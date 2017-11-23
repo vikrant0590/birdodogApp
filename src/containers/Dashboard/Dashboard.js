@@ -1,73 +1,75 @@
 import React, { Component } from 'react';
-import {
-    StyleSheet,
-    View,
-    Text,
-    Dimensions,
-    TouchableOpacity,
-} from 'react-native';
-import { Row, Body, Left, Right, Icon, Button, Input } from 'native-base';
-import { Actions } from 'react-native-router-flux';
-import MapView, { MAP_TYPES } from 'react-native-maps';
-import styles from './DashboardStyle';
+import { Text, View, TouchableOpacity, Image } from 'react-native';
+import {Container, Content, Header, Form, Item, Input, Label , Button,} from 'native-base';
+import styles from './DashboardStyles';
+import { Actions as NavActions } from 'react-native-router-flux';
+import PropTypes from 'prop-types';
+import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
 
-const { width, height } = Dimensions.get('window');
+const propTypes = {
+  homeSection: PropTypes.any,
 
-const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+};
 
 export default class Dashboard extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            region: {
-                latitude: LATITUDE,
-                longitude: LONGITUDE,
-                latitudeDelta: LATITUDE_DELTA,
-                longitudeDelta: LONGITUDE_DELTA,
-            },
-        };
-    }
-
-    onRegionChange(region) {
-        this.setState({ region });
-    }
-
-    render() {
-        return (
-            <View style={{ flex: 1 }}>
-
-                <View style={styles.container}>
-                    <MapView
-                        provider={this.props.provider}
-                        ref={ref => { this.map = ref; }}
-                        mapType={MAP_TYPES.TERRAIN}
-                        style={styles.map}
-                        initialRegion={this.state.region}
-                        onRegionChange={region => this.onRegionChange(region)}
-                    />
-                    <Row style={{ height: 40, marginBottom: height - 80, marginHorizontal: 20, backgroundColor: 'red' }}>
-                        <Left>
-                            <Button transparent onPress={() => { Actions.pop() }}>
-                                <Icon name={'ios-menu'} style={{ fontSize: 20, marginLeft: 10 }} />
-                            </Button>
-                        </Left>
-                        <Input
-                            placeholder={'search'}
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'flex-start'
-                            }} />
-                        <Right>
-                            <Icon name={'ios-search-outline'} style={{ fontSize: 20, marginRight: 20 }} />
-                        </Right>
-                    </Row>
-                </View>
-            </View>
-        );
-    }
+  componentWillMount () {
+    this.props.homeSection;
 }
+
+    render(){
+      var video = [];
+      for(let i = 0; i < 6; i++){
+        video.push(
+          <View style={{ flex:1 }}>
+        
+            <View style={{height:Metrics.screenHeight/6,flexDirection:'row',
+            marginLeft:12,marginRight:12,marginTop:12,}}>
+                 <TouchableOpacity style={{flex:0.45}} onPress={NavActions.dashboarddetail}>
+               <View style={{flex:1, borderColor:'black', borderWidth:2,}}>
+                 
+               </View>    
+               </TouchableOpacity>
+
+              <View style={{flex:0.55, flexDirection:'column', marginLeft:Metrics.screenWidth/40}}>
+                  <View  style={{alignItems:'flex-start',justifyContent:"center",marginTop:Metrics.screenHeight/120,flex:0.2 }}>
+                     <Text style={{color:'#333333', fontSize:13}}>Training Video 1 </Text>
+                  </View>
+
+                  <View style={{flex:0.5 }}>
+                     <Text style={{color:'#878787', fontSize:9}}>Sed ut perspiciatis unde omins iste natus error sit voluptatem accusantitum dolor- emque laudantium...</Text>
+                  </View>  
+
+                  <View style={{ flex:0.3,}}>
+                   <TouchableOpacity style={{alignItems:'center', flexDirection:'row',}} onPress={NavActions.dashboarddetail}>
+                   <Image source={Images.viewdetail} style={{marginRight:Metrics.screenWidth/60}}/>
+                   <Text style={{fontSize:9, color:'#333333', justifyContent:'center'}}>View Detail</Text>
+                  </TouchableOpacity>
+
+                  </View>  
+
+                 
+              </View>
+          </View>
+
+            <View style={{marginTop:12,height:1, backgroundColor:'#878787'}}>
+
+            </View>
+         </View>
+        )
+      }
+  
+        return(
+          <Content>
+        <View style={{marginTop:Metrics.navBarHeight, flex:1, }}>
+         { video}
+      </View>
+      </Content>
+      
+        
+    
+    );
+  }
+}
+    
+ 

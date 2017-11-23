@@ -1,10 +1,13 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+
+
 import AppRouter from './src/index';
-export default class App extends React.Component {
+export default class Root extends Component {
   render() {
     return (
-      < AppRouter />
+    
+       <AppRouter/>
+     
     );
   }
 }
