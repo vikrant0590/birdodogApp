@@ -53,8 +53,6 @@ export default class Signup extends Component {
            </View>
 
         </View>
-        
-      
           
       </View>
       </Content>

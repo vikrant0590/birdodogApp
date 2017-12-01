@@ -47,6 +47,7 @@ export default class DashboardDetail extends Component {
               //duration={this.state.video.duration/* I'm using a hls stream here, react-native-video
                 //can't figure out the length, so I pass it here from the vimeo config */}
             />
+            <Image source ="Images.backwhite" style={{backgroundColor:'red'}}/>
             </View>
 
              

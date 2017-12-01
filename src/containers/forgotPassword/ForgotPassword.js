@@ -7,7 +7,7 @@ export default class ForgotPassword extends Component {
     render(){
         return(
         
-           
+           <Content>
         <View style={styles.container}>
           <View style={{
             flex:1,
@@ -65,6 +65,7 @@ export default class ForgotPassword extends Component {
                    </TouchableOpacity>
         </View>
       </View>
+      </Content>
 
       
         
