@@ -28,43 +28,43 @@ export default class EditProfile extends Component {
     }
   }
   onActiveName(){
-    this.setState({ name:true, countrie:false, states:false })
+    this.setState({ name:true,countrie:false,states:false,Password:false,phone:false,street:false,city:false,zip:false,txd:false })
   }
   onDeactiveName(){
     this.setState({ name:false})
   }
   onActivePassword(){
-    this.setState({ Password:true, countrie:false, states:false})
+    this.setState({ name:false,countrie:false,states:false,Password:true,phone:false,street:false,city:false,zip:false,txd:false })
   }
   onDeactivePassword(){
     this.setState({ Password:false})
   }
   onActivePhone(){
-    this.setState({ phone:true, countrie:false, states:false})
+    this.setState({ name:false,countrie:false,states:false,Password:false,phone:true,street:false,city:false,zip:false,txd:false })
   }
   onDeactivePhone(){
     this.setState({ phone:false})
   }
   onActiveStreet(){
-    this.setState({ street:true, countrie:false, states:false})
+    this.setState({ name:false,countrie:false,states:false,Password:false,phone:false,street:true,city:false,zip:false,txd:false })
   }
   onDeactiveStreet(){
     this.setState({ street:false})
   }
   onActiveCity(){
-    this.setState({ city:true, countrie:false, states:false})
+    this.setState({ name:false,countrie:false,states:false,Password:false,phone:false,street:false,city:true,zip:false,txd:false })
   }
   onDeactiveCity(){
     this.setState({ city:false})
   }
   onActiveZip(){
-    this.setState({ zip:true, countrie:false, states:false})
+    this.setState({ name:false,countrie:false,states:false,Password:false,phone:false,street:false,city:false,zip:true,txd:false })
   }
   onDeactiveZip(){
     this.setState({ zip:false})
   }
   onActiveTxd(){
-    this.setState({ txd:true, countrie:false, states:false})
+    this.setState({ name:false,countrie:false,states:false,Password:false,phone:false,street:false,city:false,zip:false,txd:true })
   }
   onDeactiveTxd(){
     this.setState({ txd:false})
@@ -82,9 +82,8 @@ export default class EditProfile extends Component {
               <Form style={{ marginBottom:20}}>
               <Label style={{fontSize:10,marginLeft:Metrics.screenWidth/8.5,marginTop:Metrics.screenHeight/45,marginBottom:-10}}>Name</Label>
               
-                <Item style={{ borderColor: this.state.name === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:2}}>
+                <Item style={{ borderColor: this.state.name === false ? '#CECECE' : '#8CB102',borderWidth:1.3}}>
                   <Icon name="ios-person" style={{ color: '#8CB102',marginBottom:-9 }} />
-
                   <Input type="text" autoCapitalize="none" autoCorrect={false}
                    style={{marginBottom:-9, }} onBlur={()=>this.onDeactiveName()} onTouchStart={()=>this.onActiveName()}/>
                 </Item>
@@ -94,7 +93,7 @@ export default class EditProfile extends Component {
                          marginTop:Metrics.screenHeight/45,
                          marginBottom:-10}}
                          >Password</Label>
-                              <Item style={{ borderColor: this.state.Password === false ? '#A3A3A3' : '#8CB102',borderBottomWidth:2}}>
+           <Item style={{ borderColor: this.state.Password === false ? '#A3A3A3' : '#8CB102',borderBottomWidth:1.3}}>
 
                   <Icon name="ios-mail" style={{ color: '#8CB102',marginBottom:-9 }} />
                   <Input type="text" style={{marginBottom:-9,}} secureTextEntry={true} 
@@ -107,7 +106,7 @@ export default class EditProfile extends Component {
                         marginTop:Metrics.screenHeight/45,
                         marginBottom:-10}}
                         >Phone Number</Label>
-            <Item style={{ borderColor: this.state.phone === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:2}}>
+            <Item style={{ borderColor: this.state.phone === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:1.3}}>
                  <Icon name="ios-call" style={{ color: '#8CB102',marginBottom:-9 }} />
                  <Input type="text" style={{marginBottom:-9}} keyboardType="numeric"
                        onBlur={()=>this.onDeactivePhone()} onTouchStart={()=>this.onActivePhone()}
@@ -123,7 +122,7 @@ export default class EditProfile extends Component {
                         >
                         Street
                   </Label>
-                  <Item style={{ borderColor: this.state.street === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:2}}>
+                  <Item style={{ borderColor: this.state.street === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:1.3}}>
                  <Input type="text" style={{marginBottom:-9}} 
                  onBlur={()=>this.onDeactiveStreet()} onTouchStart={()=>this.onActiveStreet()}
                    autoCapitalize="none"
@@ -134,28 +133,29 @@ export default class EditProfile extends Component {
 
                   <Label style={{fontSize:10,marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45,}}>Country</Label>
                   <ModalDropdown options={['INDIA', 'PAKISTAN','CANADA']}
-                  onSelect={(idx, value)=>this.setState({country:value,countrie:true, states:false})}
-                  dropdownStyle={{width:Metrics.screenWidth - 18, height:110,marginLeft:10,marginRight:10}}>
-                  <View style={{flex:1,flexDirection:'row',marginTop:3}}>
-                    <Row>
-                      <Col style={{flex:0.99,marginTop:3}}>
-                        <Text style={{color:'black',marginLeft:Metrics.screenWidth/19,}}>{this.state.country}</Text>
-                      </Col>
-                      <Col style={{flex:0.09}}>
-                       
-                      </Col>
-                    </Row>
-                  </View>
-                  
-                  <View style={{ height:8,
-                    backgroundColor: this.state.countrie === false ? '#A3A3A3' : '#8CB102',
-                    marginLeft:Metrics.screenWidth/28,
-                     marginTop:Metrics.screenHeight/28
-                     }}>
-                     <Image source={Images.dropdownbar} resizeMethod="contain"/>
-        
-                     </View>
-                </ModalDropdown>
+                  onTouchStart={()=>this.setState({name:false,countrie:true,states:false,Password:false,phone:false,street:false,city:false,zip:false,txd:false})}
+  onSelect={(idx, value)=>this.setState({country:value,states:false,street:false})}
+  dropdownStyle={{width:Metrics.screenWidth - 10,height:110,marginLeft:10,marginRight:10}}>
+
+     <View  style={{flexDirection:"column",marginTop:Metrics.screenHeight/40}}>
+        <View style={{flexDirection:'row', marginLeft:Metrics.screenWidth/28}}>
+        <Text style={{color:'black',marginLeft:Metrics.screenWidth/30}}>{this.state.country}</Text>
+        </View>
+        { !this.state.countrie ?
+        <Image source={Images.dropdownbar} resizeMode="contain"
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+           marginLeft:Metrics.screenWidth/28,
+          
+          }}  />
+        :
+        <Image source={Images.dropdownbar_green} resizeMode="contain"
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+           marginLeft:Metrics.screenWidth/28,}}>
+           </Image>
+        }
+
+  </View>
+  </ModalDropdown>
 
                <Label style={{fontSize:10,
                         marginLeft:Metrics.screenWidth/19,
@@ -164,7 +164,7 @@ export default class EditProfile extends Component {
                         >
                       City
                   </Label>
-                  <Item style={{ borderColor: this.state.city === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:2}}>
+                  <Item style={{ borderColor: this.state.city === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:1.3}}>
 
                  <Input type="text" style={{marginBottom:-9}}  
                   autoCapitalize="none"
@@ -176,25 +176,30 @@ export default class EditProfile extends Component {
                <Label style={{fontSize:10,marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45,}}>
                State
                </Label>
-                  <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
-                  onSelect={(idx, value)=>this.setState({state:value, states:true, countrie:false})}
-                  dropdownStyle={{width:Metrics.screenWidth - 10, height:110,marginLeft:10,marginRight:10}}>
-                  <View style={{flex:1,flexDirection:'row',marginTop:3}}>
-                    <Row>
-                      <Col style={{flex:0.99,marginTop:3}}>
-                        <Text style={{color:'black',marginLeft:Metrics.screenWidth/19,}}>{this.state.state}</Text>
-                      </Col>
-                      <Col style={{flex:0.09}}>
-                        <Image source={Images.dropdown} style={{marginTop:10,marginLeft:5}} />
-                      </Col>
-                    </Row>
-                  </View>
-                  <View style={{
-                    height:2,
-                    backgroundColor: this.state.states === false ? '#A3A3A3' : '#8CB102',
-                     marginLeft:Metrics.screenWidth/28,
-                     marginTop:Metrics.screenHeight/20}}></View>
-                  </ModalDropdown>
+               <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
+               onTouchStart={()=>this.setState({ name:false,countrie:false,states:true,Password:false,phone:false,street:false,city:false,zip:false,txd:false})}
+  onSelect={(idx, value)=>this.setState({state:value, countrie:false})}
+  dropdownStyle={{width:Metrics.screenWidth - 10,height:110,marginLeft:10,marginRight:10}}>
+
+     <View  style={{flexDirection:"column",marginTop:Metrics.screenHeight/40}}>
+        <View style={{flexDirection:'row', marginLeft:Metrics.screenWidth/28}}>
+        <Text style={{color:'black',marginLeft:Metrics.screenWidth/30}}>{this.state.state}</Text>
+        </View>
+        { !this.state.states ?
+        <Image source={Images.dropdownbar} resizeMode="contain"
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+           marginLeft:Metrics.screenWidth/28,
+          
+          }}  />
+        :
+        <Image source={Images.dropdownbar_green} resizeMode="contain"
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+           marginLeft:Metrics.screenWidth/28,}}>
+           </Image>
+        }
+
+  </View>
+  </ModalDropdown>
 
       <Label style={{fontSize:10,
                         marginLeft:Metrics.screenWidth/19,
@@ -203,7 +208,7 @@ export default class EditProfile extends Component {
                         >
                       Zip
                   </Label>
-                  <Item style={{ borderColor: this.state.zip === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:2}}>
+                  <Item style={{ borderColor: this.state.zip === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:1.3}}>
                   <Input type="text" style={{marginBottom:-9}}  
                   autoCapitalize="none"
                   autoCorrect={false}
@@ -220,7 +225,7 @@ export default class EditProfile extends Component {
                         >
                         TXTDL
                   </Label>
-                  <Item style={{ borderColor: this.state.name === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:2}}>
+                  <Item style={{ borderColor: this.state.name === false ? '#A3A3A3' : '#8CB102', borderBottomWidth:1.3}}>
                   <Input type="text" style={{marginBottom:-9}} 
                    autoCapitalize="none"
                    autoCorrect={false}

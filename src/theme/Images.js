@@ -2,7 +2,6 @@
 const images = {
   
     navDrawerIcon: require('../images/drawer.png'),
-
     signin: require('../images/signin.png'),
     lockgreen: require('../images/lockgreen.png'),
     messageGreen: require('../images/messageGreen.png'),
@@ -19,6 +18,7 @@ const images = {
     rightarrow: require('../images/rightarrow.png'),
     logoutnavbar: require('../images/logoutnavbar.png'),
     dropdownbar: require('../images/dropdownbar.png'),
+    dropdownbar_green:require('../images/dropdownbar_green.png'),
     streach: require('../images/streach.png'),
     rotate: require('../images/rotate.png'),
     dollar: require('../images/dollar.png'),
@@ -33,7 +33,9 @@ const images = {
     delimagesmall: require('../images/delimagesmall.png'),
     delimagelarge: require('../images/delimagelarge.png'),
     addico: require('../images/addico.png'),
-    bar: require('../images/bar.png')
+    bar: require('../images/bar.png'),
+    bar_green:require('../images/bar_green.png'),
+
 
    
     

@@ -9,6 +9,7 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
      constructor(){
          super();
          this.state={
+             state:"--CHOOSE--",
             trashCliked:false,
             Vacant:false,
             hoarding:true,
@@ -53,7 +54,7 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
        <View>
        
          <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
-  onSelect={(idx, value)=>this.setState({state:value, states:true, countrie:false})}
+  onSelect={(idx, value)=>this.setState({state:value})}
   dropdownStyle={{width:Metrics.screenWidth-Metrics.screenWidth/15,}}>
 
      <View  style={{marginTop:10,flexDirection:"column",marginTop:Metrics.screenHeight/20}}>
@@ -62,7 +63,7 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
         <Text style={{color:'black',marginLeft:Metrics.screenWidth/30}}>{this.state.state}</Text>
         </View>
         <Image source={Images.dropdownbar} resizeMode="contain"
-        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/120}} />
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/120,}} />
 
   </View>
   </ModalDropdown>
