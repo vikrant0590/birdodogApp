@@ -35,8 +35,11 @@ const images = {
     addico: require('../images/addico.png'),
     bar: require('../images/bar.png'),
     bar_green:require('../images/bar_green.png'),
-
-
+    profilebg:require('../images/profilebg.png'),
+    profile:require('../images/profile.png'),
+    message:require('../images/message.png'),
+    phone: require('../images/phone.png'),
+    location: require('../images/location.png')
    
     
 

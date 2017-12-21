@@ -12,42 +12,49 @@ export default class MyProfile extends Component {
      
         
         return (
-            <View style={{flex:1, marginTop:Metrics.navBarHeight, backgroundColor:"#8CB102"}}>
-            
-             <View 
-             style={{flex:1,marginLeft:15, marginRight:15,marginBottom:15,
-             backgroundColor:"white", flexDirection:"column", alignItems:"center",}}>
-                
-                <View style={{flex:0.3, justifyContent:"center", alignItems:"center", marginTop:Metrics.screenHeight/12,}}>
-                   <Text style={{ fontSize:27, }}>Philip Health</Text>
-               
-                 <Icon name="ios-mail" style={{color: 'gray', marginTop:Metrics.screenHeight/30}} />
+            <View style={{flex:1}}>
+                <Image source={Images.profile}
+                    style={{flex:1,
+                        resizeMode:'stretch',
+                        width:Metrics.screenWidth,
+                        height:Metrics.screenHeight,
+                    }}
+                >
 
-                   <Text style={{ fontSize:12, color:'gray'}}>philiphealth@gmail.com</Text>
+                <View 
+             style={{flex:1,marginLeft:15, marginRight:15,marginBottom:15,
+           flexDirection:"column", alignItems:"center",}}>
+                
+                <View style={{flex:0.25, justifyContent:"center", alignItems:"center", marginTop:Metrics.screenHeight/5,backgroundColor:'transparent'}}>
+                   <Text style={{ fontSize:35,}}>Philip Health</Text>
+               
+                 <Image source={Images.message} style={{ marginTop:Metrics.screenHeight/27}} />
+
+                   <Text style={{ fontSize:16, color:'gray', marginTop:Metrics.screenHeight/85}}>philiphealth@gmail.com</Text>
                 </View>
 
                 
-                <View style={{flex:0.1, justifyContent:"center", alignItems:"center", }}>
-                 <Icon name="ios-call" style={{ color: 'gray', }} />
-                   <Text style={{ fontSize:12, color:'gray'}}>+1 898 849 5858</Text>
+                <View style={{flex:0.15, justifyContent:"center", alignItems:"center", backgroundColor:'transparent'}}>
+                 <Image source={Images.phone}  />
+                   <Text style={{ fontSize:16, color:'gray',marginTop:Metrics.screenHeight/85}}>+1 898 849 5858</Text>
                </View>    
 
                
-               <View style={{flex:0.25, justifyContent:"center", alignItems:"center",}}>
-               <Icon name="ios-pin" style={{ color: 'gray',   }} />
-                   <Text style={{ fontSize:12, color:'gray'}}>
-                   Street no:10, Central Park, {'\n'} Birmingham, Alabama 35207 {'\n'} United States}
+               <View style={{flex:0.25, justifyContent:"center", alignItems:"center",backgroundColor:'transparent'}}>
+               <Image source={Images.location}  />
+                   <Text style={{ fontSize:16, color:'gray',marginTop:Metrics.screenHeight/85}}>
+                   Street no:10, Central Park, {'\n'} Birmingham, Alabama 35207 {'\n'} United States
                    </Text>
                 </View>
                
                
-                <View style={{flex:0.1, justifyContent:"center", alignItems:"center",}}>
-                   <Text style={{marginTop:Metrics.screenHeight/27}}>TXTDL</Text>
-                   <Text style={{color:'gray'}}>P24022730</Text>
+                <View style={{flex:0.1, justifyContent:"center", alignItems:"center",backgroundColor:'transparent'}}>
+                   <Text style={{marginTop:Metrics.screenHeight/27,}}>TXTDL</Text>
+                   <Text style={{color:'gray',marginTop:Metrics.screenHeight/85,fontSize:16}}>P24022730</Text>
 
                      
                    </View>
-                   <View style={{flex:0.3, justifyContent:"center", alignItems:"center"}}>
+                   <View style={{flex:0.3, justifyContent:"center", alignItems:"center",backgroundColor:'transparent'}}>
                    <TouchableOpacity onPress={ NavActions.editprofile }
                    style={{borderRadius:20,width:Metrics.screenWidth/1.3,height:40,justifyContent:"center",alignItems:"center",
                    backgroundColor:'#333333',}}>
@@ -58,6 +65,7 @@ export default class MyProfile extends Component {
                        
 
                  </View>
+                </Image>
             </View>
 
          

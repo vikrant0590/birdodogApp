@@ -76,7 +76,7 @@ export default class EditProfile extends Component {
          
           
           <Content>
-            <Container style={{marginTop:Metrics.navBarHeight,marginRight:10, marginBottom:Metrics.screenHeight/4}}>
+            <Container style={{marginTop:Metrics.navBarHeight,marginRight:10, marginBottom:Metrics.screenHeight/3.7}}>
        
                 <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10}}>Personel Information</Text>
               <Form style={{ marginBottom:20}}>
