@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Text, View , Image, TouchableOpacity, Button} from 'react-native';
+import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight} from 'react-native';
 import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-base';
  import {Metrics, Images,} from '../../theme';
  import { ImagePicker } from 'expo';
@@ -263,7 +263,7 @@ deleteFourth =()=>{
                    { imageThird ?
                      <View style={{marginTop:Metrics.screenHeight/70,flexDirection:'row',marginRight:Metrics.screenWidth/40,}}>
                      
-                          <View >
+                          <View>
                           <TouchableOpacity onPress={()=>this._pickImageThird()}>
                              <Image source={{ uri: imageThird }}
                              style={{  width:Metrics.screenWidth/3.5,
@@ -335,19 +335,59 @@ deleteFourth =()=>{
                      }
 
                      </View>   
-                
-                     <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, flex:1 }}>
-                       <View style={{  width:Metrics.screenWidth/3.5, marginRight:Metrics.screenWidth/40, alignItems:'flex-end',}}>
+                    {/* Cut image Here */}
+                     <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, flex:1, }}>
+                     <View style={{flex:1}}>
+                       { imageSecond &&
+                     
+                     <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
+                     <TouchableOpacity onPress={()=>this.deleteSecond()}>
+                      <Image source={Images.delimagesmall} ></Image>
+                      </TouchableOpacity>
+                      </View>
+                    
+                     }
+                     </View>
+                     <View style={{flex:1}}>
+                       { imageThird &&
+                     
+                     <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
+                     <TouchableOpacity onPress={()=>this.deleteThird()}>
+                      <Image source={Images.delimagesmall} ></Image>
+                      </TouchableOpacity>
+                      </View>
+                    
+                     }
+                     </View>
+                     <View style={{flex:1}}>
+                       { imageFourth &&
+                     
+                     <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
+                     <TouchableOpacity onPress={()=>this.deleteFourth()}>
+                      <Image source={Images.delimagesmall} ></Image>
+                      </TouchableOpacity>
+                      </View>
+                    
+                     }
+                     </View>
+                     </View>
+                     
+                     
+
+                      {/* <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, flex:1, }}>
+                       <View style={{  width:Metrics.screenWidth/3.5, marginRight:Metrics.screenWidth/40, alignItems:'flex-end',backgroundColor:'red'}}>
                        {imageSecond && 
+                       
                        <TouchableOpacity onPress={()=> this.deleteSecond()}>
                         <Image source={Images.delimagesmall}
                         style={{marginRight:-Metrics.screenWidth/40,marginTop:-Metrics.screenHeight/30, resizeMode:"contain"}}/>
                         </TouchableOpacity>
+                      
                     }
 
                        </View>   
 
-                       <View style={{  width:Metrics.screenWidth/3.5, marginRight:Metrics.screenWidth/40,alignItems:'flex-end',}}>
+                       <View style={{  width:Metrics.screenWidth/3.5, marginRight:Metrics.screenWidth/40,alignItems:'flex-end'}}>
                        {imageThird && 
                        <TouchableOpacity onPress={()=> this.deleteThird()}>
                         <Image source={Images.delimagesmall}
@@ -366,7 +406,7 @@ deleteFourth =()=>{
                          </TouchableOpacity>
                     }
                        </View>   
-                     </View>  
+                     </View>    */}
 
                   
 
@@ -609,15 +649,6 @@ deleteFourth =()=>{
                    </TouchableOpacity>
 
                </View>
-
-
-
-
-
-
-
-
-        
                    </View>  
             </Container>
             </Content>

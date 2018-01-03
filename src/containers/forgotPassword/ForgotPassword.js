@@ -6,12 +6,12 @@ import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
 export default class ForgotPassword extends Component {
     render(){
         return(
-        
-           <Content>
+        <Container>
+             <Content style={{flex:1,marginTop:Metrics.navBarHeight, marginBottom:Metrics.screenHeight/20}}>
+             
         <View style={styles.container}>
           <View style={{
             flex:1,
-
             marginTop:Metrics.screenHeight/12, 
             flexDirection:'column',
             justifyContent:'center', 
@@ -66,7 +66,7 @@ export default class ForgotPassword extends Component {
         </View>
       </View>
       </Content>
-
+</Container>
       
         
     

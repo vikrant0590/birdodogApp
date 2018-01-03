@@ -13,6 +13,7 @@ import Faq from './faq';
 import NeedHelp from './needHelp';
 import TermsCondition from './termsCondition';
 import DashboardDetail from './dashboardDetail';
+
 export {
     Login,
     Signup,
@@ -28,5 +29,6 @@ export {
     Faq,
     NeedHelp,
     TermsCondition,
-    DashboardDetail
+    DashboardDetail,
+   
 }

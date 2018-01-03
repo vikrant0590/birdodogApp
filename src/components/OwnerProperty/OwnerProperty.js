@@ -17,37 +17,99 @@ export default class OwnerProperty extends Component {
            rotting: false,
            foundation: true,
            low:true,
-           roof:false
+           roof:false,
+           Oname:false,
+           Ophone:false,
+           Oemail:false,
+           Ostreet:false,
+           Ocity:false,
+           Ostate:false,
+           Ozip:false
         }
     }
+    onActiveStreet(){
+        this.setState({ Ostreet:true,Ocity:false,Ostate:false,Ozip:false,Oname:false ,Ophone:false,Oemail:false})
+      }
+      onDeactiveStreet(){
+        this.setState({ Ostreet:false})
+      }
+      onActiveCity(){
+        this.setState({ Ostreet:false,Ocity:true,Ostate:false,Ozip:false,Oname:false ,Ophone:false,Oemail:false})
+    }
+      onDeactiveCity(){
+        this.setState({ Ocity:false})
+      }
+      onActiveState(){
+        this.setState({ Ostreet:false,Ocity:false,Ostate:true,Ozip:false,Oname:false,Ophone:false,Oemail:false })
+    }
+      onDeactiveState(){
+        this.setState({ Ostate:false})
+      }
+      onActiveZip(){
+        this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:true,Oname:false,Ophone:false,Oemail:false })
+    }
+      onDeactiveZip(){
+        this.setState({ Ozip:false})
+      }
+
+      onActiveName(){
+        this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:true,Ophone:false,Oemail:false })
+    }
+      onDeactiveName(){
+        this.setState({ Oname:false})
+      }
+      onActivePhone(){
+        this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:false,Ophone:true,Oemail:false })
+    }
+      onDeactivePhone(){
+        this.setState({ Ophone:false})
+      }
+      onActiveEmail(){
+        this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:false,Ophone:false,Oemail:true })
+    }
+      onDeactiveEmail(){
+        this.setState({ Oemail:false})
+      }
     render(){
         return(
+            
             <View>
+            
                    <View style={{ marginTop:Metrics.screenHeight/20}}>
-            <Text style={{ fontSize:12,color:'#333333'}}>Contact Detail</Text> 
+            <Text style={{ fontSize:12,color:'#333333'}}>Owner Contact Info</Text> 
          </View>
 
      <View style={{marginTop:Metrics.screenHeight/40}}>
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Label style={{fontSize:11,}}>Owner's Name *</Label>
-        <Input style={{borderBottomWidth: 0}}/>
+        <Label style={{fontSize:11,}}>Owner Name *</Label>
+        <Input style={{borderBottomWidth: 0, }} onBlur={()=>this.onDeactiveName()} onTouchStart={()=>this.onActiveName()}/>
 
      </Item>
-     <Image source={Images.bar} resizeMode="contain" 
-     style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/40}}
-     />
+     { this.state.Oname === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           />
+                }
  </View>
 
 
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>Phone Number *</Label>
-              <Input style={{borderBottomWidth: 0}}/>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactivePhone()} onTouchStart={()=>this.onActivePhone()}/>
 
            </Item>
-           <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/40}}
+           { this.state.Ophone === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
            />
+                }
        </View>
 
 
@@ -57,27 +119,19 @@ export default class OwnerProperty extends Component {
      
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-              <Label style={{fontSize:11,}}>Email *</Label>
-              <Input style={{borderBottomWidth: 0}}/>
+              <Label style={{fontSize:11,}}>Email Address *</Label>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveEmail()} onTouchStart={()=>this.onActiveEmail()}/>
 
            </Item>
-           <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/40}}
+           { this.state.Oemail === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
            />
+                }
        </View>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             <View style={{ marginTop:Metrics.screenHeight/20}}>
@@ -87,31 +141,42 @@ export default class OwnerProperty extends Component {
      <View style={{marginTop:Metrics.screenHeight/40}}>
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
         <Label style={{fontSize:11,}}>Street *</Label>
-        <Input style={{borderBottomWidth: 0}}/>
+        <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveStreet()} onTouchStart={()=>this.onActiveStreet()}/>
 
      </Item>
-     <Image source={Images.bar} resizeMode="contain" 
-     style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/40}}
-     />
+     { this.state.Ostreet === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           />
+                }
  </View>
 
 
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>City *</Label>
-              <Input style={{borderBottomWidth: 0}}/>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveCity()} onTouchStart={()=>this.onActiveCity()}/>
 
            </Item>
-           <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/40}}
+           { this.state.Ocity === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
            />
+                }
        </View>
 
 
        <View>
        
          <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
-  onSelect={(idx, value)=>this.setState({state:value, states:true, countrie:false})}
+  onTouchStart={()=>this.setState({Ostreet:false,Ocity:false,Ostate:true,Ozip:false,Oname:false ,Ophone:false,Oemail:false})}                           
+  onSelect={(idx, value)=>this.setState({state:value, Ostate:true})}
   dropdownStyle={{width:Metrics.screenWidth-Metrics.screenWidth/15,}}>
 
      <View  style={{marginTop:10,flexDirection:"column",marginTop:Metrics.screenHeight/20}}>
@@ -119,9 +184,23 @@ export default class OwnerProperty extends Component {
          <Text style={{fontSize:11,color:'gray'}}>State * </Text>
         <Text style={{color:'black',marginLeft:Metrics.screenWidth/30}}>{this.state.state}</Text>
         </View>
+        {/* <Image source={Images.dropdownbar} resizeMode="contain"
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/120}} /> */}
+  { !this.state.Ostate ?
         <Image source={Images.dropdownbar} resizeMode="contain"
-        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/120}} />
-
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+            marginTop:-Metrics.screenHeight/120,
+           //marginLeft:Metrics.screenWidth/28,
+          
+          }}  />
+        :
+        <Image source={Images.dropdownbar_green} resizeMode="contain"
+        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+            marginTop:-Metrics.screenHeight/120,
+           //marginLeft:Metrics.screenWidth/28,
+        }}>
+           </Image>
+        }
   </View>
   </ModalDropdown>
        </View>
@@ -131,16 +210,21 @@ export default class OwnerProperty extends Component {
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>Zip *</Label>
-              <Input style={{borderBottomWidth: 0}}/>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveZip()} onTouchStart={()=>this.onActiveZip()}/>
 
            </Item>
-           <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/40}}
+           { this.state.Ozip === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
            />
+                }
        </View>
 
-       
         </View>
+       
         )
     }
 } 

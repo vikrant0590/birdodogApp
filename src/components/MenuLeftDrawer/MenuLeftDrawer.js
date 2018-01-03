@@ -90,6 +90,7 @@ export default class MenuLeftDrawer extends Component {
              renderRow={(item) =>
                <ListItem
                  style={{
+                   height:Metrics.screenHeight/10,
                    alignItems: 'center',
                    justifyContent: 'center',
                    marginLeft: 1,
@@ -99,7 +100,7 @@ export default class MenuLeftDrawer extends Component {
                  }}>
                  <TouchableOpacity
                    onPress={ () => this.onPress(item)}
-                   hitSlop={{top: 10, bottom: 10, right: 300}}
+                   hitSlop={{top: 15, bottom: 20, right: 300}}
                    style={{flexDirection: 'row', justifyContent: 'center',alignItems:"center"}}>
                    <Left
                      style={{

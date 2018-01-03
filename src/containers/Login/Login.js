@@ -3,8 +3,15 @@ import { Text, View, TouchableOpacity, Image } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button, Icon} from 'native-base';
 import styles from './LoginStyle';
 import {Actions as NavAction} from 'react-native-router-flux';
-import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
+import { ApplicationStyles, Colors, Metrics, Images, Fonts } from '../../theme';
+
+//import { toast } from '../../helpers/ToastMessage';
+
+
 export default class Login extends Component {
+  onPressLogin = () => {
+    NavAction.drawer();
+  }
     render(){
         return(
         
@@ -34,7 +41,7 @@ export default class Login extends Component {
           <Input  placeholder="Password" secureTextEntry={true}  placeholderTextColor={'#A3A3A3'}/>
         </Item>
 
-        <TouchableOpacity  onPress={NavAction.drawer}
+        <TouchableOpacity  onPress={()=>this.onPressLogin()}
                    style={{
                      marginTop:Metrics.screenHeight/22,
                      borderRadius:20,
@@ -42,7 +49,8 @@ export default class Login extends Component {
                      height:35,
                      justifyContent:"center",
                      alignItems:"center",
-                   backgroundColor:'#8CB102',
+                     backgroundColor:'#8CB102',
+                  
                    }}>
 
                    <Text style={styles.siginButtonText}>SIGN IN</Text>

@@ -22,7 +22,7 @@ export default class MyMoney extends Component {
         var payments = [];
         for(let i = 0; i < 4; i++){
             payments.push(
-            <View>
+            <View key={i}>
             <Card style={{flex:1, height:Metrics.screenHeight/5,marginLeft:Metrics.screenWidth/25, marginRight:Metrics.screenWidth/25,}}>
               <CardItem style={{flex:0.49,alignItems:"center",backgroundColor:"#F8F8F8" }}>
               <View style={{flexDirection:"column"}}>

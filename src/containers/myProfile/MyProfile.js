@@ -50,13 +50,13 @@ export default class MyProfile extends Component {
                
                 <View style={{flex:0.1, justifyContent:"center", alignItems:"center",backgroundColor:'transparent'}}>
                    <Text style={{marginTop:Metrics.screenHeight/27,}}>TXTDL</Text>
-                   <Text style={{color:'gray',marginTop:Metrics.screenHeight/85,fontSize:16}}>P24022730</Text>
+                   <Text style={{color:'gray',marginTop:Metrics.screenHeight/85,fontSize:16,marginBottom:Metrics.screenHeight/85,height:Metrics.screenHeight/16}}>P24022730</Text>
 
                      
                    </View>
                    <View style={{flex:0.3, justifyContent:"center", alignItems:"center",backgroundColor:'transparent'}}>
                    <TouchableOpacity onPress={ NavActions.editprofile }
-                   style={{borderRadius:20,width:Metrics.screenWidth/1.3,height:40,justifyContent:"center",alignItems:"center",
+                   style={{borderRadius:20,width:Metrics.screenWidth/1.3,height:Metrics.screenHeight/20,justifyContent:"center",alignItems:"center",
                    backgroundColor:'#333333',}}>
                    <Text style={{color:"white", fontSize:16}}>EDIT PROFILE</Text>
                     

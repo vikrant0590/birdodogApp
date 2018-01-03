@@ -149,7 +149,7 @@ export default class Faq extends Component {
        </Left>
        <Right
          style={{
-          marginRight: -Metrics.screenWidth/28,
+         // marginRight: -Metrics.screenWidth/40,
           
          }}>
         

@@ -7,7 +7,7 @@ export default StyleSheet.create({
         marginLeft:Metrics.screenWidth/12,
         marginRight:Metrics.screenWidth/12,
          flexDirection:'column',
-         marginTop:Metrics.navBarHeight,
+         //marginTop:Metrics.navBarHeight,
          marginBottom:Metrics.screenHeight/12,
         
     },

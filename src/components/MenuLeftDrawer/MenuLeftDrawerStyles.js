@@ -21,11 +21,12 @@ export default StyleSheet.create({
       itemList: {
         flex:1,
         color: '#a7a7a7',
-        height:30,
+        height:Metrics.screenHeight/18,
         alignSelf:"center",
         justifyContent:'center',
         marginLeft:14,
-        fontSize:17
+        fontSize:17,
+       
       },
 
   

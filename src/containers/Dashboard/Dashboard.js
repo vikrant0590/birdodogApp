@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StatusBar } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button,} from 'native-base';
 import styles from './DashboardStyles';
 import { Actions as NavActions } from 'react-native-router-flux';
 import PropTypes from 'prop-types';
-import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
+import { ApplicationStyles, Colors, Metrics, Images , Fonts} from '../../theme';
 
 const propTypes = {
   homeSection: PropTypes.any,
@@ -21,19 +21,22 @@ export default class Dashboard extends Component {
       var video = [];
       for(let i = 0; i < 6; i++){
         video.push(
-          <View style={{ flex:1 }}>
+          <View style={{ flex:1,}} key={i}>
         
-            <View style={{height:Metrics.screenHeight/6,flexDirection:'row',
-            marginLeft:12,marginRight:12,marginTop:12,}}>
-                 <TouchableOpacity style={{flex:0.45}} onPress={NavActions.dashboarddetail}>
-               <View style={{flex:1, borderColor:'black', borderWidth:2,}}>
-                 
-               </View>    
-               </TouchableOpacity>
+            <View style={{flex:1,height:Metrics.screenHeight/6,flexDirection:'row',
+            marginLeft:Metrics.screenWidth/25,marginRight:Metrics.screenWidth/25,marginTop:12, }}>
+               
+               <TouchableOpacity onPress={NavActions.dashboarddetail} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.3, }}>
+                 <Image source={Images.signin} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.3,resizeMode:'stretch'}}/>
+               </TouchableOpacity>  
 
-              <View style={{flex:0.55, flexDirection:'column', marginLeft:Metrics.screenWidth/40}}>
+
+               <View style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.2,
+               
+                 flexDirection:'column',
+                  marginLeft:Metrics.screenWidth/30}}>
                   <View  style={{alignItems:'flex-start',justifyContent:"center",marginTop:Metrics.screenHeight/120,flex:0.2 }}>
-                     <Text style={{color:'#333333', fontSize:13}}>Training Video 1 </Text>
+                     <Text style={{color:'#333333', fontSize:13,}}>Training Video 1 </Text>
                   </View>
 
                   <View style={{flex:0.5 }}>
@@ -49,7 +52,7 @@ export default class Dashboard extends Component {
                   </View>  
 
                  
-              </View>
+              </View> 
           </View>
 
             <View style={{marginTop:12,height:1, backgroundColor:'#878787'}}>

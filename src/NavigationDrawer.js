@@ -24,6 +24,7 @@ class NavigationDrawer extends React.Component {
 
     return (
       <Drawer
+    
         ref={(ref) => this._drawer = ref}
         onOpen={() =>Actions.refresh({ key: state.key, open: true })}
         onClose={() => Actions.refresh({ key: state.key, open: false })}
