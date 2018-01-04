@@ -128,7 +128,7 @@ export default class Faq extends Component {
 
          <TouchableOpacity
        onPress={ () => this.onPress(item,items.length, items)}
-       hitSlop={{top: 10, bottom: 10, right: 300}}
+       hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
        style={{flex:1,flexDirection: 'row', justifyContent: 'center',alignItems:"center",}}>
        <Left
          style={{

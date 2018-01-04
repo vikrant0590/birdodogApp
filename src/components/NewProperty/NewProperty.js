@@ -107,12 +107,19 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
         <Text style={{color:'black',marginLeft:Metrics.screenWidth/50}}>{this.state.state}</Text>
         </View>
         { this.state.State === false ?
-                <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,}}
-           /> :
-           <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15, }}
-           />
+            <Image source={Images.dropdownbar} resizeMode="contain"
+            style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+                marginTop:-Metrics.screenHeight/120,
+          
+              
+              }}  />
+            :
+            <Image source={Images.dropdownbar_green} resizeMode="contain"
+            style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
+                marginTop:-Metrics.screenHeight/120,
+               
+            }}>
+               </Image>
                 }
 
   </View>

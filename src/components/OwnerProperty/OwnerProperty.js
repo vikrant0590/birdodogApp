@@ -184,20 +184,19 @@ export default class OwnerProperty extends Component {
          <Text style={{fontSize:11,color:'gray'}}>State * </Text>
         <Text style={{color:'black',marginLeft:Metrics.screenWidth/30}}>{this.state.state}</Text>
         </View>
-        {/* <Image source={Images.dropdownbar} resizeMode="contain"
-        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/120}} /> */}
+       
   { !this.state.Ostate ?
         <Image source={Images.dropdownbar} resizeMode="contain"
         style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
             marginTop:-Metrics.screenHeight/120,
-           //marginLeft:Metrics.screenWidth/28,
+      
           
           }}  />
         :
         <Image source={Images.dropdownbar_green} resizeMode="contain"
         style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
             marginTop:-Metrics.screenHeight/120,
-           //marginLeft:Metrics.screenWidth/28,
+           
         }}>
            </Image>
         }

@@ -18,11 +18,7 @@
   "jest": {
     "preset": "jest-expo"
   },
-  "rnpm": {
-    "assets": [
-      "./src/fonts/"
-    ]
-  },
+ 
   "dependencies": {
     "@expo/videoplayer": "^0.1.13",
     "expo": "^22.0.2",

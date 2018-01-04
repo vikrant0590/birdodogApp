@@ -1,7 +1,15 @@
 {
   "expo": {
   
-    "sdkVersion": "22.0.0"
+    "sdkVersion": "22.0.0",
+    "orientation": "portrait",
+    "androidStatusBar": {
+      "barStyle":"dark-content"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf"]
+    }
+    
   }
   
 }

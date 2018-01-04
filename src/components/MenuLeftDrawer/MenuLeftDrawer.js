@@ -23,6 +23,7 @@ export default class MenuLeftDrawer extends Component {
       };
 
       onPress = (item) => {
+      
           console.log("INDEX", item.index);
         if(item.index === 0){
           this.props.homeSection();
@@ -100,8 +101,8 @@ export default class MenuLeftDrawer extends Component {
                  }}>
                  <TouchableOpacity
                    onPress={ () => this.onPress(item)}
-                   hitSlop={{top: 15, bottom: 20, right: 300}}
-                   style={{flexDirection: 'row', justifyContent: 'center',alignItems:"center"}}>
+                   hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
+                   style={{flexDirection: 'row', justifyContent: 'center',alignItems:"center",}}>
                    <Left
                      style={{
                        justifyContent: 'center',

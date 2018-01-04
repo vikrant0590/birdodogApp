@@ -33,7 +33,7 @@ export default class Settings extends Component {
             {index: 3, title: 'Sign out',  image:require('../../images/logout.png')}];
         return(
           <Container style={{flex:1,marginTop:Metrics.navBarHeight, flexDirection:'column'}}>
-            <View style={{flex:0.90}}>
+            <View style={{flex:1}}>
                        
                         <List
              dataArray={items}
@@ -50,7 +50,7 @@ export default class Settings extends Component {
                  }}>
                  <TouchableOpacity
                    onPress={ () => this.onPress(item)}
-                   hitSlop={{top: 10, bottom: 10, right: 300}}
+                   hitSlop={{top: 12, left: 36, bottom: 0, right: 0}}
                    style={{flexDirection: 'row', justifyContent: 'center',alignItems:"center"}}>
                    <Left
                      style={{
@@ -78,14 +78,14 @@ export default class Settings extends Component {
             
 
 
-               <View style={{height:0.5,backgroundColor:'#A3A3A3', }}>
+               {/* <View style={{height:0.5,backgroundColor:'#A3A3A3', }}>
        
                  </View>
                  <View style={{flex:0.10,justifyContent:"center",alignItems:"center" }}>
                  <TouchableOpacity>
                     <Text style={{color:'#797979', fontSize:13}}>DELETE MY ACCOUNT</Text>
                   </TouchableOpacity>  
-            </View>
+            </View> */}
             </Container>
         )
     }

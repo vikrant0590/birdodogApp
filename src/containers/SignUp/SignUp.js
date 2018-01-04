@@ -8,14 +8,13 @@ export default class Signup extends Component {
   
     render(){
         return(
-    
+        <Container style={{flex:1,marginTop:Metrics.navBarHeight}}>
           <Content>
         <View style={styles.container}> 
-       
-          <View style={{flex:1,flexDirection:"column",marginTop:Metrics.navBarHeight}}>
-            <View style={{flex:1,marginTop:Metrics.screenHeight/15,marginBottom:Metrics.screenHeight/50}}>
-               <Text>Personal Information</Text>
-            </View>
+        <View style={{flex:1,flexDirection:"column",}}>
+          <View style={{flex:1,marginTop:Metrics.screenHeight/15,marginBottom:Metrics.screenHeight/50}}>
+                <Text>Personal Information</Text>
+                        </View>
 
             <View style={{flex:1}}> 
                <Item >
@@ -57,7 +56,9 @@ export default class Signup extends Component {
         </View>
      
       </View>
+    
       </Content>  
+      </Container>
    
         
     

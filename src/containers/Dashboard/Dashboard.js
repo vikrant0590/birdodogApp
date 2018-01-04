@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, StatusBar } from 'react-native';
+import { Text, View, TouchableOpacity, Image, StatusBar, Platform } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button,} from 'native-base';
 import styles from './DashboardStyles';
 import { Actions as NavActions } from 'react-native-router-flux';
@@ -16,6 +16,10 @@ export default class Dashboard extends Component {
   componentWillMount () {
     this.props.homeSection;
 }
+
+
+
+
 
     render(){
       var video = [];

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Text, StyleSheet, View,  Stack, NativeAppEventEmitter} from 'react-native';
+import {Text, StyleSheet, View,  Stack, NativeAppEventEmitter, Alert, BackAndroid, BackHandler} from 'react-native';
 import {
     Login,
     Signup,
@@ -68,7 +68,7 @@ export default class AppRouter extends Component {
         return (
           <Router
            navigationBarStyle={{backgroundColor:'#8CB102',borderBottomWidth: 0,}}
-          
+           onExitApp={onExitApp}
            drawerImage={Images.navDrawerIcon}
            hideNavBar={false}
            backButtonImage={Images.backwhite}
@@ -104,3 +104,14 @@ export default class AppRouter extends Component {
     );
   }
 }
+const onExitApp = () => {
+  Alert.alert(
+    'Birddog',
+    'Are you sure to exit this app ?',
+    [
+      { text: 'Cancel', onPress: () => {} },
+      { text: 'Ok', onPress: () => BackHandler.exitApp() },
+    ]
+  );
+  return true;
+};

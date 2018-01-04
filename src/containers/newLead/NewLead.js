@@ -97,15 +97,10 @@ deleteFourth =()=>{
     render(){
         let { image, imageSecond, imageThird, imageFourth } = this.state;
         return(
+          <Container
+          style={{flex:1,marginTop: Metrics.navBarHeight }}>
           <Content>
-            <Container
-             style={{marginTop: Metrics.navBarHeight,
-              marginLeft:Metrics.screenWidth/36,
-             marginRight:Metrics.screenHeight/36,
-             marginBottom:Metrics.screenHeight
-             }}>
-   
-                   <View style={{flexDirection:"column"}}>
+                   <View style={{flexDirection:"column",marginBottom: Metrics.screenHeight/8,marginLeft:Metrics.screenWidth/36,marginRight:Metrics.screenHeight/36,}}>
 
                      <View style={{marginTop:Metrics.screenHeight/40}}>
                          <Text style={{fontSize:11}}>Select Property Type</Text>
@@ -127,7 +122,7 @@ deleteFourth =()=>{
                       </View>
 
 
-                           <View style={{flex:0.8, alignItems:'flex-start', justifyContent:'center'}}>
+                           <View style={{flex:0.8, alignItems:'flex-start', justifyContent:'center',}}>
                            <TouchableOpacity 
                               onPress={()=>this.setState({newProperty:true, ownerProperty:false})}
                              >
@@ -372,44 +367,6 @@ deleteFourth =()=>{
                      </View>
                      </View>
                      
-                     
-
-                      {/* <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, flex:1, }}>
-                       <View style={{  width:Metrics.screenWidth/3.5, marginRight:Metrics.screenWidth/40, alignItems:'flex-end',backgroundColor:'red'}}>
-                       {imageSecond && 
-                       
-                       <TouchableOpacity onPress={()=> this.deleteSecond()}>
-                        <Image source={Images.delimagesmall}
-                        style={{marginRight:-Metrics.screenWidth/40,marginTop:-Metrics.screenHeight/30, resizeMode:"contain"}}/>
-                        </TouchableOpacity>
-                      
-                    }
-
-                       </View>   
-
-                       <View style={{  width:Metrics.screenWidth/3.5, marginRight:Metrics.screenWidth/40,alignItems:'flex-end'}}>
-                       {imageThird && 
-                       <TouchableOpacity onPress={()=> this.deleteThird()}>
-                        <Image source={Images.delimagesmall}
-                        style={{marginRight:-Metrics.screenWidth/40,marginTop:-Metrics.screenHeight/30}}/>
-                        </TouchableOpacity>
-                        
-                    }
-
-                       </View>   
-
-                       <View style={{  width:Metrics.screenWidth/3.5, alignItems:'flex-end',}}>
-                       {imageFourth && 
-                       <TouchableOpacity onPress={()=>this.deleteFourth()}>
-                        <Image source={Images.delimagesmall}
-                         style={{marginRight:-Metrics.screenWidth/40,marginTop:-Metrics.screenHeight/30}}/>
-                         </TouchableOpacity>
-                    }
-                       </View>   
-                     </View>    */}
-
-                  
-
               
                        {this.state.newProperty ?
         
@@ -428,12 +385,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.trashCliked ?
             <TouchableOpacity onPress={()=>this.setState({trashCliked:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({trashCliked:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain'/>
               </TouchableOpacity>
      
             }
@@ -452,12 +409,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.Vacant ?
             <TouchableOpacity onPress={()=>this.setState({Vacant:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({Vacant:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain'/>
               </TouchableOpacity>
      
             }
@@ -478,12 +435,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.hoarding ?
             <TouchableOpacity onPress={()=>this.setState({hoarding:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({hoarding:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain'/>
               </TouchableOpacity>
      
             }
@@ -502,12 +459,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.lawn ?
             <TouchableOpacity onPress={()=>this.setState({lawn:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({lawn:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain'/>
               </TouchableOpacity>
      
             }
@@ -528,12 +485,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.rotting ?
             <TouchableOpacity onPress={()=>this.setState({rotting:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({rotting:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain' />
               </TouchableOpacity>
      
             }
@@ -552,12 +509,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.foundation ?
             <TouchableOpacity onPress={()=>this.setState({foundation:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({foundation:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain'/>
               </TouchableOpacity>
      
             }
@@ -578,12 +535,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.low ?
             <TouchableOpacity onPress={()=>this.setState({low:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({low:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain'/>
               </TouchableOpacity>
      
             }
@@ -602,12 +559,12 @@ deleteFourth =()=>{
               <View style={{flex:0.2, alignItems:"flex-start", justifyContent:"flex-start",}}>
             { this.state.roof ?
             <TouchableOpacity onPress={()=>this.setState({roof:false})}>
-              <Image source={Images.checkbox}/>
+              <Image source={Images.checkbox} resizeMode='contain'/>
               </TouchableOpacity>
             
               :
               <TouchableOpacity onPress={()=>this.setState({roof:true})}>
-              <Image source={Images.uncheckbox}/>
+              <Image source={Images.uncheckbox} resizeMode='contain'/>
               </TouchableOpacity>
      
             }
@@ -638,11 +595,14 @@ deleteFourth =()=>{
 
                  <View>
                         <TouchableOpacity  
-                   style={{borderRadius:20,
-                    width:Metrics.screenWidth/1.07,height:35,
+                   style={{
+                     borderRadius:20,
+                    width:Metrics.screenWidth/1.07,
+                    height:35,
                     justifyContent:"center",alignItems:"center",
                    backgroundColor:'#8db103',
                    marginTop:Metrics.screenHeight/15,
+                 
                    }}>
                    <Text style={{color:"white", fontSize:14}}>SUBMIT LEAD</Text>
                     
@@ -650,8 +610,9 @@ deleteFourth =()=>{
 
                </View>
                    </View>  
-            </Container>
+       
             </Content>
+            </Container>
         )
     }
 }
