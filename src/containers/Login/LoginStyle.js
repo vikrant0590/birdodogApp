@@ -10,7 +10,7 @@ export default StyleSheet.create({
     siginButtonText:{
         color:"white", 
         fontSize:16,
-        //fontFamily:Fonts.openSans.semiBoldItalic
+        
     }
 
 });

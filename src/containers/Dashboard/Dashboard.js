@@ -17,10 +17,6 @@ export default class Dashboard extends Component {
     this.props.homeSection;
 }
 
-
-
-
-
     render(){
       var video = [];
       for(let i = 0; i < 6; i++){

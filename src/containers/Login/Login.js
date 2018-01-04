@@ -15,9 +15,8 @@ export default class Login extends Component {
     render(){
         return(
         
-     
+     <Content style={{flex:1}}>
         <Container style={styles.container}>
- 
           <View style={{flex:0.4,}}>
             <Image source ={Images.signin}  style={{width:Metrics.screenWidth, flex:1}}></Image>
          </View>
@@ -78,10 +77,10 @@ export default class Login extends Component {
           </View>
      
         
-          
+     
       </Container>
    
-        
+        </Content>
     
     );
   }

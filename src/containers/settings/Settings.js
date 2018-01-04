@@ -78,14 +78,7 @@ export default class Settings extends Component {
             
 
 
-               {/* <View style={{height:0.5,backgroundColor:'#A3A3A3', }}>
-       
-                 </View>
-                 <View style={{flex:0.10,justifyContent:"center",alignItems:"center" }}>
-                 <TouchableOpacity>
-                    <Text style={{color:'#797979', fontSize:13}}>DELETE MY ACCOUNT</Text>
-                  </TouchableOpacity>  
-            </View> */}
+      
             </Container>
         )
     }
