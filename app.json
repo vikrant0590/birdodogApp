@@ -1,14 +1,18 @@
 {
   "expo": {
-  
+    "name": "Birddog",
     "sdkVersion": "22.0.0",
     "orientation": "portrait",
+    "android": {
+      "package": "com.Antier.Birddog"
+    },
     "androidStatusBar": {
-      "barStyle":"dark-content"
+      "barStyle":"light-content"
     },
     "packagerOpts": {
       "assetExts": ["ttf"]
     }
+    
     
   }
   

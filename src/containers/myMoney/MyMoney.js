@@ -30,7 +30,7 @@ export default class MyMoney extends Component {
                 <Text style={{marginTop:5,color:"#ADADAD", fontSize:11}}>{record[i].date}</Text>
                 </View>
               </CardItem>
-              <View style={{ flex:0.01,height:0.1,backgroundColor:'#ADADAD'}}></View>
+              <View style={{ flex:0.01,height:0.1,backgroundColor:'#D3D3D3'}}></View>
               <CardItem style={{flex:0.49}}>
             <View style={{flexDirection:"column", flex:1}}>
 

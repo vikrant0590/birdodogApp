@@ -20,14 +20,7 @@ async function openSans() {
     regular: require('../fonts/OpenSans-Regular.ttf'),
     semiBold: require('../fonts/OpenSans-Semibold.ttf'),
     semiBoldItalic: require('../fonts/OpenSans-SemiboldItalic.ttf'),
-    base: 'Lato-Regular',
-    bold: 'Lato-Bold',
-    emphasis: 'Lato-Italic',
-    heavy: 'Lato-Heavy',
-    light: 'Lato-Light',
-    medium: 'Lato-Medium',
-    semiBold: 'Lato-Semibold',
-    thin: 'Lato-Thin',
+    
     
   });
 }else {

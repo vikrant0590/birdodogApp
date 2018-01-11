@@ -1,60 +1,170 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image, AsyncStorage } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button, Icon, } from 'native-base';
 import styles from './ChangePasswordStyle';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
+import Spinner from 'react-native-loading-spinner-overlay';
+import PropTypes from 'prop-types';
+import { toast } from '../../helpers/ToastMessage';
+import { changepassword } from '../../redux/modules/auth';
+import { connect } from 'react-redux';
+import {Actions} from 'react-native-router-flux';
 
 
-
-export default class ChangePassword extends Component {
-    render(){
-        return(
-          
-        <View style={styles.container}>
-     
-            <View style={{flex:0.15,justifyContent:'center' }}>
-              <Text>Set Password</Text>
-            </View>
-
-              <View style={{ flex:0.45}}>
-                 <Item>
-                     <Image source={Images.lockgreen}/>
-                     <Input placeholder="Old Password" placeholderTextColor={'#A3A3A3'} secureTextEntry={true}/>
-                  </Item>
-          
-                    <Item>
-                      <Image source={Images.lockgreen}/>
-                      <Input  placeholder="New Password"  placeholderTextColor={'#A3A3A3'} secureTextEntry={true} />
-                   </Item>
-
-                   <Item >
-                     <Image source={Images.lockgreen}/>
-                     <Input  placeholder="Confirm Password"  placeholderTextColor={'#A3A3A3'} secureTextEntry={true} />
-                   </Item>
-              </View>
-
-          <View style={{flex:0.4,alignItems:'center', justifyContent:'center'}}>
-              <TouchableOpacity  
-               style={{borderRadius:20,
-              
-               width:Metrics.screenWidth/1.1,height:40,
-               justifyContent:"center",
-               alignItems:"center",
-                backgroundColor:'#8CB102',
-             
-          }}>
-           <Text style={{color:"white", fontSize:14}}>CHANGE PASSWORD</Text>
-           
-          </TouchableOpacity>
-          </View>
-         
-      </View>
-    
-      
-        
-    
-    );
+class ChangePassword extends Component {
+  constructor(props){
+    super(props);
+    this.state ={
+      isBusy:false,
+      password: undefined,
+      new_password:undefined,
+      confirmPassword: undefined,
+      token: undefined,
+      UserToken:undefined,
+      isVisible:false
+    };
   }
+ 
+
+  static contextTypes = {
+    store: PropTypes.object,
+    changepassword: PropTypes.object
+  };
+
+  onPressSubmitButton =() =>{
+    this.UserToken = this.props.auth.user.data.token,
+    console.log( "USER TOKEN",this.UserToken);
+    this.setState({isBusy:true});
+    let data = {
+      
+
+      'password':this.state.password,
+      'new_password': this.state.new_password,
+    };
+    console.log("TOKEN",data.token);
+
+    const {store: {dispatch}} = this.context;
+
+    if(this.state.new_password && this.state.confirmPassword && this.state.password){
+      if(this.state.new_password === this.state.confirmPassword){
+        this.setState({isVisible:true})
+        dispatch(changepassword(data, this.UserToken))
+          .then((res)=>{
+            this.setState({isBusy:false});
+           this.setState({
+             new_password:'',
+             password:'',
+             confirmPassword:'',
+             isVisible:false
+           })
+           if(res.status === 200){
+            toast("Password Changed Successfuly.");
+           }else if(res.status === 404){
+             toast("Old password do not matched.");
+           }
+           
+          })
+          .catch(() => {
+          })
+      } else {
+        this.setState({isBusy:false});
+        toast("Password Do Not Matched");
+      }
+    } else {
+      this.setState({isBusy:false});
+      toast('Please enter all Fields.');
+
+    }
+  };
+  render(){
+    return(
+      
+    <View style={styles.container}>
+     <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
+
+        <View style={{flex:0.15,justifyContent:'center' }}>
+          <Text>Set Password</Text>
+        </View>
+
+          <View style={{ flex:0.45}}>
+             <Item>
+                 <Image source={Images.lockgreen}/>
+                 <Input placeholder="Old Password" 
+                 placeholderTextColor={'#A3A3A3'}
+                 value={this.state.password}
+                 autoCorrect={false}
+                 returnKeyType="next"
+                 autoFocus ={false}
+                 secureTextEntry={true} 
+                 onChangeText={(password) => {
+                   this.setState({password});
+                 }}
+                 />
+              </Item>
+      
+                <Item>
+                  <Image source={Images.lockgreen}/>
+                  <Input  placeholder="New Password" 
+                      placeholderTextColor={'#A3A3A3'}
+                      value={this.state.new_password}
+                      autoCorrect={false}
+                      returnKeyType="next"
+                      autoFocus ={false}
+                      secureTextEntry={true} 
+                      onChangeText={(new_password) => {
+                        this.setState({new_password});
+                      }}
+                  />
+               </Item>
+
+               <Item >
+                 <Image source={Images.lockgreen}/>
+                 <Input  placeholder="Confirm Password"  
+                     value={this.state.confirmPassword}
+                     placeholderTextColor={'#A3A3A3'}
+                     autoCorrect={false}
+                     returnKeyType="next"
+                     autoFocus ={false}
+                     secureTextEntry={true} 
+                     onChangeText={(confirmPassword) => {
+                       this.setState({confirmPassword});
+                     }}
+                 />
+               </Item>
+          </View>
+
+      <View style={{flex:0.4,alignItems:'center', justifyContent:'center'}}>
+          <TouchableOpacity  
+            onPress={this.onPressSubmitButton}
+           style={{borderRadius:20,
+          
+           width:Metrics.screenWidth/1.1,height:40,
+           justifyContent:"center",
+           alignItems:"center",
+            backgroundColor:'#8CB102',
+         
+      }}>
+       <Text style={{color:"white", fontSize:14}}>CHANGE PASSWORD</Text>
+       
+      </TouchableOpacity>
+      </View>
+     
+  </View>
+
+  
+    
+
+);
+}
 }
     
- 
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  };
+};
+const  mapDispatchToProps = {
+
+};
+
+export default  connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})(ChangePassword)

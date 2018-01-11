@@ -12,15 +12,15 @@ export default class NeedHelp extends Component {
                 marginLeft:Metrics.screenWidth/24,
                 marginRight:Metrics.screenWidth/24}}>
                <View style={{marginTop:Metrics.screenHeight/28,flexDirection:"column"}}>
-                   <Text style={{ fontSize:12}}>If you have any query. Please fill below form. We will try to contact you asap.</Text>
+                   <Text style={{ fontSize:14}}>If you have any query. Please fill below form. We will try to contact you asap.</Text>
  
                    <Item floatingLabel
                    style={{marginTop:Metrics.screenHeight/35}}>
-                    <Label style={{color:"#A3A3A3",fontSize:12}}>Write Message</Label>
+                    <Label style={{color:"#A3A3A3",fontSize:13}}>Write Subject</Label>
 
                     <Input  style={{fontSize:15,}}/>
                   </Item>
-                 <Label style={{color:"#A3A3A3",fontSize:12, marginTop:Metrics.screenHeight/15}}>Your Message...</Label>
+                 <Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/15}}>Your Message...</Label>
                   <Item style={{marginTop:Metrics.screenHeight/20}}>
                    <Input multiline={true} style={{fontSize:15}}/>
                   </Item>

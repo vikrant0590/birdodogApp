@@ -26,12 +26,12 @@ export default class Dashboard extends Component {
             <View style={{flex:1,height:Metrics.screenHeight/6,flexDirection:'row',
             marginLeft:Metrics.screenWidth/25,marginRight:Metrics.screenWidth/25,marginTop:12, }}>
                
-               <TouchableOpacity onPress={NavActions.dashboarddetail} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.3, }}>
-                 <Image source={Images.signin} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.3,resizeMode:'stretch'}}/>
+               <TouchableOpacity onPress={NavActions.dashboarddetail} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4, }}>
+                 <Image source={Images.signin} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4,resizeMode:'stretch'}}/>
                </TouchableOpacity>  
 
 
-               <View style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.2,
+               <View style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.1,
                
                  flexDirection:'column',
                   marginLeft:Metrics.screenWidth/30}}>
@@ -40,13 +40,13 @@ export default class Dashboard extends Component {
                   </View>
 
                   <View style={{flex:0.5 }}>
-                     <Text style={{color:'#878787', fontSize:9}}>Sed ut perspiciatis unde omins iste natus error sit voluptatem accusantitum dolor- emque laudantium...</Text>
+                     <Text style={{color:'#878787', fontSize:10}}>Sed ut perspiciatis unde omins iste natus error sit voluptatem accusantitum dolor- emque laudantium...</Text>
                   </View>  
 
                   <View style={{ flex:0.3,}}>
                    <TouchableOpacity style={{alignItems:'center', flexDirection:'row',}} onPress={NavActions.dashboarddetail}>
                    <Image source={Images.viewdetail} style={{marginRight:Metrics.screenWidth/60}}/>
-                   <Text style={{fontSize:9, color:'#333333', justifyContent:'center'}}>View Detail</Text>
+                   <Text style={{fontSize:11, color:'#333333', justifyContent:'center'}}>View Detail</Text>
                   </TouchableOpacity>
 
                   </View>  
@@ -55,7 +55,7 @@ export default class Dashboard extends Component {
               </View> 
           </View>
 
-            <View style={{marginTop:12,height:1, backgroundColor:'#878787'}}>
+            <View style={{marginTop:12,height:1, backgroundColor:'#D3D3D3'}}>
 
             </View>
          </View>

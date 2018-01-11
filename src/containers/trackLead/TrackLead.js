@@ -32,7 +32,7 @@ export default class TrackLead extends Component {
                 </View>
               </CardItem>
 
-      <View style={{ flex:0.01,height:0.1,backgroundColor:'#ADADAD'}}></View>
+      <View style={{ flex:0.01,height:0.1,backgroundColor:'#D3D3D3'}}></View>
           <CardItem style={{flex:0.58}}>
             <View style={{flexDirection:"column", flex:1,justifyContent:"center"}}>
                   <View style={{flexDirection:'row',flex:1}}>

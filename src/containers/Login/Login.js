@@ -4,11 +4,66 @@ import {Container, Content, Header, Form, Item, Input, Label , Button, Icon} fro
 import styles from './LoginStyle';
 import {Actions as NavAction} from 'react-native-router-flux';
 import { ApplicationStyles, Colors, Metrics, Images, Fonts } from '../../theme';
+import { validationOnEmail} from '../../helpers/EmailValidation';
+import { login } from '../../redux/modules/auth';
+import Spinner from 'react-native-loading-spinner-overlay';
 
-//import { toast } from '../../helpers/ToastMessage';
+import PropTypes from 'prop-types';
+
+
+import { toast } from '../../helpers/ToastMessage';
 
 
 export default class Login extends Component {
+  static  propTypes = {
+    dispatch: PropTypes.func,
+  };
+
+  static contextTypes = {
+    store: PropTypes.object,
+    login: PropTypes.object
+  };
+
+  constructor(props){
+    super(props);
+    this.state ={
+      email: undefined,
+      password:undefined ,
+      isVisible: false
+    }
+  }
+  onPressLoginButton = () => {
+    // NavAction.drawer();
+    const {email, password} = this.state;
+    if (email && password) {
+      if (validationOnEmail(email)) {
+        this.setState({isVisible: true});
+        const {store: {dispatch}} = this.context;
+        dispatch(login({email, password}))
+          .then((res) => {
+            if(res.status === 200){
+        
+            this.setState({ isVisible:false});
+            NavAction.drawer();
+            toast('Login successfully.');
+            }else if(res.status === 404 ){
+              this.setState({isVisible: false});
+              toast('Invalid Email and Password.');
+            }
+          }).catch(() => {
+            this.setState({isVisible: false});
+             toast('Invalid Email and Password.');
+          });
+
+      } else {
+         toast('Please Enter Valid Email Address.');
+      }
+    } else {
+       toast('Please Enter Email/Password!');
+    }
+
+  };
+
   onPressLogin = () => {
     NavAction.drawer();
   }
@@ -17,6 +72,8 @@ export default class Login extends Component {
         
      <Content style={{flex:1}}>
         <Container style={styles.container}>
+        <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
+
           <View style={{flex:0.4,}}>
             <Image source ={Images.signin}  style={{width:Metrics.screenWidth, flex:1}}></Image>
          </View>
@@ -32,15 +89,28 @@ export default class Login extends Component {
             }}>
         <Item>
         <Image source={Images.messageGreen} />
-          <Input placeholder="Email"  placeholderTextColor={'#A3A3A3'}/>
+          <Input placeholder="Email" 
+           placeholderTextColor={'#A3A3A3'}
+           autoCorrect={false}
+           autoCapitalize={'none'}
+           onChangeText={(email) => {
+             this.setState({email});
+           }}
+           />
         </Item>
         
         <Item>
         <Image source={Images.lockgreen}/>
-          <Input  placeholder="Password" secureTextEntry={true}  placeholderTextColor={'#A3A3A3'}/>
+          <Input  placeholder="Password" 
+          secureTextEntry={true} 
+           placeholderTextColor={'#A3A3A3'}
+           onChangeText={(password) => {
+             this.setState({password});
+           }}
+           />
         </Item>
 
-        <TouchableOpacity  onPress={()=>this.onPressLogin()}
+        <TouchableOpacity onPress={this.onPressLoginButton}
                    style={{
                      marginTop:Metrics.screenHeight/22,
                      borderRadius:20,
@@ -56,7 +126,7 @@ export default class Login extends Component {
                     
                    </TouchableOpacity>
                    <TouchableOpacity onPress={NavAction.forgotPassword}>
-                   <Text style={{marginTop:Metrics.screenHeight/30,color:"#333333"}}>Forgot Password?</Text>
+                   <Text style={{fontSize:16,marginTop:Metrics.screenHeight/30,color:"#333333"}}>Forgot Password?</Text>
                    </TouchableOpacity>
 
         </View>
@@ -69,9 +139,9 @@ export default class Login extends Component {
            marginLeft:Metrics.screenWidth/10,
            marginRight:Metrics.screenWidth/10,
            }}>
-           <Text style={{fontSize:13, color:"#797979",marginTop:Metrics.screenHeight/30,}}>Don't have an Account?</Text>
+           <Text style={{fontSize:14, color:"#797979",marginTop:Metrics.screenHeight/30,}}>Don't have an Account?</Text>
            <TouchableOpacity onPress={NavAction.signup}>
-               <Text style={{fontSize:12,marginLeft:3, color:'#333333',marginTop:Metrics.screenHeight/30, }}>SIGN UP NOW</Text>
+               <Text style={{fontSize:15,marginLeft:3, color:'#333333',marginTop:Metrics.screenHeight/30, }}>SIGN UP NOW</Text>
                </TouchableOpacity>
 
           </View>

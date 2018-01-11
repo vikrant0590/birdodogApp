@@ -1,5 +1,5 @@
 import React,{ Component} from 'react';
-import { Text, TouchableOpacity, View, Image} from 'react-native';
+import { Text, TouchableOpacity, View, Image,AsyncStorage} from 'react-native';
 import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, ListItem, H3,Left,Right} from 'native-base';
 import styles from './SettingsStyles';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
@@ -28,9 +28,9 @@ export default class Settings extends Component {
     render(){
         const items = [
             {index: 0, title: 'Change Password', image:require('../../images/lockgreen.png')},
-            {index: 1, title: 'FAQ', image:require('../../images/logout.png')},
-            {index: 2, title: 'Terms & Conditions',  image:require('../../images/logout.png')},
-            {index: 3, title: 'Sign out',  image:require('../../images/logout.png')}];
+            {index: 1, title: 'FAQ', image:require('../../images/FAQ.png')},
+            {index: 2, title: 'Terms & Conditions',  image:require('../../images/Terms.png')},
+            {index: 3, title: 'Need Help',  image:require('../../images/question.png')}];
         return(
           <Container style={{flex:1,marginTop:Metrics.navBarHeight, flexDirection:'column'}}>
             <View style={{flex:1}}>
@@ -65,7 +65,7 @@ export default class Settings extends Component {
                      style={{
                        marginRight: 5,
                      }}>
-                     {(item.index < 3) &&
+                     {(item.index < 4) &&
                      <Image source={Images.arrowRight} ></Image>
                      }
              

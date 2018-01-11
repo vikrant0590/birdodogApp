@@ -4,26 +4,47 @@ import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, List
 import { View, Text, Image, Platform, TouchableOpacity, Switch, Share } from 'react-native'
 import { Colors, Images, Metrics } from '../../theme';
 import styles from './MenuLeftDrawerStyles';
-
+import {MyProfile}  from '../../containers';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 
 import { Actions as NavActions } from 'react-native-router-flux';
-const propTypes = {
-  homeSection: PropTypes.any,
-
-};
-
-export default class MenuLeftDrawer extends Component {
+import { logout, getProfile } from '../../redux/modules/auth';
+import { connect } from 'react-redux';
 
 
-    
+
+
+ class MenuLeftDrawer extends Component {
+  constructor(){
+    super();
+    this.state = {
+    UserToken: undefined,
+    isVisible:false,
+    click:0,
+    }
+  }
+  static  propTypes = {
+    homeSection: PropTypes.any,
+    dispatch: PropTypes.func,
+  };
+  
       static contextTypes = {
     
         drawer: PropTypes.object,
+        store: PropTypes.object,
+        getProfile: PropTypes.object
       };
+      
+ componentWillMount= ()=>{
+  this.UserToken = this.props.auth.user.data.token;
+  console.log("SIGUP TOKEN", this.UserToken);
+ }
+  
 
       onPress = (item) => {
-      
+        this.state.isVisible = false;
+       
           console.log("INDEX", item.index);
         if(item.index === 0){
           this.props.homeSection();
@@ -42,14 +63,42 @@ export default class MenuLeftDrawer extends Component {
          NavActions.mymoney();
         }
         else if(item.index === 4){
+          this.state.isVisible = false;
+         this.state.click = this.state.click +1;
+         if(this.state.click <=1){
+          this.state.isVisible =true;
+         }else {
+           this.state.isVisible = false;
+         }
           this.props.homeSection();
-          NavActions.myprofile();
+          const {store: {dispatch}} = this.context;
+          dispatch(getProfile(this.UserToken))
+         .then((res) => {
+          
+            
+            this.state.isVisible = false;
+              
+            NavActions.myprofile();
+          
+          }).catch(() => {
+            this.setState({isVisible: false});
+             toast('xyz');
+          });
+    
+      
+          
+        
         }
         else if(item.index === 5){
           this.props.homeSection();
             NavActions.settings();
           }
       };
+      
+      onPressLogout(){
+        const {store: {dispatch}} = this.context;
+        dispatch(logout());
+      }
     
     
   
@@ -65,7 +114,9 @@ export default class MenuLeftDrawer extends Component {
         {index: 5, title: 'Settings', image:require('../../images/settingsidenav.png')}];
     return(
           <View style={{flex:1,flexDirection:"column"}}>
-
+          { this.state.click <=1 &&
+    <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
+          }
                  <View style={{flex:0.15,backgroundColor:'#212121',flexDirection:'row', alignItems:"center"}}>
                  <View style={{borderRadius: 30,width: 60,height: 60, 
                    backgroundColor:'#74930A',marginLeft:Metrics.screenWidth/25, justifyContent:"center",alignItems:"center"}}>
@@ -75,8 +126,8 @@ export default class MenuLeftDrawer extends Component {
              <Text style={{color:'white',fontSize:15}}>Philp Health</Text>
             </View>
             <View style={{marginRight:Metrics.screenWidth/14}}>
-            <TouchableOpacity>
-            <Image source={Images.logoutnavbar}/>
+            <TouchableOpacity onPress= {()=>this.onPressLogout()}>
+            <Image source={Images.logoutnavbar} />
             </TouchableOpacity>
            </View>
          </View>
@@ -136,3 +187,13 @@ export default class MenuLeftDrawer extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth
+  };
+};
+const  mapDispatchToProps = {
+
+};
+
+export default  connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})(MenuLeftDrawer)

@@ -12,7 +12,8 @@ export default class TermsCondition extends Component {
             <View style={{marginTop:Metrics.navBarHeight, 
             flex:1,
              marginLeft:Metrics.screenWidth/25 ,
-             marginRight:Metrics.screenWidth/25
+             marginRight:Metrics.screenWidth/25,
+             marginBottom:Metrics.screenHeight/7,
               }}>
             
               <Text style={{color:'#878787', fontSize:12, marginTop:Metrics.screenHeight/30}}>

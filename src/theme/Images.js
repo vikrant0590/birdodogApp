@@ -39,7 +39,11 @@ const images = {
     profile:require('../images/profile.png'),
     message:require('../images/message.png'),
     phone: require('../images/phone.png'),
-    location: require('../images/location.png')
+    location: require('../images/location.png'),
+    question: require('../images/question.png'),
+    FAQ:require('../images/FAQ.png'),
+    Terms: require('../images/Terms.png'),
+    profilee: require('../images/profilee.png')
    
     
 
