@@ -58,8 +58,10 @@ export default class Login extends Component {
       } else {
          toast('Please Enter Valid Email Address.');
       }
-    } else {
-       toast('Please Enter Email/Password!');
+    } else if(email && !password){
+       toast('Please Enter Password!');
+    }else{
+      toast('Please enter Email')
     }
 
   };

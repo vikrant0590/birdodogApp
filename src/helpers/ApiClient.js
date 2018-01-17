@@ -14,8 +14,9 @@ function get (endpoint,UserToken) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'UserToken':UserToken
+        'Usertoken':UserToken
       }
+     
     }).then(async (res) => {
       let response = await res.json();
       if (!res.ok) {
@@ -34,7 +35,7 @@ function post (endpoint, data, UserToken) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'UserToken':UserToken
+        'Usertoken':UserToken
       },
       body: JSON.stringify(data)
     }).then(async (res) => {

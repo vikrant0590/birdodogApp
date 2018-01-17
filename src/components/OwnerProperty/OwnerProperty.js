@@ -82,7 +82,7 @@ export default class OwnerProperty extends Component {
      <View style={{marginTop:Metrics.screenHeight/40}}>
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
         <Label style={{fontSize:11,}}>Owner Name *</Label>
-        <Input style={{borderBottomWidth: 0, }} onBlur={()=>this.onDeactiveName()} onTouchStart={()=>this.onActiveName()}/>
+        <Input style={{borderBottomWidth: 0, }} onBlur={()=>this.onDeactiveNamee()} onTouchStart={()=>this.onActiveNamee()}/>
 
      </Item>
      { this.state.Oname === false ?
@@ -99,7 +99,7 @@ export default class OwnerProperty extends Component {
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>Phone Number *</Label>
-              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactivePhone()} onTouchStart={()=>this.onActivePhone()}/>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactivePhonee()} onTouchStart={()=>this.onActivePhonee()}/>
 
            </Item>
            { this.state.Ophone === false ?
@@ -120,7 +120,7 @@ export default class OwnerProperty extends Component {
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>Email Address *</Label>
-              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveEmail()} onTouchStart={()=>this.onActiveEmail()}/>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveEmaill()} onTouchStart={()=>this.onActiveEmaill()}/>
 
            </Item>
            { this.state.Oemail === false ?
@@ -141,7 +141,7 @@ export default class OwnerProperty extends Component {
      <View style={{marginTop:Metrics.screenHeight/40}}>
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
         <Label style={{fontSize:11,}}>Street *</Label>
-        <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveStreet()} onTouchStart={()=>this.onActiveStreet()}/>
+        <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveStreett()} onTouchStart={()=>this.onActiveStreett()}/>
 
      </Item>
      { this.state.Ostreet === false ?
@@ -158,7 +158,7 @@ export default class OwnerProperty extends Component {
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>City *</Label>
-              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveCity()} onTouchStart={()=>this.onActiveCity()}/>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveCityy()} onTouchStart={()=>this.onActiveCityy()}/>
 
            </Item>
            { this.state.Ocity === false ?
@@ -209,7 +209,7 @@ export default class OwnerProperty extends Component {
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>Zip *</Label>
-              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveZip()} onTouchStart={()=>this.onActiveZip()}/>
+              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveZipp()} onTouchStart={()=>this.onActiveZipp()}/>
 
            </Item>
            { this.state.Ozip === false ?

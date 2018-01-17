@@ -29,12 +29,24 @@ const USERPROFILE_FAIL ='auth/USERPROFILE_FAIL';
 const USER_UPDATE ="auth/USER_UPDATE";
 const USER_UPDATE_SUCCESS = 'auth/USER_UPADTE_SUCCESS';
 
+const LEAD_IMAGE_DELETE = "auth/LEAD_IMAGE_DELETE";
+const LEAD_IMAGE_DELETE_SUCCESS="auth/LEAD_IMAGE_DELETE_SUCCESS";
+const LEAD_IMAGE_DELETE_FAIL = "auth/LEAD_IMAGE_DELETE_FAIL";
+
+const LEAD_DATA ="auth/LEAD_DATA";
+
+
+const LEAD_DETAIL ="auth/LEAD_DETAIL";
+const LEAD_DETAIL_SUCCESS="auth/LEAD_DETAIL_SUCCESS";
+const LEAD_DETAIL_FAIL="auth/LEAD_DETAIL_FAIL";
+
 
 const CLEAR_PROFILE = 'CLEAR_PROFILE';
 
 const initialState = {
   user: undefined,
-  userProfile:undefined
+  userProfile:undefined,
+  detail:undefined,
   
 };
 
@@ -58,6 +70,12 @@ export default function reducer(state = initialState, action = {}) {
       return { ...state, };
 
 
+
+       //IMAGE SAVE
+
+       case LEAD_IMAGE_DELETE:
+       return {...state};
+ 
 
        // reset password
     case RESETPASSWORD:{
@@ -93,6 +111,23 @@ export default function reducer(state = initialState, action = {}) {
        case USER_UPDATE:{
         return{...state}
       }
+
+      // Lead Form SUbmition Here
+
+      case LEAD_DATA:
+        return {...state}
+      
+
+      //get Lead Deatil checkbox
+
+      case LEAD_DETAIL:
+        return {...state};
+      case LEAD_DETAIL_SUCCESS:
+      return {...state, detail:action.result}
+        
+      case LEAD_DETAIL_FAIL:
+      return { ...state}
+
     
 
     default:
@@ -166,6 +201,33 @@ export function getProfile(data){
   })
 
 }
+
+
+export function getDetails(UserToken){
+  console.log("TOKEN",UserToken);
+  return (dispatch, getState)=>  new Promise((resolve, reject)=> {
+    dispatch({ type: LEAD_DETAIL});
+    api
+    .get('lead/lead_details_list',UserToken)
+    .then((res)=> { 
+      
+      if(res.status === 200){
+      dispatch({ type: LEAD_DETAIL_SUCCESS, result: res });
+      console.log("USER PROFILE API RESPONSE",res);
+      }
+      resolve(res);
+    })
+    .catch((ex)=>{
+      reject(ex);
+    })
+  })
+
+}
+
+
+
+
+
 export function userupdate(data,Usertoken) {
 
   console.log("FORM DATA TO UPDATE", data);
@@ -210,7 +272,7 @@ export function forgotpassword(data) {
   return (dispatch, getState) => new Promise((resolve, reject) =>{
     dispatch({ type: FORGOTPASSWORD});
     api
-      .post('user/forgot_password', data)
+      .post('user/temp_password', data)
       .then((res) => {
         console.log("FORGOT API RESPONSE",res);
       
@@ -237,4 +299,51 @@ export function logout() {
       })
     
 }
+
+
+export function deleteImage(data, UserToken) {
+  console.log("DELETE USER TOKEN", UserToken)
+  console.log("IMAGE FILE",data)
+  return (dispatch,getState)=> new Promise((resolve, reject)=> {
+    dispatch({ type:LEAD_IMAGE_DELETE});
+    api.
+  get('lead/lead_image_delete/' + data.fileid, UserToken)
+  .then((res) => {
+    console.log("DELETE IMAGE API RESPONSE",res);
+  
+
+      resolve(res);
+  
+  })
+  .catch((ex) => {
+
+    reject(ex);
+  });
+  })
+  
+}
+
+
+export function submitLead(data, UserToken) {
+  console.log("LEAD USER TOKEN", UserToken)
+  console.log("Lead form DATA",data)
+  return (dispatch,getState)=> new Promise((resolve, reject)=> {
+    dispatch({ type:LEAD_DATA});
+    api.
+  post('lead/add',data,UserToken)
+  .then((res) => {
+    console.log("ADD LEAD  API RESPONSE",res);
+  
+
+      resolve(res);
+  
+  })
+  .catch((ex) => {
+
+    reject(ex);
+  });
+  })
+  
+}
+
 

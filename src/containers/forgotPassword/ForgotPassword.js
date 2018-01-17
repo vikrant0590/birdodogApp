@@ -9,6 +9,7 @@ import { toast } from '../../helpers/ToastMessage';
 
 import PropTypes from 'prop-types';
 import { forgotpassword } from '../../redux/modules/auth';
+import { Actions } from 'react-native-router-flux';
 
 export default class ForgotPassword extends Component {
   constructor(){
@@ -40,6 +41,7 @@ export default class ForgotPassword extends Component {
           if(res.status === 200){
             this.setState({isVisible: false, email:''});
             toast("Link has been sent to your email address.");
+            Actions.login();
           } 
     }).catch(() => {
       this.setState({isVisible: false});

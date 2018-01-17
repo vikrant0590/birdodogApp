@@ -21,7 +21,10 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
             street:false,
             city:false,
             State:false,
-            zip:false
+            zip:false,
+            cityy:undefined,
+            statee:undefined,
+            zipp:undefined,
 
          }
      }
@@ -56,30 +59,20 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
             <View style={{ marginTop:Metrics.screenHeight/20}}>
             <Text style={{ fontSize:12,color:'#333333'}}>Property Detail</Text> 
          </View>
-
-     <View style={{marginTop:Metrics.screenHeight/40}}>
-        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Label style={{fontSize:11,}}>Street *</Label>
-        <Input onBlur={()=>this.onDeactiveStreet()} onTouchStart={()=>this.onActiveStreet()}  style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}/>
-
-     </Item>
-     { this.state.street === false ?
-                <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
-           /> :
-           <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
-           />
-                }
-
-    
- </View>
-
-
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>City *</Label>
-              <Input style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}} onBlur={()=>this.onDeactiveCity()} onTouchStart={()=>this.onActiveCity()} />
+              <Input 
+              style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
+              autoCapitalize="none" 
+              autoCorrect={false}
+              returnKeyType="next"
+              autoFocus ={false}
+               onBlur={()=>this.onDeactiveCity()}
+                onTouchStart={()=>this.onActiveCity()}
+                onChangeText={(city)=> this.setState({city:cityy})}
+                
+                />
 
            </Item>
            { this.state.city === false ?
@@ -94,7 +87,35 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
        </View>
 
 
-       <View>
+       <View style={{marginTop:Metrics.screenHeight/40}}>
+        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
+        <Label style={{fontSize:11,}}>State * </Label>
+        <Input 
+        onBlur={()=>this.onDeactiveState()} 
+        onTouchStart={()=>this.onActiveState()} 
+         style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
+         autoCapitalize="none" 
+         autoCorrect={false}
+         returnKeyType="next"
+         autoFocus ={false}
+         onChangeText={(state)=>this.setState({statee:state})}
+         />
+
+     </Item>
+     { this.state.State === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           />
+                }
+
+    
+ </View>
+
+
+       {/* <View>
        
          <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
              onTouchStart={()=>this.setState({city:false,street:false,zip:false,State:true})}  
@@ -124,14 +145,19 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
 
   </View>
   </ModalDropdown>
-       </View>
+       </View>  */}
 
 
      
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Label style={{fontSize:11,}}>Zip *</Label>
-              <Input onBlur={()=>this.onDeactiveZip()} onTouchStart={()=>this.onActiveZip()} style={{borderBottomWidth: 0, marginLeft:-Metrics.screenWidth/40}}/>
+              <Input
+               onBlur={()=>this.onDeactiveZip()}
+                onTouchStart={()=>this.onActiveZip()}
+                 style={{borderBottomWidth: 0, marginLeft:-Metrics.screenWidth/40}}
+                 onChangeText={(zip)=>this.setState({zipp:zip})}
+                 />
 
            </Item>
            { this.state.zip === false ?

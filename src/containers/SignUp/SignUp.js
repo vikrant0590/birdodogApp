@@ -35,6 +35,16 @@ export default class Signup extends Component {
   passwordMatch =(password, confirmPass) =>{
     return passwordMatch(password,confirmPass);
   }
+  onDeactiveName(){
+    const nameValdiation =/^[a-zA-Z ]+$/;
+    if(this.state.name!=''){
+      if(nameValdiation.test(this.state.name)){
+
+      }else {
+        toast("Name not valid.")
+      }
+    }
+  }
   
 
   handleSubmit = () => {
@@ -111,12 +121,14 @@ export default class Signup extends Component {
                <Item >
                  <Image source={Images.profilee} resizeMode="contain" style={{ marginRight:Metrics.screenWidth/30 }} />
                  <Input
+                 maxLength={30}
                   placeholder="Name"
                   placeholderTextColor={'#A3A3A3'} 
                   autoCapitalize={'none'}
                    autoCorrect={false}
                    returnKeyType="next"
                    autoFocus ={false}
+                   onBlur={()=>this.onDeactiveName()}
                    onChangeText={(name) => {
                      this.setState({name});
                    }}
@@ -126,6 +138,7 @@ export default class Signup extends Component {
                <Item style={{marginTop:Metrics.screenHeight/50}}>
                <Image source={Images.message} style={{resizeMode:'contain', marginRight:Metrics.screenWidth/30}}/>
                  <Input
+                 
                    placeholder="Email"
                      placeholderTextColor={'#A3A3A3'} 
                      autoCorrect={false}
@@ -176,7 +189,7 @@ export default class Signup extends Component {
                         />
               </Item>
               <Button rounded 
-              //onPress={()=>this.handleSubmit()}
+              onPress={()=>this.handleSubmit()}
         style={{width:Metrics.screenWidth/1.15, marginTop:Metrics.screenHeight/10,justifyContent:"center",alignItems:"center",backgroundColor:"#8CB102"}}>
             <Text style={{color:"white",fontSize:18}}>SIGN UP</Text>
           </Button>

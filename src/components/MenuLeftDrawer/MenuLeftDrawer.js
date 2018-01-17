@@ -9,19 +9,20 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 
 import { Actions as NavActions } from 'react-native-router-flux';
-import { logout, getProfile } from '../../redux/modules/auth';
+import { logout, getProfile, getDetails } from '../../redux/modules/auth';
 import { connect } from 'react-redux';
 
 
 
 
  class MenuLeftDrawer extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
     UserToken: undefined,
     isVisible:false,
     click:0,
+    user:this.props.auth.userProfile,
     }
   }
   static  propTypes = {
@@ -52,7 +53,22 @@ import { connect } from 'react-redux';
         }
         else if(item.index === 1){
           this.props.homeSection();
+
+          const {store: {dispatch}} = this.context;
+          dispatch(getDetails(this.UserToken))
+          //check here
+         .then((res) => {
+                   console.log("Details Response",res)
+            this.state.isVisible = false;
             NavActions.newlead();
+          
+          
+          }).catch(() => {
+            this.setState({isVisible: false});
+          });
+    
+      
+          
           }
         else if(item.index === 2){
           this.props.homeSection();
@@ -73,12 +89,12 @@ import { connect } from 'react-redux';
           this.props.homeSection();
           const {store: {dispatch}} = this.context;
           dispatch(getProfile(this.UserToken))
+          //check here
          .then((res) => {
-          
-            
+        
             this.state.isVisible = false;
               
-            NavActions.myprofile();
+            NavActions.myprofile({profile:this.state.user});
           
           }).catch(() => {
             this.setState({isVisible: false});
