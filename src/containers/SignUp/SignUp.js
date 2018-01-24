@@ -65,9 +65,9 @@ export default class Signup extends Component {
             dispatch(register(data))
               .then((res) => {
                 if(res.status === 200){
-                this.setState({isVisible: false});
+                this.setState({isVisible: false,name:'',email:'',password:'',confirmPassword:''});
                 toast('Successfully Register!');
-                NavAction.drawer();
+               // NavAction.drawer();
                 }else if (res.status === 400){
                   if(res.data.name){
                     this.setState({isVisible: false});
@@ -121,6 +121,7 @@ export default class Signup extends Component {
                <Item >
                  <Image source={Images.profilee} resizeMode="contain" style={{ marginRight:Metrics.screenWidth/30 }} />
                  <Input
+                 value={this.state.name}
                  maxLength={30}
                   placeholder="Name"
                   placeholderTextColor={'#A3A3A3'} 
@@ -138,7 +139,7 @@ export default class Signup extends Component {
                <Item style={{marginTop:Metrics.screenHeight/50}}>
                <Image source={Images.message} style={{resizeMode:'contain', marginRight:Metrics.screenWidth/30}}/>
                  <Input
-                 
+                 value={this.state.email}
                    placeholder="Email"
                      placeholderTextColor={'#A3A3A3'} 
                      autoCorrect={false}
@@ -165,6 +166,7 @@ export default class Signup extends Component {
                <Item>
                <Image source={Images.lockgreen} style={{resizeMode:'contain', marginRight:Metrics.screenWidth/30}} />
                  <Input 
+                 value={this.state.password}
                  placeholder="Password" 
                  placeholderTextColor={'#A3A3A3'}
                  autoCorrect={false}
@@ -180,6 +182,7 @@ export default class Signup extends Component {
                <Item style={{marginTop:Metrics.screenHeight/50}}>
                <Image source={Images.lockgreen} style={{resizeMode:'contain', marginRight:Metrics.screenWidth/30}}/>
                  <Input
+                 value={this.state.confirmPassword}
                    placeholder="Confirm Password"
                      placeholderTextColor={'#A3A3A3'}
                         secureTextEntry={true}

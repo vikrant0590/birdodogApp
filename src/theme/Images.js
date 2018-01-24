@@ -43,7 +43,8 @@ const images = {
     question: require('../images/question.png'),
     FAQ:require('../images/FAQ.png'),
     Terms: require('../images/Terms.png'),
-    profilee: require('../images/profilee.png')
+    profilee: require('../images/profilee.png'),
+    logo:require('../images/logo.png')
    
     
 

@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, ListItem, H3,Left,Right} from 'native-base';
-import { View, Text, Image, Platform, TouchableOpacity, Switch, Share } from 'react-native'
+import { View, Text, Image, Platform, TouchableOpacity, Switch, Share,AsyncStorage } from 'react-native'
 import { Colors, Images, Metrics } from '../../theme';
 import styles from './MenuLeftDrawerStyles';
 import {MyProfile}  from '../../containers';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import { toast } from '../../helpers/ToastMessage';
 
 import { Actions as NavActions } from 'react-native-router-flux';
-import { logout, getProfile, getDetails } from '../../redux/modules/auth';
+import { logout, getProfile, getDetails, getTrackList } from '../../redux/modules/auth';
 import { connect } from 'react-redux';
 
 
@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
     UserToken: undefined,
     isVisible:false,
     click:0,
-    user:this.props.auth.userProfile,
+    //user:this.props.auth.userProfile,
     }
   }
   static  propTypes = {
@@ -36,11 +36,18 @@ import { connect } from 'react-redux';
         store: PropTypes.object,
         getProfile: PropTypes.object
       };
-      
- componentWillMount= ()=>{
-  this.UserToken = this.props.auth.user.data.token;
-  console.log("SIGUP TOKEN", this.UserToken);
+
+      componentWillMount = async () => {
+        const token = await AsyncStorage.getItem('token');
+        const  tokenSend = JSON.parse(token);
+        console.log("tooookkkkkeeennnnnnnn",tokenSend.data.token)
+        this.state.UserToken = tokenSend.data.token;
+        
+  //this.UserToken = this.props.auth.user.data.token;
+
+  console.log("SIGUP TOKEN", this.state.UserToken);
  }
+ 
   
 
       onPress = (item) => {
@@ -55,7 +62,7 @@ import { connect } from 'react-redux';
           this.props.homeSection();
 
           const {store: {dispatch}} = this.context;
-          dispatch(getDetails(this.UserToken))
+          dispatch(getDetails(this.state.UserToken))
           //check here
          .then((res) => {
                    console.log("Details Response",res)
@@ -73,35 +80,19 @@ import { connect } from 'react-redux';
         else if(item.index === 2){
           this.props.homeSection();
           NavActions.tracklead();
+   
         }
+
+
         else if(item.index === 3){
           this.props.homeSection();
          NavActions.mymoney();
         }
+
         else if(item.index === 4){
-          this.state.isVisible = false;
-         this.state.click = this.state.click +1;
-         if(this.state.click <=1){
-          this.state.isVisible =true;
-         }else {
-           this.state.isVisible = false;
-         }
           this.props.homeSection();
-          const {store: {dispatch}} = this.context;
-          dispatch(getProfile(this.UserToken))
-          //check here
-         .then((res) => {
-        
-            this.state.isVisible = false;
-              
-            NavActions.myprofile({profile:this.state.user});
-          
-          }).catch(() => {
-            this.setState({isVisible: false});
-             toast('xyz');
-          });
     
-      
+        NavActions.myprofile();
           
         
         }
@@ -109,11 +100,15 @@ import { connect } from 'react-redux';
           this.props.homeSection();
             NavActions.settings();
           }
+
       };
       
-      onPressLogout(){
+       onPressLogout = async () => {
+       //this.props.homeSection();
+       AsyncStorage.removeItem('userCredentials');
         const {store: {dispatch}} = this.context;
         dispatch(logout());
+    
       }
     
     
@@ -127,12 +122,10 @@ import { connect } from 'react-redux';
         {index: 2, title: 'Track Lead', image:require('../../images/locationsidenav.png')},
         {index: 3, title: 'My Money', image:require('../../images/moneybagsidenav.png')},
         {index: 4, title: 'My Profile', image:require('../../images/usersidenav.png')},
-        {index: 5, title: 'Settings', image:require('../../images/settingsidenav.png')}];
+        {index: 5, title: 'Settings', image:require('../../images/settingsidenav.png')}]
+       
     return(
           <View style={{flex:1,flexDirection:"column"}}>
-          { this.state.click <=1 &&
-    <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
-          }
                  <View style={{flex:0.15,backgroundColor:'#212121',flexDirection:'row', alignItems:"center"}}>
                  <View style={{borderRadius: 30,width: 60,height: 60, 
                    backgroundColor:'#74930A',marginLeft:Metrics.screenWidth/25, justifyContent:"center",alignItems:"center"}}>

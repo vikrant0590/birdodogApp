@@ -2,6 +2,8 @@ import api from '../../helpers/ApiClient';
 import config from '../../config/app'
 import { AsyncStorage } from 'react-native';
 import {Actions} from 'react-native-router-flux';
+import TimerMixin from 'react-timer-mixin';
+
 
 import { toast } from '../../helpers/ToastMessage';
 
@@ -41,12 +43,20 @@ const LEAD_DETAIL_SUCCESS="auth/LEAD_DETAIL_SUCCESS";
 const LEAD_DETAIL_FAIL="auth/LEAD_DETAIL_FAIL";
 
 
+const TRACK_LEAD ="auth/TRACK_LEAD";
+const TRACK_LEAD_SUCCESS ="auth/TRACK_LEAD_SUCCESS";
+const TRACK_LEAD_FAIL ="auth/TRACK_LEAD_FAIL";
+
+const NEED_HELP="auth/NEED_HELP";
+
+
 const CLEAR_PROFILE = 'CLEAR_PROFILE';
 
 const initialState = {
   user: undefined,
   userProfile:undefined,
   detail:undefined,
+  trackListData:undefined
   
 };
 
@@ -108,9 +118,10 @@ export default function reducer(state = initialState, action = {}) {
 
        // user updation
 
-       case USER_UPDATE:{
+       case USER_UPDATE:
         return{...state}
-      }
+       
+      
 
       // Lead Form SUbmition Here
 
@@ -128,6 +139,20 @@ export default function reducer(state = initialState, action = {}) {
       case LEAD_DETAIL_FAIL:
       return { ...state}
 
+      //track Lead
+
+      case TRACK_LEAD:
+      return {...state}
+      case TRACK_LEAD_SUCCESS:
+      return {...state, trackListData:action.result}
+      case TRACK_LEAD_FAIL:
+      return {...state}
+
+      //need help
+
+      case NEED_HELP:
+      return {...state}
+
     
 
     default:
@@ -143,15 +168,13 @@ export function login(data) {
       .post('user/signin', data)
       .then((res) => {
         console.log("LOGIN response",res);
-        if(res.status === 200){
+        
         dispatch({ type: LOGIN_SUCCESS, result: res });
         AsyncStorage.setItem('userCredentials', JSON.stringify(data));
-        resolve(res);
-        }
-        else {
-          resolve(res);
-          
-        }
+        //AsyncStorage.setItem('token', JSON.stringify(res));
+         resolve(res);
+        
+        
       })
       .catch((ex) => {
         console.log("CATCH CALLED");
@@ -171,8 +194,11 @@ export  function register(data) {
       .then((res) => {
         console.log("SIGNUP RESPONSE",res);
         dispatch({ type: REGISTER_SUCCESS, result: res });
+     
         AsyncStorage.setItem('userCredentials', JSON.stringify(data));
+        //AsyncStorage.setItem('token', JSON.stringify(res));
         resolve(res);
+      
       })
       .catch((ex) => {
         dispatch({ type: REGISTER_FAIL });
@@ -238,7 +264,7 @@ export function userupdate(data,Usertoken) {
       .post('user/profile_update', data, Usertoken)
       .then((res) => {
         console.log("UPADTE API RESPONSE", res);
-        //dispatch({ type:USER_UPDATE_SUCCESS, result:res});
+       
         resolve(res);
       })
       .catch((error) => {
@@ -258,9 +284,13 @@ export function changepassword(data,UserToken) {
       .post('user/change_password', data,UserToken)
       .then((res) => {
         console.log("API CHANGE RESPONSE",res)
+       if(res.status === 200){
        
         dispatch({type:RESETPASSWORD_SUCCESS, result:res});
         resolve(res);
+       }else {
+         resolve(res);
+       }
       })
       .catch((ex) => {
         reject(ex);
@@ -291,11 +321,11 @@ export function forgotpassword(data) {
 export function logout() {
   return (dispatch, getState) => new Promise((resolve, reject) => {
     
-        dispatch({type: CLEAR_PROFILE });
-        toast('Logout successfuly.');
-        Actions.login();
-        AsyncStorage.removeItem('userCredentials');
-        resolve();
+       dispatch({type: CLEAR_PROFILE });
+       toast('Logout successfuly.');
+       Actions.login();
+        
+        
       })
     
 }
@@ -344,6 +374,54 @@ export function submitLead(data, UserToken) {
   });
   })
   
+}
+
+export function getTrackList(Usertoken,page) {
+  console.log("Track USER TOKEN", Usertoken);
+  console.log(page);
+  
+  return (dispatch,getState)=> new Promise((resolve, reject)=> {
+    dispatch({ type:TRACK_LEAD});
+    api.
+  get('lead/list/'+page, Usertoken)
+  .then((res) => {
+    console.log("TACKLIST  API RESPONSE",res);
+    if(res.status === 200){
+      dispatch({type:TRACK_LEAD_SUCCESS, result:res});
+      resolve(res);
+    }
+  
+
+ 
+  })
+  .catch((ex) => {
+
+    reject(ex);
+  });
+  })
+  
+}
+
+
+
+export function needHelp(data,UserToken){
+  console.log(data);
+
+  
+  return (dispatch,getState)=> new Promise((resolve, reject)=> {
+    dispatch({ type:NEED_HELP});
+  api.
+  post('user/need_help',data,UserToken)
+  .then((res)=> {
+    console.log("help Res", res)
+    resolve(res);
+  })
+  .catch((ex) => {
+
+    reject(ex);
+  });
+})
+
 }
 
 

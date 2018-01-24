@@ -7,12 +7,13 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
  import {NewProperty, OwnerProperty} from '../../components';
  import { deleteImage , submitLead} from '../../redux/modules/auth';
  import Spinner from 'react-native-loading-spinner-overlay';
- import PropTypes, {any} from 'prop-types';
+ import PropTypes, {any, object} from 'prop-types';
  import { connect } from 'react-redux';
 
  import config from '../../config/app';
  import api from '../../helpers/ApiClient';
 import { toast } from '../../helpers/ToastMessage';
+import { Actions } from 'react-native-router-flux';
 
 
  const checkboxArray =[];
@@ -35,6 +36,32 @@ import { toast } from '../../helpers/ToastMessage';
             isVisible:false,
             checkboxArray:[],
             detailsArray:[],
+           
+            error:false,
+            emptyCity:false,
+            emptyStreet:false,
+            emptyState:false,
+            emptyZip:false,
+            emptyCountry:false,
+            emptyAddress:false,
+            emptyNotes:false,
+            emptyName:false,
+            emptyEmail:false,
+            emptyPhone:false,
+
+            cityError:false,
+            streetError:false,
+            stateError:false,
+            zipError:false,
+            countryError:false,
+            nameError:false,
+            emailError:false,
+            phoneError:false,
+            ziplength:false,
+            mobileLengthError:false,
+       
+            checkTicked:0,
+            imageSelected:0,
             
             
 
@@ -44,8 +71,10 @@ import { toast } from '../../helpers/ToastMessage';
             state:"--CHOOSE--",
             city:false,
             State:false,
+            street:false,
             zip:false,
             country:false,
+            notes:false,
             cityy:undefined,
             statee:undefined,
             zipp:undefined,
@@ -53,22 +82,18 @@ import { toast } from '../../helpers/ToastMessage';
             address:false,
             Address:undefined,
             Street:undefined,
+            Notes:undefined,
+            
+            
 
 //owner state
             
             Oname:false,
+            oname:undefined,
             Ophone:false,
+            ophone:undefined,
             Oemail:false,
-            Ostreet:false,
-            Ocity:false,
-            Ostate:false,
-            Ozip:false,
-            Onamee:undefined,
-            Ophonee:undefined,
-            Oemaill:undefined,
-            Ocityy:undefined,
-            Ostatee:undefined,
-            Ozipp:undefined,
+            oemail:undefined,
             DetailData:undefined,
           
         }
@@ -108,7 +133,7 @@ import { toast } from '../../helpers/ToastMessage';
       aspect: [4, 3],
     });
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
+      this.setState({ image: result.uri, imageSelected: this.state.imageSelected +1 });
       console.log("IMAGE RESEPONSE",result)
       var data = new FormData();
       data.append('file', {uri: this.state.image, name: 'selfie.jpg', type: 'image/jpg'});
@@ -146,7 +171,7 @@ import { toast } from '../../helpers/ToastMessage';
       aspect: [4, 3],
     });
     if (!result.cancelled) {
-      this.setState({ imageSecond: result.uri });
+      this.setState({ imageSecond: result.uri ,imageSelected: this.state.imageSelected +1});
       var data = new FormData()
       data.append('file', {uri: this.state.imageSecond, name: 'selfie.jpg', type: 'image/jpg'});
       console.log("DATA",data)
@@ -180,7 +205,7 @@ import { toast } from '../../helpers/ToastMessage';
       aspect: [4, 3],
     });
     if (!result.cancelled) {
-      this.setState({ imageThird: result.uri });
+      this.setState({ imageThird: result.uri,imageSelected: this.state.imageSelected +1 });
       var data = new FormData();
       data.append('file', {uri: this.state.imageThird, name: 'selfie.jpg', type: 'image/jpg'});
       console.log("DATA",data)
@@ -215,7 +240,7 @@ import { toast } from '../../helpers/ToastMessage';
       aspect: [4, 3],
     });
     if (!result.cancelled) {
-      this.setState({ imageFourth: result.uri });
+      this.setState({ imageFourth: result.uri,imageSelected: this.state.imageSelected +1 });
       var data = new FormData();
       data.append('file', {uri: this.state.imageFourth, name: 'selfie.jpg', type: 'image/jpg'});
       console.log("DATA",data)
@@ -252,6 +277,7 @@ import { toast } from '../../helpers/ToastMessage';
   deleteFirst =()=>{
       this.setState({
           image:null,
+          imageSelected: this.state.imageSelected -1,
       })
       
       const data={
@@ -279,7 +305,8 @@ import { toast } from '../../helpers/ToastMessage';
 
   deleteSecond =()=>{
     this.setState({
-        imageSecond:null
+        imageSecond:null,
+        imageSelected: this.state.imageSelected -1,
     
     })
 
@@ -305,7 +332,8 @@ import { toast } from '../../helpers/ToastMessage';
 
 deleteThird =()=>{
     this.setState({
-        imageThird:null
+        imageThird:null,
+        imageSelected: this.state.imageSelected -1,
     
     })
     const data={
@@ -330,7 +358,8 @@ deleteThird =()=>{
 }
 deleteFourth =()=>{
     this.setState({
-        imageFourth:null
+        imageFourth:null,
+        imageSelected: this.state.imageSelected -1,
     
     })
 
@@ -356,13 +385,14 @@ deleteFourth =()=>{
 
 
 onPressSubmit = () => {
-  this.state.isVisible = true;
+  var data=any;
   const finalArray = [];
   const finalDetail=[];
     for(var i=0;i< this.state.lead_images.length; i++) {
     if(this.state.lead_images[i]!= undefined){
     finalArray.push(this.state.lead_images[i]);
     }
+      
     }
     console.log("FIANL ARRAY",finalArray);
 
@@ -374,8 +404,11 @@ onPressSubmit = () => {
       console.log("FINAL Detail",this.state.detailsArray);
       console.log(" Detail array",finalDetail);
 
-
-    const data = {
+      if(!this.state.error && this.state.checkTicked!==0 && this.state.imageSelected!==0){
+       
+        this.state.isVisible = true;
+        if(this.property_type ==='self'){
+     data = {
       property_type : this.state.property_type,
       address : this.state.Address,
       city : this.state.cityy,
@@ -384,9 +417,26 @@ onPressSubmit = () => {
       zip_code : this.state.zipp,
       country : this.state.Country,
       details:finalDetail,
-      notes:this.state.notes,
+      notes:this.state.Notes,
       lead_images : finalArray,
     }
+  }else {
+     data = {
+      property_type : this.state.property_type,
+      address : this.state.Address,
+      city : this.state.cityy,
+      state : this.state.statee,
+      street:this.state.Street,
+      zip_code : this.state.zipp,
+      country : this.state.Country,
+      details:finalDetail,
+      notes:this.state.Notes,
+      lead_images : finalArray,
+      owner_mobile:this.state.ophone,
+      owner_name: this.state.oname,
+      owner_email: this.state.oemail,
+    }
+  }
 
     const {store: {dispatch}} = this.context;
 
@@ -394,9 +444,13 @@ onPressSubmit = () => {
    .then((res) => {
     
       if(res.status === 200){
+    
+        this.setState({lead_images:[]});     // check it if needed..
         toast("Successfully submitted.");
         
-        this.setState({isVisible:false})
+        this.setState({isVisible:false});
+        Actions.tracklead();
+        
       }else {
         this.setState({isVisible:false})
       }
@@ -409,95 +463,188 @@ onPressSubmit = () => {
        
     });
     
+  } else {
+    toast('Please Correct your form data.');
   }
+}
 
 
   //New Property Function
   onActiveStreet(){
-    this.setState({ street:true,city:false,State:false,zip:false,country:false })
+    this.setState({ street:true,city:false,State:false,zip:false,country:false,address:false,notes:false,emptyStreet:false,streetError:false })
   }
   onDeactiveStreet(){
-    this.setState({ street:false})
+    this.setState({ street:false});
+    const streetValdiation =/^[0-9a-zA-Z]*$/;
+    if(this.state.Street ==='' || this.state.Street=== undefined){
+        this.setState({emptyStreet:true, error: true})
+    }else{
+    if(streetValdiation.test(this.state.Street)){
+      this.setState({ streetError:false, error:false})
+    }else {
+      this.setState({streetError:true, error:true})
+    }
+  }
+
   }
   onActiveCity(){
-    this.setState({ street:false,city:true,State:false,zip:false,country:false })
+    this.setState({ street:false,city:true,State:false,zip:false,country:false,address:false,notes:false, emptyCity:false,cityError:false })
   }
   onDeactiveCity(){
-    this.setState({ city:false})
+    this.setState({ city:false});
+    const CityValdiation =/^[a-zA-Z .]*$/;
+    if(this.state.cityy =='' || this.state.cityy=== undefined){
+        this.setState({emptyCity:true, error: true})
+    }else{
+    if(CityValdiation.test(this.state.cityy)){
+      this.setState({ cityError:false, error:false})
+    }else {
+      this.setState({cityError:true, error:true})
+    }
+  }
   }
   onActiveState(){
-    this.setState({ street:false,city:false,State:true,zip:false,country:false })
+    this.setState({ street:false,city:false,State:true,zip:false,country:false,address:false,notes:false,emptyState:false,stateError:false })
   }
   onDeactiveState(){
-    this.setState({ State:false})
+    this.setState({ State:false});
+
+    const StateValdiation =/^[a-zA-Z .]*$/;
+    if(this.state.statee =='' || this.state.statee=== undefined){
+        this.setState({emptyState:true, error: true})
+    }else{
+    if(StateValdiation.test(this.state.statee)){
+      this.setState({ stateError:false, error:false})
+    }else {
+      this.setState({stateError:true, error:true})
+    }
   }
+  }
+
   onActiveCountry(){
-    this.setState({ street:false,city:false,State:false,zip:false,country:true })
+    this.setState({ street:false,city:false,State:false,zip:false,country:true,address:false,notes:false,emptyCountry:false, countryError:false })
   }
   onDeactiveCountry (){
-    this.setState({ country:false})
+    this.setState({ country:false});
+    const CountryValdiation =/^[a-zA-Z .]*$/;
+    if(this.state.Country =='' || this.state.Country=== undefined){
+        this.setState({emptyCountry:true, error: true})
+    }else{
+    if(CountryValdiation.test(this.state.Country)){
+      this.setState({ countryError:false, error:false})
+    }else {
+      this.setState({countryError:true, error:true})
+    }
+  }
+
   }
   onActiveZip(){
-    this.setState({ street:false,city:false,State:false,zip:true ,country:false})
+    this.setState({ street:false,city:false,State:false,zip:true ,country:false,address:false,notes:false,emptyZip:false,zipError:false,ziplength:false})
   }
+
   onDeactiveZip(){
-    this.setState({ zip:false})
+    this.setState({ zip:false});
+    const ZipValdiation =/^[0-9a-zA-Z]*$/;
+    if(this.state.zipp =='' || this.state.zipp=== undefined){
+        this.setState({emptyZip:true, error: true})
+    }else{
+    if(ZipValdiation.test(this.state.zipp)){
+      this.setState({ zipError:false, error:false});
+      if(this.state.zipp.length < 4){
+        this.setState({ziplength:true, error:true})
+      }
+    }else {
+      this.setState({zipError:true, error:true})
+    }
+  }
   }
 
   onActiveAddress(){
-    this.setState({ street:false,city:false,State:false,zip:false,country:false, address:true })
+    this.setState({ street:false,city:false,State:false,zip:false,country:false, address:true ,notes:false, emptyAddress:false,})
   }
   onDeactiveAddress(){
-      this.setState({ address:false})
+      this.setState({ address:false});
+
+      if(this.state.Address ==='' || this.state.Address=== undefined){
+        this.setState({emptyAddress:true, error: true})
+    }
+
   }
+
+  onActiveNotes(){
+    this.setState({ street:false,city:false,State:false,zip:false,country:false, address:false, notes:true,emptyNotes:false });
+  }
+  onDeactiveNotes(){
+    this.setState({ notes:false});
+    
+    if(this.state.Notes ==='' || this.state.Notes=== undefined){
+      this.setState({emptyNotes:true, error: true})
+  }
+  }
+
 
   //owner property functions
-  onActiveStreett(){
-    this.setState({ Ostreet:true,Ocity:false,Ostate:false,Ozip:false,Oname:false ,Ophone:false,Oemail:false})
-  }
-  onDeactiveStreett(){
-    this.setState({ Ostreet:false})
-  }
-  onActiveCityy(){
-    this.setState({ Ostreet:false,Ocity:true,Ostate:false,Ozip:false,Oname:false ,Ophone:false,Oemail:false})
-}
-  onDeactiveCityy(){
-    this.setState({ Ocity:false})
-  }
-  onActiveStatee(){
-    this.setState({ Ostreet:false,Ocity:false,Ostate:true,Ozip:false,Oname:false,Ophone:false,Oemail:false })
-}
-  onDeactiveStatee(){
-    this.setState({ Ostate:false})
-  }
-  onActiveZipp(){
-    this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:true,Oname:false,Ophone:false,Oemail:false })
-}
-  onDeactiveZipp(){
-    this.setState({ Ozip:false})
-  }
+
+ 
 
   onActiveNamee(){
-    this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:true,Ophone:false,Oemail:false })
+    this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:true,Ophone:false,Oemail:false,emptyName:false,nameError:false })
 }
   onDeactiveNamee(){
-    this.setState({ Oname:false})
+    this.setState({ Oname:false});
+    const nameValdiation =/^[a-zA-Z ]+$/;
+    if(this.state.oname ==='' || this.state.oname === undefined){
+      this.setState({ emptyName: true, error:true})
+    }else {
+     if(nameValdiation.test(this.state.oname)){
+        this.setState({ nameError:false, error:false,emptyName:false})
+    }else {
+      this.setState({nameError:true, error:true})
+    }
+  }
   }
   onActivePhonee(){
-    this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:false,Ophone:true,Oemail:false })
+    this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:false,Ophone:true,Oemail:false,emptyPhone:false })
 }
   onDeactivePhonee(){
-    this.setState({ Ophone:false})
+    this.setState({ Ophone:false});
+    if(this.state.ophone === '' || this.state.ophone === undefined){
+      this.setState({ emptyPhone:true,error:true});
+    }else{
+      this.setState({ emptyPhone:false,error:false})
+    }
+
+
+    if(this.state.ophone.length <10){
+      this.setState({emptyPhone:false,mobileLengthError:true,error:true})
+    }
+
   }
   onActiveEmaill(){
-    this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:false,Ophone:false,Oemail:true })
+    this.setState({ Ostreet:false,Ocity:false,Ostate:false,Ozip:false,Oname:false,Ophone:false,Oemail:true,emptyEmail:false,emailError:false })
 }
   onDeactiveEmaill(){
-    this.setState({ Oemail:false})
+    this.setState({ Oemail:false});
+
+    const emailValdiation =/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(this.state.oemail ==='' || this.state.oemail=== undefined){
+      this.setState({ emptyEmail: true, error:true})
+    }else {
+     if(emailValdiation.test(this.state.oemail)){
+        this.setState({ emailError:false, error:false,emptyName:false})
+    }else {
+      this.setState({emailError:true, error:true})
+    }
+  }
   }
 
+ 
   newOwnerOnPress = ()=> {
+
     if(this.state.newProperty ===true){
+      for(var i=0; i<this.state.checkboxArray.length;i++){
+        this.state.checkboxArray[i]=false;
+      }
     this.setState({
       ownerProperty:true,
       newProperty:false,
@@ -507,12 +654,9 @@ onPressSubmit = () => {
       Country:undefined,
       statee:undefined,
       state:undefined,
-      Onamee:undefined,
-      Ophonee:undefined,
-      Ostatee:undefined,
-      Ozipp:undefined,
-      Oemaill:undefined,
-      Ocityy:undefined,
+      oname:undefined,
+      ophone:undefined,
+      oemail:undefined,
       image:null,
       imageSecond:null,
       imageThird:null,
@@ -520,11 +664,40 @@ onPressSubmit = () => {
       notes:undefined,
       Address:undefined,
       Street:undefined,
+      Notes:undefined,
+
+            emptyCity:false,
+            emptyStreet:false,
+            emptyState:false,
+            emptyZip:false,
+            emptyCountry:false,
+            emptyAddress:false,
+            emptyNotes:false,
+            emptyName:false,
+            emptyEmail:false,
+            emptyPhone:false,
+
+            cityError:false,
+            streetError:false,
+            stateError:false,
+            zipError:false,
+            countryError:false,
+            nameError:false,
+            emailError:false,
+            phoneError:false,
+            
+   
+      
      })
   }
 }
 newPropertyOnPress = () => {
+  
   if(this.state.ownerProperty === true){
+    for(var i=0; i<this.state.checkboxArray.length;i++){
+      this.state.checkboxArray[i]=false;
+    }
+    
     this.setState({
       newProperty:true,
       ownerProperty:false,
@@ -532,13 +705,10 @@ newPropertyOnPress = () => {
       cityy:undefined,
       zipp:undefined,
       state:undefined,
-      Onamee:undefined,
+      oname:undefined,
       Country:undefined,
-      Ophonee:undefined,
-      Ostatee:undefined,
-      Ozipp:undefined,
-      Oemaill:undefined,
-      Ocityy:undefined,
+      ophone:undefined,
+      oemail:undefined,
       image:null,
       imageSecond:null,
       imageThird:null,
@@ -546,14 +716,38 @@ newPropertyOnPress = () => {
       notes:undefined,
       Address:undefined,
       Street:undefined,
+      Notes:undefined,
+
+            emptyCity:false,
+            emptyStreet:false,
+            emptyState:false,
+            emptyZip:false,
+            emptyCountry:false,
+            emptyAddress:false,
+            emptyNotes:false,
+            emptyName:false,
+            emptyPhone:false,
+            emptyEmail:false,
+
+            cityError:false,
+            streetError:false,
+            stateError:false,
+            zipError:false,
+            countryError:false,
+            nameError:false,
+            emailError:false,
+            phoneError:false,
+            
+   
       
      })
   }
 }
 
 checkBoxDetail (id){
-
-  
+ 
+  this.state.checkTicked = this.state.checkTicked +1;
+ 
   switch(id) {
     case 1: {
       this.setState({trashCliked:true});
@@ -625,6 +819,8 @@ checkBoxDetail (id){
 
 uncheckBoxDetail(id){
  
+  this.state.checkTicked = this.state.checkTicked -1;
+  
 
   this.setState({trashCliked:false});
 
@@ -836,8 +1032,16 @@ uncheckBoxDetail(id){
 
 
 
-                     <View style={{marginTop:Metrics.screenHeight/30,marginBottom:Metrics.screenHeight/30}}>
-                         <Text style={{fontSize:12, color:'#333333'}}>Uplaod Image</Text>
+                     <View style={{flexDirection:'row' ,marginTop:Metrics.screenHeight/30,marginBottom:Metrics.screenHeight/30}}>
+                        <View style={{flex:0.3}}>
+                          <Text style={{fontSize:12, color:'#333333'}}>Uplaod Image</Text>
+                         </View>
+
+                         <View style={{flex:0.7,alignItems:'flex-start'}}>
+                         {this.state.image === null && this.state.imageSecond === null && this.state.imageThird === null && this.state.imageFourth===null &&
+                          <Text style={{fontSize:12, color:'gray'}}>( Atleast one image is required.)</Text>
+                         }
+                         </View>
                      </View>
 
                    
@@ -1008,7 +1212,7 @@ uncheckBoxDetail(id){
                      </View>   
                     {/* Cut image Here */}
                      <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, flex:1, }}>
-                     <View style={{flex:1}}>
+                     <View style={{flex:1,marginLeft:Metrics.screenWidth/90}}>
                        { imageSecond &&
                      
                      <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
@@ -1019,7 +1223,7 @@ uncheckBoxDetail(id){
                     
                      }
                      </View>
-                     <View style={{flex:1}}>
+                     <View style={{flex:1,marginLeft:Metrics.screenWidth/42}}>
                        { imageThird &&
                      
                      <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
@@ -1030,12 +1234,12 @@ uncheckBoxDetail(id){
                     
                      }
                      </View>
-                     <View style={{flex:1}}>
+                     <View style={{flex:1,marginLeft:Metrics.screenWidth/37}}>
                        { imageFourth &&
                      
                      <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
                      <TouchableOpacity onPress={()=>this.deleteFourth()}>
-                      <Image source={Images.delimagesmall} ></Image>
+                      <Image source={Images.delimagesmall}></Image>
                       </TouchableOpacity>
                       </View>
                     
@@ -1048,14 +1252,65 @@ uncheckBoxDetail(id){
       // New Property Form here    *****************************************
 
            <View>
-           <View style={{ marginTop:Metrics.screenHeight/20}}>
-           <Text style={{ fontSize:12,color:'#333333'}}>Property Detail</Text> 
+           <View style={{ marginTop:Metrics.screenHeight/20,}}>
+               
+                     <Text style={{ fontSize:12,color:'#333333'}}>Property Detail</Text> 
+               
+                
         </View>
+
+
+
+        <View style={{marginTop:Metrics.screenHeight/40}}>
+      {this.state.emptyStreet &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+       {this.state.streetError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid street</Text>
+      }
+        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
+        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30}}>Street *</Text>
+        <Input style={{borderBottomWidth: 0}}
+          value={this.state.Street}
+          maxLength={20}
+          autoCapitalize="none" 
+             autoCorrect={false}
+             returnKeyType="next"
+             autoFocus ={false}
+         onBlur={()=>this.onDeactiveStreet()}
+         onTouchStart={()=>this.onActiveStreet()}
+         onChangeText={(street)=>this.setState({ Street:street,emptyStreet:false,streetError:false})}
+         
+         />
+
+     </Item>
+     { this.state.street === false ?
+                <Image source={Images.bar} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           /> :
+           <Image source={Images.bar_green} resizeMode="contain" 
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           />
+                }
+ </View>
+
+    
+             
+           
       <View style={{marginTop:Metrics.screenHeight/40}}>
-          <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-             <Label style={{fontSize:11,color:'#A3A3A3'}}>City *</Label>
+      {this.state.emptyCity &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+        {this.state.cityError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid city.</Text>
+      }
+          <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0,}}>
+             
+                 <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12}}>City *</Text>
+             
              <Input 
              style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
+             maxLength={30}
              autoCapitalize="none" 
              autoCorrect={false}
              returnKeyType="next"
@@ -1063,7 +1318,7 @@ uncheckBoxDetail(id){
              value={this.state.cityy}
               onBlur={()=>this.onDeactiveCity()}
                onTouchStart={()=>this.onActiveCity()}
-               onChangeText={(city)=> this.setState({cityy:city})}
+               onChangeText={(city)=> this.setState({cityy:city,emptyCity:false,cityError:false})}
                
                />
 
@@ -1079,41 +1334,29 @@ uncheckBoxDetail(id){
 
       </View>
 
-      <View style={{marginTop:Metrics.screenHeight/40}}>
-        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Label style={{fontSize:11,}}>Street *</Label>
-        <Input style={{borderBottomWidth: 0}} 
-         onBlur={()=>this.onDeactiveStreet()}
-         onTouchStart={()=>this.onActiveStreet()}
-         onChangeText={(street)=>this.setState({ Street:street})}
-         
-         />
-
-     </Item>
-     { this.state.street === false ?
-                <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
-           /> :
-           <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
-           />
-                }
- </View>
+ 
 
 
       <View style={{marginTop:Metrics.screenHeight/40}}>
+      {this.state.emptyState &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+       {this.state.stateError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid state.</Text>
+      }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Label style={{fontSize:11,color:'#A3A3A3'}}>State * </Label>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>State *</Text>
        <Input 
+       maxLength={30}
        value={this.state.statee}
        onBlur={()=>this.onDeactiveState()} 
        onTouchStart={()=>this.onActiveState()} 
-        style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
+        style={{borderBottomWidth: 0,}}
         autoCapitalize="none" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
-        onChangeText={(state)=>this.setState({statee:state})}
+        onChangeText={(state)=>this.setState({statee:state,emptyState:false, stateError:false})}
         />
 
     </Item>
@@ -1130,49 +1373,33 @@ uncheckBoxDetail(id){
 </View>
 
 
-      {/* <View>
-      
-        <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
-            onTouchStart={()=>this.setState({city:false,street:false,zip:false,State:true})}  
- onSelect={(idx, value)=>this.setState({state:value,city:false,street:false,zip:false})}
- dropdownStyle={{width:Metrics.screenWidth-Metrics.screenWidth/15,}}>
-
-    <View  style={{marginTop:10,flexDirection:"column",marginTop:Metrics.screenHeight/20}}>
-       <View style={{flexDirection:'row',}}>
-        <Text style={{fontSize:11,color:'gray'}}>State * </Text>
-       <Text style={{color:'black',marginLeft:Metrics.screenWidth/50}}>{this.state.state}</Text>
-       </View>
-       { this.state.State === false ?
-           <Image source={Images.dropdownbar} resizeMode="contain"
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
-               marginTop:-Metrics.screenHeight/120,
-         
-             
-             }}  />
-           :
-           <Image source={Images.dropdownbar_green} resizeMode="contain"
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
-               marginTop:-Metrics.screenHeight/120,
-              
-           }}>
-              </Image>
-               }
-
- </View>
- </ModalDropdown>
-      </View>  */}
+   
 
 
     
       <View style={{marginTop:Metrics.screenHeight/40}}>
+      {this.state.emptyZip &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+      {this.state.zipError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid Zipcode.</Text>
+      }
+       {this.state.ziplength &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Min 4 characters required.</Text>
+      }
           <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-             <Label style={{fontSize:11,color:'#A3A3A3'}}>Zip *</Label>
+             <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10}}>Zip *</Text>
              <Input
+             maxLength={10}
+             autoCapitalize={'none'}
+             autoCorrect={false}
+             returnKeyType="next"
+             autoFocus ={false}
              value={this.state.zipp}
               onBlur={()=>this.onDeactiveZip()}
                onTouchStart={()=>this.onActiveZip()}
                 style={{borderBottomWidth: 0, marginLeft:-Metrics.screenWidth/40}}
-                onChangeText={(zip)=>this.setState({zipp:zip})}
+                onChangeText={(zip)=>this.setState({zipp:zip,emptyZip:false, zipError:false,ziplength:false})}
                 />
 
           </Item>
@@ -1187,10 +1414,52 @@ uncheckBoxDetail(id){
       </View>
 
 
+
       <View style={{marginTop:Metrics.screenHeight/40}}>
+        {this.state.emptyAddress &&
+        <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+        }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Label style={{fontSize:11,color:'#A3A3A3'}}>Country * </Label>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>Address * </Text>
        <Input 
+       maxLength={50}
+       value={this.state.Address}
+       onBlur={()=>this.onDeactiveAddress()} 
+       onTouchStart={()=>this.onActiveAddress()} 
+        style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
+        autoCapitalize="none" 
+        autoCorrect={false}
+        returnKeyType="next"
+        autoFocus ={false}
+        onChangeText={(address)=>this.setState({Address:address, emptyAddress:false})}
+        />
+
+    </Item>
+    { this.state.address === false ?
+               <Image source={Images.bar} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          /> :
+          <Image source={Images.bar_green} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          />
+               }
+
+   
+        </View>
+
+
+
+      <View style={{marginTop:Metrics.screenHeight/40}}>
+      {this.state.emptyCountry &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+        {this.state.countryError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid country.</Text>
+      }
+       <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>Country * </Text>
+       <Input 
+       maxLength={30}
        value={this.state.Country}
        onBlur={()=>this.onDeactiveCountry()} 
        onTouchStart={()=>this.onActiveCountry()} 
@@ -1199,7 +1468,7 @@ uncheckBoxDetail(id){
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
-        onChangeText={(country=>this.setState({Country:country}))}
+        onChangeText={(country=>this.setState({Country:country,emptyCountry:false, countryError:false}))}
         />
 
     </Item>
@@ -1217,34 +1486,6 @@ uncheckBoxDetail(id){
 
 
 
-
-        <View style={{marginTop:Metrics.screenHeight/40}}>
-       <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Label style={{fontSize:11,color:'#A3A3A3'}}>Address * </Label>
-       <Input 
-       value={this.state.Address}
-       onBlur={()=>this.onDeactiveAddress()} 
-       onTouchStart={()=>this.onActiveAddress()} 
-        style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
-        autoCapitalize="none" 
-        autoCorrect={false}
-        returnKeyType="next"
-        autoFocus ={false}
-        onChangeText={(address)=>this.setState({Address:address})}
-        />
-
-    </Item>
-    { this.state.address === false ?
-               <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
-          /> :
-          <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
-          />
-               }
-
-   
-        </View>
 
       
        </View>
@@ -1265,13 +1506,24 @@ uncheckBoxDetail(id){
          </View>
 
      <View style={{marginTop:Metrics.screenHeight/40}}>
+     {this.state.emptyName &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+        {this.state.nameError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid name.</Text>
+      }
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Label style={{fontSize:11,color:'#A3A3A3'}}>Owner Name *</Label>
+        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/16}}>Owner Name *</Text>
         <Input style={{borderBottomWidth: 0, }} 
+        maxLength={30}
+        autoCapitalize={'none'}
+        autoCorrect={false}
+        returnKeyType="next"
+        autoFocus ={false}
         onBlur={()=>this.onDeactiveNamee()}
          onTouchStart={()=>this.onActiveNamee()}
-         value={this.state.Onamee}
-         onChangeText={(oname)=>this.setState({ Onamee:oname})}
+         value={this.state.oname}
+         onChangeText={(oname)=>this.setState({ oname:oname, emptyName:false, nameError:false})}
          />
 
      </Item>
@@ -1287,13 +1539,29 @@ uncheckBoxDetail(id){
 
 
        <View style={{marginTop:Metrics.screenHeight/40}}>
+       {this.state.emptyPhone &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+        {this.state.phoneError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid phone number.</Text>
+      }
+
+{this.state.mobileLengthError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Min 10 digits required.</Text>
+      }
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-              <Label style={{fontSize:11,color:'#A3A3A3'}}>Phone Number *</Label>
+              <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30}}>Phone Number *</Text>
               <Input style={{borderBottomWidth: 0}}
-               value={this.state.Ophonee}
-               onBlur={()=>this.onDeactivePhonee()}
-                onTouchStart={()=>this.onActivePhonee()}
-                onChangeText={(ophone)=>this.setState({ Ophonee:ophone})}
+              maxLength={10}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              returnKeyType="next"
+              autoFocus ={false}
+              keyboardType='numeric'
+              value={this.state.ophone}
+              onBlur={()=>this.onDeactivePhonee()}
+              onTouchStart={()=>this.onActivePhonee()}
+              onChangeText={(ophone)=>this.setState({ ophone:ophone, emptyPhone:false, phoneError:false, mobileLengthError:false})}
                 />
 
            </Item>
@@ -1313,13 +1581,23 @@ uncheckBoxDetail(id){
 
      
        <View style={{marginTop:Metrics.screenHeight/40}}>
+       {this.state.emptyEmail &&
+           <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+        {this.state.emailError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid Email.</Text>
+      }
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-              <Label style={{fontSize:11,color:'#A3A3A3'}}>Email Address *</Label>
+              <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20}}>Email Address *</Text>
               <Input style={{borderBottomWidth: 0}}
-               value={this.state.Oemaill}
+              autoCapitalize={'none'}
+              autoCorrect={false}
+              returnKeyType="next"
+              autoFocus ={false}
+               value={this.state.oemail}
                onBlur={()=>this.onDeactiveEmaill()} 
                onTouchStart={()=>this.onActiveEmaill()}
-               onChangeText={(oemail)=>this.setState({ Oemaill:oemail})}
+               onChangeText={(oemail)=>this.setState({ oemail:oemail, emptyEmail:false, emailError:false})}
                />
 
            </Item>
@@ -1338,13 +1616,29 @@ uncheckBoxDetail(id){
             <Text style={{ fontSize:12,color:'#333333'}}>Property Detail</Text> 
          </View>
 
-     <View style={{marginTop:Metrics.screenHeight/40}}>
+         <View style={{marginTop:Metrics.screenHeight/40}}>
+      {this.state.emptyStreet &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+       {this.state.streetError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid street</Text>
+      }
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Label style={{fontSize:11,}}>Street *</Label>
-        <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveStreett()} onTouchStart={()=>this.onActiveStreett()}/>
+        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30}}>Street *</Text>
+        <Input style={{borderBottomWidth: 0}}
+        autoCapitalize={'none'}
+        autoCorrect={false}
+        returnKeyType="next"
+        autoFocus ={false}
+        maxLength={20}
+         onBlur={()=>this.onDeactiveStreet()}
+         onTouchStart={()=>this.onActiveStreet()}
+         onChangeText={(street)=>this.setState({ Street:street,emptyStreet:false,streetError:false})}
+         
+         />
 
      </Item>
-     { this.state.Ostreet === false ?
+     { this.state.street === false ?
                 <Image source={Images.bar} resizeMode="contain" 
            style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
            /> :
@@ -1355,76 +1649,192 @@ uncheckBoxDetail(id){
  </View>
 
 
-       <View style={{marginTop:Metrics.screenHeight/40}}>
-           <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-              <Label style={{fontSize:11,color:'#A3A3A3'}}>City *</Label>
-              <Input style={{borderBottomWidth: 0}}
-               onBlur={()=>this.onDeactiveCityy()}
-               onTouchStart={()=>this.onActiveCityy()}
-               onChangeText={(ocity)=>this.setState({ Ocityy:ocity})}
-               />
-
-           </Item>
-           { this.state.Ocity === false ?
-                <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
-           /> :
-           <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
-           />
-                }
-       </View>
-
-
-       <View>
-       
-         <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
-  onTouchStart={()=>this.setState({Ostreet:false,Ocity:false,Ostate:true,Ozip:false,Oname:false ,Ophone:false,Oemail:false})}                           
-  onSelect={(idx, value)=>this.setState({state:value, Ostate:true})}
-  dropdownStyle={{width:Metrics.screenWidth-Metrics.screenWidth/15,}}>
-
-     <View  style={{marginTop:10,flexDirection:"column",marginTop:Metrics.screenHeight/20}}>
-        <View style={{flexDirection:'row',}}>
-         <Text style={{fontSize:11,color:'#A3A3A3'}}>State * </Text>
-        <Text style={{color:'black',marginLeft:Metrics.screenWidth/30}}>{this.state.state}</Text>
-        </View>
-       
-  { !this.state.Ostate ?
-        <Image source={Images.dropdownbar} resizeMode="contain"
-        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
-            marginTop:-Metrics.screenHeight/120,
-      
           
-          }}  />
-        :
-        <Image source={Images.dropdownbar_green} resizeMode="contain"
-        style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
-            marginTop:-Metrics.screenHeight/120,
-           
-        }}>
-           </Image>
-        }
-  </View>
-  </ModalDropdown>
-       </View>
+ <View style={{marginTop:Metrics.screenHeight/40}}>
+ {this.state.emptyCity &&
+ <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+ }
+   {this.state.cityError &&
+ <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid city.</Text>
+ }
+     <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0,}}>
+        
+            <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12}}>City *</Text>
+        
+        <Input 
+        style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
+        maxLength={30}
+        autoCapitalize="none" 
+        autoCorrect={false}
+        returnKeyType="next"
+        autoFocus ={false}
+        value={this.state.cityy}
+         onBlur={()=>this.onDeactiveCity()}
+          onTouchStart={()=>this.onActiveCity()}
+          onChangeText={(city)=> this.setState({cityy:city,emptyCity:false,cityError:false})}
+          
+          />
+
+     </Item>
+     { this.state.city === false ?
+          <Image source={Images.bar} resizeMode="contain" 
+     style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+     /> :
+     <Image source={Images.bar_green} resizeMode="contain" 
+     style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+     />
+          }
+
+ </View>
 
 
-     
        <View style={{marginTop:Metrics.screenHeight/40}}>
-           <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-              <Label style={{fontSize:11,color:'#A3A3A3'}}>Zip *</Label>
-              <Input style={{borderBottomWidth: 0}} onBlur={()=>this.onDeactiveZipp()} onTouchStart={()=>this.onActiveZipp()}/>
+      {this.state.emptyState &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+       {this.state.stateError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid state.</Text>
+      }
+       <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>State *</Text>
+       <Input 
+       maxLength={30}
+       value={this.state.statee}
+       onBlur={()=>this.onDeactiveState()} 
+       onTouchStart={()=>this.onActiveState()} 
+        style={{borderBottomWidth: 0,}}
+        autoCapitalize="none" 
+        autoCorrect={false}
+        returnKeyType="next"
+        autoFocus ={false}
+        onChangeText={(state)=>this.setState({statee:state,emptyState:false, stateError:false})}
+        />
 
-           </Item>
-           { this.state.Ozip === false ?
-                <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
-           /> :
-           <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
-           />
-                }
-       </View>
+    </Item>
+    { this.state.State === false ?
+               <Image source={Images.bar} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          /> :
+          <Image source={Images.bar_green} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          />
+               }
+
+   
+</View>
+
+
+
+
+<View style={{marginTop:Metrics.screenHeight/40}}>
+{this.state.emptyZip &&
+<Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+}
+{this.state.zipError &&
+<Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid Zipcode.</Text>
+}
+ {this.state.ziplength &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Min 4 characters required.</Text>
+      }
+
+    <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10}}>Zip *</Text>
+       <Input
+       maxLength={10}
+       autoCapitalize={'none'}
+       autoCorrect={false}
+       returnKeyType="next"
+       autoFocus ={false}
+       value={this.state.zipp}
+        onBlur={()=>this.onDeactiveZip()}
+         onTouchStart={()=>this.onActiveZip()}
+          style={{borderBottomWidth: 0, marginLeft:-Metrics.screenWidth/40}}
+          onChangeText={(zip)=>this.setState({zipp:zip,emptyZip:false, zipError:false,ziplength:false})}
+          />
+
+    </Item>
+    { this.state.zip === false ?
+         <Image source={Images.bar} resizeMode="contain" 
+    style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45,}}
+    /> :
+    <Image source={Images.bar_green} resizeMode="contain" 
+    style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+    />
+         }
+</View>
+
+
+<View style={{marginTop:Metrics.screenHeight/40}}>
+        {this.state.emptyAddress &&
+        <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+        }
+       <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20}}>Address * </Text>
+       <Input 
+       maxLength={50}
+       value={this.state.Address}
+       onBlur={()=>this.onDeactiveAddress()} 
+       onTouchStart={()=>this.onActiveAddress()} 
+        style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
+        autoCapitalize="none" 
+        autoCorrect={false}
+        returnKeyType="next"
+        autoFocus ={false}
+        onChangeText={(address)=>this.setState({Address:address, emptyAddress:false})}
+        />
+
+    </Item>
+    { this.state.address === false ?
+               <Image source={Images.bar} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          /> :
+          <Image source={Images.bar_green} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          />
+               }
+
+   
+        </View>
+
+
+
+      <View style={{marginTop:Metrics.screenHeight/40}}>
+      {this.state.emptyCountry &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      }
+        {this.state.countryError &&
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid country.</Text>
+      }
+       <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>Country * </Text>
+       <Input 
+       maxLength={30}
+       value={this.state.Country}
+       onBlur={()=>this.onDeactiveCountry()} 
+       onTouchStart={()=>this.onActiveCountry()} 
+        style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
+        autoCapitalize="none" 
+        autoCorrect={false}
+        returnKeyType="next"
+        autoFocus ={false}
+        onChangeText={(country=>this.setState({Country:country,emptyCountry:false, countryError:false}))}
+        />
+
+    </Item>
+    { this.state.country === false ?
+               <Image source={Images.bar} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          /> :
+          <Image source={Images.bar_green} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          />
+               }
+
+   
+        </View>
+
+
+
 
         </View>
                        }
@@ -1432,8 +1842,15 @@ uncheckBoxDetail(id){
 
 
                       
-                        <View style={{marginTop:Metrics.screenHeight/30}}>
-                            <Text style={{color:'#333333', fontSize:12}}>Details</Text>
+                        <View style={{marginTop:Metrics.screenHeight/30, flexDirection:'row'}}>
+                           <View style={{flex:0.3}}>
+                              <Text style={{color:'#333333', fontSize:12}}>Details</Text>
+                            </View>
+                            <View style={{flex:0.7, alignItems:'flex-start'}}>
+                            { this.state.checkTicked === 0 &&
+                               <Text style={{ fontSize:12,color:'gray'}}>(Atleast one detail is required.)</Text> 
+                            }
+                            </View>
                          </View> 
 
       
@@ -1444,18 +1861,30 @@ uncheckBoxDetail(id){
 
 
                         <View style={{marginTop:Metrics.screenHeight/30,flexDirection:'column'}}>
-                          <Text style={{color:'#333333',fontSize:12}}>Notes</Text>
+                        <View>
+                        {this.state.emptyNotes &&
+                         <Text style={{fontSize:12,color:'red'}}>*This field is required.</Text>
+                         }
+                          </View>
+                        
+                                   <Text style={{color:'#333333',fontSize:12}}>Notes</Text>
+                           
+                              
+                            </View>
+
+                            <View>
+
                           <Input style={{borderBottomWidth: 0.7, borderColor:'#A3A3A3'}}
                             autoCapitalize={'none'}
                             autoCorrect={false}
                             returnKeyType="next"
                             autoFocus ={false}
-                          value={this.state.notes}
+                           value={this.state.Notes}
                           multiline={true}
                           maxLength={250}
-                          //onBlur={()=>this.onDeactiveEmaill()} 
-                          //onTouchStart={()=>this.onActiveEmaill()}
-                          onChangeText={(notes)=>this.setState({ notes:notes})}/>
+                        onBlur={()=>this.onDeactiveNotes()} 
+                        onTouchStart={()=>this.onActiveNotes()}
+                          onChangeText={(notes)=>this.setState({ Notes:notes, emptyNotes:false})}/>
                         </View>  
 
                  <View>

@@ -15,7 +15,7 @@ class ChangePassword extends Component {
   constructor(props){
     super(props);
     this.state ={
-      isBusy:false,
+  
       password: undefined,
       new_password:undefined,
       confirmPassword: undefined,
@@ -34,7 +34,7 @@ class ChangePassword extends Component {
   onPressSubmitButton =() =>{
     this.UserToken = this.props.auth.user.data.token,
     console.log( "USER TOKEN",this.UserToken);
-    this.setState({isBusy:true});
+    this.setState({isVisible:true});
     let data = {
       
 
@@ -50,6 +50,7 @@ class ChangePassword extends Component {
         this.setState({isVisible:true})
         dispatch(changepassword(data, this.UserToken))
           .then((res)=>{
+            console.log("CHANGE PASSWORD RESPONSE",res)
             this.setState({isBusy:false});
            this.setState({
              new_password:'',
@@ -58,20 +59,25 @@ class ChangePassword extends Component {
              isVisible:false
            })
            if(res.status === 200){
-            toast("Password Changed Successfuly.");
-           }else if(res.status === 404){
-             toast("Old password do not matched.");
+             this.setState({isVisible:false});
+            AsyncStorage.setItem('userCredentials',JSON.stringify({'email':this.props.auth.userProfile.data.email,'password':data.new_password}) );
+            toast("Password changed successfully.");
+           } else {
+             this.setState({isVisible:false})
+             toast("Old password does not matched.");
+              
            }
            
           })
           .catch(() => {
+            this.setState({isVisible:false})
           })
       } else {
-        this.setState({isBusy:false});
-        toast("Password Do Not Matched");
+        this.setState({isVisible:false});
+        toast("Confirm password do not matched.");
       }
     } else {
-      this.setState({isBusy:false});
+      this.setState({isVisible:false});
       toast('Please enter all Fields.');
 
     }
@@ -135,7 +141,7 @@ class ChangePassword extends Component {
 
       <View style={{flex:0.4,alignItems:'center', justifyContent:'center'}}>
           <TouchableOpacity  
-            onPress={this.onPressSubmitButton}
+            onPress={()=>this.onPressSubmitButton()}
            style={{borderRadius:20,
           
            width:Metrics.screenWidth/1.1,height:40,

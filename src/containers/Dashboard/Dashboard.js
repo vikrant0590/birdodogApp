@@ -13,8 +13,10 @@ const propTypes = {
 
 export default class Dashboard extends Component {
 
+
   componentWillMount () {
     this.props.homeSection;
+  
 }
 
     render(){
@@ -27,7 +29,15 @@ export default class Dashboard extends Component {
             marginLeft:Metrics.screenWidth/25,marginRight:Metrics.screenWidth/25,marginTop:12, }}>
                
                <TouchableOpacity onPress={NavActions.dashboarddetail} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4, }}>
-                 <Image source={Images.signin} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4,resizeMode:'stretch'}}/>
+                 <Image source={Images.signin} style={{
+                   borderBottomLeftRadius:5,
+                   borderBottomRightRadius:5,
+                   borderTopLeftRadius:5,
+                   borderTopRightRadius:5,
+                   borderRadius:5,
+                   height:Metrics.screenHeight/6,
+                   width:Metrics.screenWidth/2.4,
+                   resizeMode:'stretch'}}/>
                </TouchableOpacity>  
 
 

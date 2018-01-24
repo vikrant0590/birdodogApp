@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image,BackHandler, } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button, Icon} from 'native-base';
 import styles from './LoginStyle';
 import {Actions as NavAction} from 'react-native-router-flux';
@@ -27,13 +27,18 @@ export default class Login extends Component {
   constructor(props){
     super(props);
     this.state ={
+      refresh:false,
       email: undefined,
       password:undefined ,
       isVisible: false
     }
   }
+  componentWillMount=()=>{
+  this.setState({ email:'',password:''})
+  }
+
   onPressLoginButton = () => {
-    // NavAction.drawer();
+   
     const {email, password} = this.state;
     if (email && password) {
       if (validationOnEmail(email)) {
@@ -66,10 +71,9 @@ export default class Login extends Component {
 
   };
 
-  onPressLogin = () => {
-    NavAction.drawer();
-  }
+ 
     render(){
+      
         return(
         
      <Content style={{flex:1}}>
@@ -92,6 +96,7 @@ export default class Login extends Component {
         <Item>
         <Image source={Images.messageGreen} />
           <Input placeholder="Email" 
+          value={this.state.email}
            placeholderTextColor={'#A3A3A3'}
            autoCorrect={false}
            autoCapitalize={'none'}
@@ -104,6 +109,7 @@ export default class Login extends Component {
         <Item>
         <Image source={Images.lockgreen}/>
           <Input  placeholder="Password" 
+          value={this.state.password}
           secureTextEntry={true} 
            placeholderTextColor={'#A3A3A3'}
            onChangeText={(password) => {

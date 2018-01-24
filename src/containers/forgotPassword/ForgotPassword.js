@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, TouchableOpacity, Image } from 'react-native';
-import {Container, Content, Header, Form, Item, Input, Label , Button, Icon} from 'native-base';
+import {Container, Content, Header, Form, Item, Input, Label , Button, Icon, AsyncStorage} from 'native-base';
 import styles from './ForgotPasswordStyles';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -41,6 +41,7 @@ export default class ForgotPassword extends Component {
           if(res.status === 200){
             this.setState({isVisible: false, email:''});
             toast("Link has been sent to your email address.");
+            AsyncStorage.removeItem('userCredentials');
             Actions.login();
           } 
     }).catch(() => {

@@ -36,6 +36,7 @@
     "react-native-simple-modal": "^7.0.0",
     "react-native-snackbar-dialog": "^1.4.0",
     "react-redux": "^5.0.5",
+    "react-timer-mixin": "^0.13.3",
     "redux": "^3.7.0",
     "redux-persist": "^4.8.0",
     "redux-thunk": "^2.2.0"
