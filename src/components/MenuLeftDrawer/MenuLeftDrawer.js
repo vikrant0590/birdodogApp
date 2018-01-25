@@ -22,7 +22,7 @@ import { connect } from 'react-redux';
     UserToken: undefined,
     isVisible:false,
     click:0,
-    //user:this.props.auth.userProfile,
+    user:this.props.auth.userProfile,
     }
   }
   static  propTypes = {
@@ -36,18 +36,11 @@ import { connect } from 'react-redux';
         store: PropTypes.object,
         getProfile: PropTypes.object
       };
-
-      componentWillMount = async () => {
-        const token = await AsyncStorage.getItem('token');
-        const  tokenSend = JSON.parse(token);
-        console.log("tooookkkkkeeennnnnnnn",tokenSend.data.token)
-        this.state.UserToken = tokenSend.data.token;
-        
-  //this.UserToken = this.props.auth.user.data.token;
-
-  console.log("SIGUP TOKEN", this.state.UserToken);
+      
+ componentWillMount= ()=>{
+  this.UserToken = this.props.auth.user.data.token;
+  console.log("SIGUP TOKEN", this.UserToken);
  }
- 
   
 
       onPress = (item) => {
@@ -59,15 +52,14 @@ import { connect } from 'react-redux';
        NavActions.dashboard();
         }
         else if(item.index === 1){
-          this.props.homeSection();
-
           const {store: {dispatch}} = this.context;
-          dispatch(getDetails(this.state.UserToken))
+          dispatch(getDetails(this.UserToken))
           //check here
          .then((res) => {
                    console.log("Details Response",res)
-            this.state.isVisible = false;
-            NavActions.newlead();
+                   this.props.homeSection();
+                  this.state.isVisible = false;
+                  NavActions.newlead();
           
           
           }).catch(() => {
@@ -106,6 +98,7 @@ import { connect } from 'react-redux';
        onPressLogout = async () => {
        //this.props.homeSection();
        AsyncStorage.removeItem('userCredentials');
+       AsyncStorage.removeItem('token');
         const {store: {dispatch}} = this.context;
         dispatch(logout());
     

@@ -171,7 +171,8 @@ export function login(data) {
         
         dispatch({ type: LOGIN_SUCCESS, result: res });
         AsyncStorage.setItem('userCredentials', JSON.stringify(data));
-        //AsyncStorage.setItem('token', JSON.stringify(res));
+        AsyncStorage.setItem('token', JSON.stringify(res));
+        AsyncStorage.setItem('UserType',JSON.stringify(res.data.type));
          resolve(res);
         
         
@@ -196,7 +197,7 @@ export  function register(data) {
         dispatch({ type: REGISTER_SUCCESS, result: res });
      
         AsyncStorage.setItem('userCredentials', JSON.stringify(data));
-        //AsyncStorage.setItem('token', JSON.stringify(res));
+        AsyncStorage.setItem('token', JSON.stringify(res));
         resolve(res);
       
       })
@@ -323,9 +324,7 @@ export function logout() {
     
        dispatch({type: CLEAR_PROFILE });
        toast('Logout successfuly.');
-       Actions.login();
-        
-        
+       Actions.login({type: 'reset'});    
       })
     
 }

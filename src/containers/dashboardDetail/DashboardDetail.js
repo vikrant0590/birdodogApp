@@ -21,15 +21,30 @@ import {Video, ScreenOrientation,} from 'expo';
 import Modal from 'react-native-simple-modal';
 import {Actions as NavAction} from 'react-native-router-flux';
 import VideoPlayer from '@expo/videoplayer';
+import PropTypes, {any, object} from 'prop-types';
 
 export default class DashboardDetail extends Component { 
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state= {
       checked:true,
-      open:false
+      open:false,
+      videoUrl:undefined,
+      description:undefined,
+      title:undefined
    
     }
+  }
+  static  propTypes = {
+   
+    videoUrl:PropTypes.string,
+    description:PropTypes.string,
+    title:PropTypes.string
+  
+  };
+  
+  componentWillMount = async () => {
+       this.setState({ videoUrl:this.props.videoUrl, description:this.props.description, title:this.props.title})
   }
 
     render() {
@@ -44,7 +59,7 @@ export default class DashboardDetail extends Component {
         shouldPlay: true,
     resizeMode: Video.RESIZE_MODE_CONTAIN,
     source: {
-      uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' ,
+      uri: this.state.videoUrl ,
     },
   }}
   isPortrait={true}
@@ -70,23 +85,11 @@ export default class DashboardDetail extends Component {
       
        
                   }}>
-               <Text style={{fontSize:17}}> Training Video 1</Text>
+               <Text style={{fontSize:17}}> {this.state.title}</Text>
             
                <Text style={{color:'#878787', fontSize:10,marginTop:Metrics.screenHeight/50,flex:1,}}>
-               Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-               It has survived not only five centuries. It was popularised in 
-               the 1960s with the release of Letraset sheets containing Lorem Ipsum passages. {'\n\n'}
-                and more recently with desktop publishing software like Aldus PageMaker including 
-                versions of Lorem Ipsum. Lorem Ipsum has been the industry's standard dummy text
-                 ever since the 1500s. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-               It has survived not only five centuries. It was popularised in 
-               the 1960s with the release of Letraset sheets containing Lorem Ipsum passages. {'\n\n'}
-                and more recently with desktop publishing software like Aldus PageMaker including 
-                versions of Lorem Ipsum. Lorem Ipsum has been the industry's standard dummy text
-                 ever since the 1500s.
-             
+
+                           {this.state.description}
                </Text>
 
             </View>  
@@ -152,17 +155,17 @@ export default class DashboardDetail extends Component {
 
           </View>
           <Modal
-	open={this.state.open}
-	offset={0}
-	overlayBackground={'rgba(0, 0, 0, 0.75)'}
-	animationDuration={200}
-	animationTension={40}
-	modalDidOpen={() => undefined}
-	modalDidClose={() => this.setState({open:false})}
-	closeOnTouchOutside={true}
-	containerStyle={{
-	   justifyContent: 'center'
-	}}
+	        open={this.state.open}
+	        offset={0}
+	        overlayBackground={'rgba(0, 0, 0, 0.75)'}
+	         animationDuration={200}
+         	animationTension={40}
+	         modalDidOpen={() => undefined}
+       	modalDidClose={() => this.setState({open:false})}
+        	closeOnTouchOutside={true}
+       	containerStyle={{
+	            justifyContent: 'center'
+	          }}
 	modalStyle={{
     flex:1,
 	   borderRadius: 2,

@@ -328,7 +328,7 @@ import {Actions} from 'react-native-router-flux';
             this.setState({isVisible: false});
            
             toast('Successfully Updated!');
-        
+           Actions.pop();
             }
             
             

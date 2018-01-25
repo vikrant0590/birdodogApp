@@ -196,7 +196,7 @@ import {
     TermsCondition,
     DashboardDetail
 } from './containers';
-import {Icon} from 'native-base';
+
 
  import {MenuLeftDrawer,WalkThroughFirst } from './components'
 
@@ -205,6 +205,7 @@ import NavigationDrawer from './NavigationDrawer';
 import { Router, Scene, Actions as NavigationActions } from 'react-native-router-flux';
 import { login } from './redux/modules/auth';
 import PropTypes from 'prop-types';
+
 const Styles = {
   container: {
     flex: 1
@@ -252,9 +253,8 @@ export default class AppRouter extends Component {
       isVisible:false
     };
   }
-  onBackFunction =() => {
-   NavigationActions.pop();
-  }
+
+  
   componentWillMount = async () => {
   
     // AsyncStorage.removeItem('userCredentials');
@@ -319,7 +319,7 @@ export default class AppRouter extends Component {
                  <Scene key="signup" component={Signup} hideNavBar={false} title="SIGN UP"   />
                  <Scene key="forgotPassword" component={ForgotPAssword} hideNavBar={false} title="FORGOT PASSWORD"  />
                  <Scene key="changePassword" component={ChangePassword} hideNavBar={false} title="CHANGE PASSWORD" />
-                 <Scene key="editprofile" component={EditProfile} hideNavBar={false}  onBack={()=>this.onBackFunction()} title="EDIT PROFILE"/>
+                 <Scene key="editprofile" component={EditProfile} hideNavBar={false}   title="EDIT PROFILE"/>
                  <Scene key="faq" component={Faq} hideNavBar={false} title="FAQ" />
                  <Scene key="help"component={NeedHelp} hideNavBar={false} title="NEED HELP?" />
                  <Scene key="termsCondition" component={TermsCondition} hideNavBar={false} title="TERMS AND CONDITIONS"/>

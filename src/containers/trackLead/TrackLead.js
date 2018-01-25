@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component} from 'react';
 
-import { Text, View, Image, FlatList,ActivityIndicator,Platform } from 'react-native';
+import { Text, View, Image, FlatList,ActivityIndicator,Platform ,ListView} from 'react-native';
 import { Container, Header, Content, Card, CardItem, Body ,Icon,List } from 'native-base';
 import { connect } from 'react-redux';
 import { getTrackList } from '../../redux/modules/auth';
@@ -32,6 +32,7 @@ import { register } from '../../redux/modules/auth';
             recordLength:0,
             showMe:false,
 
+
           
          
             
@@ -51,23 +52,27 @@ import { register } from '../../redux/modules/auth';
 
 
    componentWillMount = ()=>{
-     
-    this.state.UserToken = this.props.auth.user.data.token;
-    console.log("USERT TOKEN TRACK LIST", this.state.UserToken);
-    this.fetchData();
-    
+    this.fetchData(); 
      }
+
+
      handleEnd =()=>{
-       console.log("HandleEnd");
+      this.setState({loading:true})
+      setTimeout(() => {
         this.setState(state =>({ page: this.state.page + 1 }),() =>this.fetchData());
+      }, 3000);
+       console.log("HandleEnd");
+    
 
      }
 
      fetchData = async() => {
+      this.state.UserToken = this.props.auth.user.data.token;
+      console.log("USERT TOKEN TRACK LIST", this.state.UserToken);
       console.log("fetchEnd");
        console.log("pageno",this.state.page)
   
-      this.setState({loading:true})
+
     const data = {
         method: 'GET',
         headers: {
@@ -101,6 +106,7 @@ import { register } from '../../redux/modules/auth';
             
  
     render(){
+      const isIOS = Platform.OS === 'ios';
        // console.log("******Render Data", this.state.data);
         return(
               
@@ -112,20 +118,20 @@ import { register } from '../../redux/modules/auth';
 
                  <View style={{flex:0.2,height:Metrics.screenHeight/6, flexDirection:'column', }}>
 
-<View style={{flexDirection:'row',marginTop:20,height:Metrics.screenHeight/20,}}>
-      <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-      <Image source={Images.enter}/>
+             <View style={{flexDirection:'row',marginTop:Metrics.screenHeight/30,height:Metrics.screenHeight/20,}}>
 
-      </View>   
+                   <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
+                    <Image source={Images.enter}/>
+                  </View>   
 
-      <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-      <Image source={Images.rotate}/>
-      </View>  
+                 <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
+                    <Image source={Images.rotate}/>
+                </View>  
 
-      <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-      <Image source={Images.check}/>
-      </View>  
-  </View> 
+                <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
+                  <Image source={Images.check}/>
+                </View>  
+          </View> 
 
   <View style={{flexDirection:'row',height:Metrics.screenHeight/30,marginTop:Metrics.screenHeight/35}}>
       <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
@@ -172,10 +178,10 @@ import { register } from '../../redux/modules/auth';
         :
 
 
-    <View style={{flex:0.2, flexDirection:'column',marginTop:20 }}>
+    <View style={{flex:0.2, flexDirection:'column',marginTop:Metrics.screenHeight/30 }}>
 
 <View style={{flexDirection:'row',height:Metrics.screenHeight/20,}}>
-<View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
+    <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
 <Image source={Images.enter}/>
 
 </View>   
@@ -234,17 +240,22 @@ import { register } from '../../redux/modules/auth';
  }     
 
           {this.state.message!='No records found' ?
-       
-       <View style={{flex:0.8,marginTop:Metrics.screenHeight/15}}>
+    
+       <View style={{flex:0.8,marginTop:Metrics.screenHeight/30}}>
                            <FlatList
                              style={{flex:1,}}
                            data ={this.state.data}
                            keyExtractor ={(x,i)=>i}
                            ListFooterComponent={() => <ActivityIndicator animating={this.state.loading}/>}
                          
-                            onEndReached={()=>this.handleEnd()}
+                            onEndReached={()=> 
+                        
+                                this.handleEnd() 
+                          
+                        
+                            }
                          
-                             onEndReachedThreshold={0}
+                            onEndReachedThreshold={isIOS ? 0 : 1}
                        
                               renderItem={({ item })=>
 
@@ -304,7 +315,11 @@ import { register } from '../../redux/modules/auth';
  </View>
     
  :
-   <Text>No Records Found</Text>            
+ <View style={{flex:0.8,marginTop:Metrics.screenHeight/30,alignItems:'center', justifyContent:'center'}}>
+ <CardItem style={{flex:0.2,backgroundColor:"#01A9F2"}}>
+  <Text style={{fontSize:16}}>No Records Found!</Text>       
+  </CardItem>
+</View>          
 
 }
                 </View>
