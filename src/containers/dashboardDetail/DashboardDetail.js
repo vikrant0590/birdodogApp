@@ -12,7 +12,8 @@ import {
   TouchableOpacity,
   View,
   Image,
-  StatusBar
+  StatusBar,
+  AsyncStorage
 } from 'react-native';
 import {Content} from 'native-base';
 import styles from './DashboardDetailStyles';
@@ -27,24 +28,113 @@ export default class DashboardDetail extends Component {
   constructor(props){
     super(props);
     this.state= {
-      checked:true,
+      checked:false,
       open:false,
       videoUrl:undefined,
       description:undefined,
-      title:undefined
+      title:undefined,
+      id:undefined,
+      UserToken:undefined,
+      data:[],
+      dataSecond:[],
+      status:undefined,
+      termsCondition:false,
+      finish:false
    
     }
   }
   static  propTypes = {
    
-    videoUrl:PropTypes.string,
-    description:PropTypes.string,
-    title:PropTypes.string
+
+    id:PropTypes.string,
+    watch_status:PropTypes.string
   
   };
+  changeState =()=>{
+    this.setState({termsCondition:true});
+  }
+
+  onChangeFinished =() =>{
+    this.setState({finish:true})
+  }
+
+  updateStatus = async () =>{
+    console.log("IDIDIDIDIID",this.state.id);
+ 
+
+      const dataa = {
+        "term_condition": true
+      }
+
+    const data = {
+    
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Usertoken': this.state.UserToken
+      
+      },
+      body: JSON.stringify(dataa)
+     
+      }
+      if(this.props.watch_status === 'watchable'){
+    
+    const response = await fetch( `http://s2.staging-host.com/birddog-express/api/video/update_watched_video_status/${this.state.id}`,data);
+    const json = await response.json();
+    
+   console.log("UPDATE STATUS",json);
+      }
+  }
   
   componentWillMount = async () => {
-       this.setState({ videoUrl:this.props.videoUrl, description:this.props.description, title:this.props.title})
+
+   
+
+    const token = await AsyncStorage.getItem('token');
+    const  Usertoken = JSON.parse(token);
+
+    const type= await AsyncStorage.getItem('UserType');
+    const UserType = JSON.parse(type);
+
+    this.setState({ UserToken:Usertoken.data.token, UserType:UserType});
+    const id ={
+      id:this.props.id,
+     
+    }
+    const watch_status ={
+
+      watch_status:this.props.watch_status
+    }
+
+   AsyncStorage.setItem('video_id',JSON.stringify(id));
+       this.setState({id:this.props.id});
+       console.log("VIDEO ID",this.state.id)
+       AsyncStorage.setItem('w_status',JSON.stringify(watch_status));
+
+       const data = {
+        method: 'GET',
+        headers: {
+        'Usertoken': this.state.UserToken
+        },
+       
+        }
+  
+      const response =await fetch( `http://s2.staging-host.com/birddog-express/api/video/details/${this.state.id}`,data);
+      const json = await response.json();
+      this.setState({data:json.data})
+      console.log("_____________________",json.data);
+
+
+
+      const responseFirst =await fetch( `http://s2.staging-host.com/birddog-express/api/video/list/1`,data);
+      const jsonFirst = await responseFirst.json();
+      this.setState({dataSecond:jsonFirst.data});
+
+      console.log("------ -------- -------",this.state.dataSecond[0].watch_status);
+      this.setState({status: this.state.dataSecond[0].watch_status});
+      
+
   }
 
     render() {
@@ -55,19 +145,26 @@ export default class DashboardDetail extends Component {
       <View style={{flex:0.33,}}>
      
       <VideoPlayer
+        data={()=>this.onChangeFinished()}
+
+
          videoProps={{
+          switchToLandscape:true,
         shouldPlay: true,
-    resizeMode: Video.RESIZE_MODE_CONTAIN,
-    source: {
-      uri: this.state.videoUrl ,
-    },
-  }}
+       resizeMode: Video.RESIZE_MODE_CONTAIN,
+          source: {
+         uri: this.state.data.file_path ,
+       },
+       
+      }}
+
   isPortrait={true}
   playFromPositionMillis={0}
   style={{flex:1,width: Metrics.screenWidth,}}
     />
-       <TouchableOpacity onPress={()=> NavAction.drawer()} style={{marginTop:-Metrics.screenHeight/3.9,marginLeft:Metrics.screenWidth/20,}}>
-        <Image  source={Images.backwhite} style={{ resizeMode:'contain'}}/>
+       <TouchableOpacity onPress={()=> NavAction.drawer()}
+        style={{ marginTop:-Metrics.screenHeight/3.4,marginLeft:Metrics.screenWidth/24,width:Metrics.screenWidth/13}}>
+        <Image  source={Images.backwhite} style={{ resizeMode:'contain',}}/>
        </TouchableOpacity>
                 
        </View>
@@ -85,19 +182,20 @@ export default class DashboardDetail extends Component {
       
        
                   }}>
-               <Text style={{fontSize:17}}> {this.state.title}</Text>
+               <Text style={{fontSize:17}}> {this.state.data.title}</Text>
             
                <Text style={{color:'#878787', fontSize:10,marginTop:Metrics.screenHeight/50,flex:1,}}>
 
-                           {this.state.description}
+                           {this.state.data.description}
                </Text>
 
             </View>  
 
-
+{ this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && 
           <View style={{flex:0.001, backgroundColor:'#878787',}}></View>
+                }
 
-
+  { this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && 
             <View style={{flex:0.16,
               marginLeft:Metrics.screenWidth/20,
                   marginRight:Metrics.screenWidth/20,
@@ -138,6 +236,7 @@ export default class DashboardDetail extends Component {
          
                <View style={{ flex:0.4,justifyContent:'flex-end',marginTop:Metrics.screenHeight/20}}>
                <TouchableOpacity  
+               onPress={()=> this.state.checked  ? this.updateStatus() : alert("please accept terms and condition")}
                    style={{borderRadius:20,
                       height:35,
                       
@@ -147,13 +246,15 @@ export default class DashboardDetail extends Component {
                     alignItems:"center",
                    backgroundColor:'#8CB102',
                    }}>
-                   <Text style={{color:"white", fontSize:15}}>NEXT TRAINING VIDEO</Text>
+                   <Text style={{color:"white", fontSize:15}}>ACCEPT TERMS AND CONDITION</Text>
                     
                    </TouchableOpacity>
 
                </View> 
 
           </View>
+  }
+
           <Modal
 	        open={this.state.open}
 	        offset={0}
@@ -244,4 +345,4 @@ export default class DashboardDetail extends Component {
       }
     }
     
- 
+    

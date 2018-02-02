@@ -52,11 +52,14 @@ const NEED_HELP="auth/NEED_HELP";
 
 const CLEAR_PROFILE = 'CLEAR_PROFILE';
 
+const VIDEO_FINISH ="auth/VIDEO_VIDEO_FINSH"
+
 const initialState = {
   user: undefined,
   userProfile:undefined,
   detail:undefined,
-  trackListData:undefined
+  trackListData:undefined,
+  videoFinish:undefined
   
 };
 
@@ -153,7 +156,9 @@ export default function reducer(state = initialState, action = {}) {
       case NEED_HELP:
       return {...state}
 
-    
+    //Video FInsihed
+    case VIDEO_FINISH:
+    return {...state,videoFinish:true}
 
     default:
       return state;
@@ -420,6 +425,12 @@ export function needHelp(data,UserToken){
     reject(ex);
   });
 })
+
+}
+
+export function videoFinish(){
+  console.log("Video FUNISHED REDUX MESSAGE")
+ //dispatch({ type:VIDEO_FINISH })
 
 }
 

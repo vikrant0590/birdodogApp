@@ -206,6 +206,7 @@ import { Router, Scene, Actions as NavigationActions } from 'react-native-router
 import { login } from './redux/modules/auth';
 import PropTypes from 'prop-types';
 
+
 const Styles = {
   container: {
     flex: 1
@@ -261,7 +262,8 @@ export default class AppRouter extends Component {
     try {
       const userCredential = await AsyncStorage.getItem('userCredentials');
       const  savedUserParams = JSON.parse(userCredential);
-      console.log("savedUserParams",savedUserParams)
+      console.log("savedUserParams",savedUserParams);
+      
       
       if(!savedUserParams){
         this.setState({ loading: false });

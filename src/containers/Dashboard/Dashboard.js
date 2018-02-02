@@ -16,6 +16,7 @@ export default class Dashboard extends Component {
     super(props);
     this.state = {
       data:[],
+      description:[],
       UserToken:undefined,
       loading:false,
       message:undefined,
@@ -41,11 +42,14 @@ export default class Dashboard extends Component {
     this.fetchData();
 }
 
-
-       playVideo = (file_path,description,title,watch_status) => {
-         if(watch_status ==='watchable'){
+    //on click video 
+    
+       playVideo = (watch_status, video_Id,) => {
+         console.log("PAGE",this.state.page)
+         console.log("???????????",video_Id);
+         if(watch_status ==='watchable' || watch_status === 'watched'){
            console.log("Watch STATUS", watch_status);
-         NavActions.dashboarddetail({videoUrl:file_path,description:description,title:title})
+         NavActions.dashboarddetail({id:video_Id,watch_status:watch_status})
          }
         }
 
@@ -70,13 +74,23 @@ fetchData= async() => {
      
       }
 
-    const response =await fetch( `http://s2.staging-host.com/birddog-express/api/video/list/1`,data);
+    const response =await fetch( `http://s2.staging-host.com/birddog-express/api/video/list/${this.state.page}`,data);
       const json = await response.json();
-      console.log("JSON",json)
+      const json2 = json;
+      
+      console.log("JSON.......",json)
+
+      for(var i=0;i<json.data.length;i++){
+         json.data[i].description = json.data[i].description.slice(0,75);
+      
+      }
+      console.log("&&&&&&&&&&&&&&&&",this.state.description);
+
       if(json.status === 200){
+                
         this.setState(state =>({
            
-          data: this.state.page ===1 ? json.data : [...state.data, ...json.data],
+          data: this.state.page ===1 ? json.data : [...state.data, ...json.data,],
           loading:false,
           message:json.message,
   
@@ -103,16 +117,16 @@ fetchData= async() => {
   
                           <FlatList
                              style={{flex:1,}}
-                           data ={this.state.data}
+                          data ={this.state.data || this.state.description}
+                           
                            keyExtractor ={(x,i)=>i}
                            ListFooterComponent={() => <ActivityIndicator animating={this.state.loading}/>}
                          
-                            // onEndReached={()=> 
+                             onEndReached={()=> 
                         
-                            //     this.handleEnd() 
+                              this.handleEnd() 
                           
-                        
-                            // }
+                        }
                          
                             onEndReachedThreshold={isIOS ? 0 : 1}
                        
@@ -123,9 +137,10 @@ fetchData= async() => {
   <View style={{ flex:1}} >
         <View style={{flex:1,height:Metrics.screenHeight/6,flexDirection:'row',
         marginLeft:Metrics.screenWidth/25,marginRight:Metrics.screenWidth/25,marginTop:12, }}>
+        <View style={{flexDirection:'column'}}>
            
-           <TouchableOpacity onPress={()=> this.playVideo(item.file_path, item.description,item.title,item.watch_status)} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4, }}>
-             <Image     blurRadius ={item.watch_status === 'watchable' ? 0 : 3} source={{uri:item.thumb_path}} style={{
+           <TouchableOpacity onPress={()=> this.playVideo(item.watch_status,item.id)} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4, }}>
+             <Image   blurType="light" blurAmount={5}   blurRadius ={item.watch_status === 'watchable' || item.watch_status === 'watched' ? 0 : 6} source={{uri:item.thumb_path}} style={{
   
            
                borderBottomLeftRadius:5,
@@ -137,22 +152,30 @@ fetchData= async() => {
                width:Metrics.screenWidth/2.4,
                resizeMode:'stretch'}}/>
            </TouchableOpacity>  
+           { item.watch_status === 'watchable' || item.watch_status === 'watched' ?
+           <Image source={Images.check} style={{marginTop:-Metrics.screenHeight/9.3,marginLeft:Metrics.screenWidth/6,alignItems:'center', justifyContent:'center'}}/>
+            :
+           
+           <Image source={Images.lockgreen} style={{marginTop:-Metrics.screenHeight/9.3,marginLeft:Metrics.screenWidth/6,alignItems:'center', justifyContent:'center'}}/>
+         
+            }
+           </View>
 
 
-           <View style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.1,
+           <View style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.1,flex:1,
            
              flexDirection:'column',
-              marginLeft:Metrics.screenWidth/30}}>
-              <View  style={{alignItems:'flex-start',justifyContent:"center",marginTop:Metrics.screenHeight/120,flex:0.2 }}>
+              marginLeft:Metrics.screenWidth/30,}}>
+              <View  style={{alignItems:'flex-start',justifyContent:"center",marginTop:Metrics.screenHeight/120,flex:0.2, }}>
                  <Text style={{color:'#333333', fontSize:13,}}>{item.title} </Text>
               </View>
 
-              <View style={{flex:0.5 }}>
-                 <Text style={{color:'#878787', fontSize:10}}>{item.description}</Text>
+              <View style={{flex:0.5, }}>
+                 <Text style={{color:'#878787', fontSize:10}}>{item.description} ...</Text>
               </View>  
 
               <View style={{ flex:0.3,}}>
-               <TouchableOpacity style={{alignItems:'center', flexDirection:'row',}} onPress={ ()=> this.playVideo(item.file_path,item.description,item.title,item.watch_status)}>
+               <TouchableOpacity style={{alignItems:'center', flexDirection:'row',}} onPress={ ()=> this.playVideo(item.watch_status,item.id,)}>
                <Image source={Images.viewdetail} style={{marginRight:Metrics.screenWidth/60,}}/>
                <Text style={{fontSize:11, color:'#333333', justifyContent:'center'}}>View Detail</Text>
               </TouchableOpacity>

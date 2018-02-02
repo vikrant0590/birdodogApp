@@ -23,6 +23,8 @@ import { connect } from 'react-redux';
     isVisible:false,
     click:0,
     user:this.props.auth.userProfile,
+    data:[],
+    FirstNameChar:undefined
     }
   }
   static  propTypes = {
@@ -40,7 +42,34 @@ import { connect } from 'react-redux';
  componentWillMount= ()=>{
   this.UserToken = this.props.auth.user.data.token;
   console.log("SIGUP TOKEN", this.UserToken);
+  this.fetchData();
  }
+
+ fetchData= async() => {
+  this.state.UserToken = this.props.auth.user.data.token;
+    this.setState({loading:true})
+  const data = {
+      method: 'GET',
+      headers: {
+      'Usertoken': this.state.UserToken
+      },
+     
+      }
+    const response =await fetch( `http://s2.staging-host.com/birddog-express/api/user/profile`,data);
+      const json = await response.json();
+      console.log("-------------------------------------DRAWER NAME",json)
+
+
+      this.setState({data:json.data, loading:false,});
+      var name = this.state.data.name;
+      var TrimName =name.trim();
+      var result = TrimName.slice(0, 1);
+
+      this.setState({FirstNameChar:result})
+
+
+    
+}
   
 
       onPress = (item) => {
@@ -122,10 +151,10 @@ import { connect } from 'react-redux';
                  <View style={{flex:0.15,backgroundColor:'#212121',flexDirection:'row', alignItems:"center"}}>
                  <View style={{borderRadius: 30,width: 60,height: 60, 
                    backgroundColor:'#74930A',marginLeft:Metrics.screenWidth/25, justifyContent:"center",alignItems:"center"}}>
-                  <H3 style={{color:'white',  backgroundColor:'transparent'}}>P</H3>
+                  <H3 style={{color:'white',  backgroundColor:'transparent'}}>{this.state.FirstNameChar}</H3>
                 </View>
             <View style={{flex:1,marginLeft:5}}>
-             <Text style={{color:'white',fontSize:15}}>Philp Health</Text>
+             <Text style={{color:'white',fontSize:15}}>{this.state.data.name}</Text>
             </View>
             <View style={{marginRight:Metrics.screenWidth/14}}>
             <TouchableOpacity onPress= {()=>this.onPressLogout()}>
