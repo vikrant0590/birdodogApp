@@ -493,7 +493,7 @@ import {Actions} from 'react-native-router-flux';
                   </View>
                      <View style={{flex:0.8, alignItems:'flex-start'}}>
                      {this.state.emptyAddress &&
-                  <Text style={{ color:'red'}}>*This field is required.</Text>
+                  <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
                      }
                   </View>
                  </View>
@@ -528,10 +528,10 @@ import {Actions} from 'react-native-router-flux';
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   { this.state.cityError &&
-               <Text style={{ color:'red'}}>*City not valid.</Text>
+               <Text style={{ color:'red',fontSize:12}}>*City not valid.</Text>
                   }
                      { this.state.emptyCity &&
-               <Text style={{ color:'red'}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
                   }
                </View>
             </View>
@@ -564,10 +564,10 @@ import {Actions} from 'react-native-router-flux';
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   {this.state.stateError &&
-                      <Text style={{ color:'red'}}>* State not valid.</Text>
+                      <Text style={{ color:'red',fontSize:12}}>* State not valid.</Text>
                   }
                      { this.state.emptyState &&
-               <Text style={{ color:'red'}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
                   }
                </View>
             </View>
@@ -602,13 +602,13 @@ import {Actions} from 'react-native-router-flux';
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   { this.state.zipError &&
-                     <Text style={{ color:'red'}}>*Zipcode not valid.</Text>
+                     <Text style={{ color:'red',fontSize:12}}>*Zipcode not valid.</Text>
                   }
                      { this.state.emptyZip &&
-               <Text style={{ color:'red'}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
                   }
                        { this.state.zipLength &&
-               <Text style={{ color:'red'}}>*Min 4 Characters required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>*Min 4 Characters required.</Text>
                   }
                </View>
             </View>
@@ -644,10 +644,10 @@ import {Actions} from 'react-native-router-flux';
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   {this.state.txdlError &&
-               <Text style={{ color:'red'}}>*txtdl not valid.</Text>
+               <Text style={{ color:'red',fontSize:12}}>*txtdl not valid.</Text>
                   }
                      {this.state.emptyTxdl &&
-               <Text style={{ color:'red'}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
                   }
                </View>
             </View>

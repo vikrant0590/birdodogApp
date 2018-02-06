@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image, StatusBar, Platform ,AsyncStorage, FlatList, ActivityIndicator} from 'react-native';
+import { BlurView } from 'expo';
+import { Audio, Video, ScreenOrientation } from 'expo';
+import { Text, View, TouchableOpacity, Image, StatusBar, Platform ,AsyncStorage, FlatList, ActivityIndicator,StyleSheet} from 'react-native';
+
 import {Container, Content, Header, Form, Item, Input, Label , Button,} from 'native-base';
 import styles from './DashboardStyles';
 import { Actions as NavActions } from 'react-native-router-flux';
@@ -27,7 +30,7 @@ export default class Dashboard extends Component {
 
 
   componentWillMount = async () => {
-  
+   // ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
     //this.props.homeSection;
     const token = await AsyncStorage.getItem('token');
     const  Usertoken = JSON.parse(token);
@@ -81,7 +84,7 @@ fetchData= async() => {
       console.log("JSON.......",json)
 
       for(var i=0;i<json.data.length;i++){
-         json.data[i].description = json.data[i].description.slice(0,75);
+         json.data[i].description = json.data[i].description.slice(0,70);
       
       }
       console.log("&&&&&&&&&&&&&&&&",this.state.description);
@@ -138,11 +141,11 @@ fetchData= async() => {
         <View style={{flex:1,height:Metrics.screenHeight/6,flexDirection:'row',
         marginLeft:Metrics.screenWidth/25,marginRight:Metrics.screenWidth/25,marginTop:12, }}>
         <View style={{flexDirection:'column'}}>
-           
+      
            <TouchableOpacity onPress={()=> this.playVideo(item.watch_status,item.id)} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4, }}>
-             <Image   blurType="light" blurAmount={5}   blurRadius ={item.watch_status === 'watchable' || item.watch_status === 'watched' ? 0 : 6} source={{uri:item.thumb_path}} style={{
-  
-           
+            
+             <Image   source={{uri:item.thumb_path}} 
+             style={{
                borderBottomLeftRadius:5,
                borderBottomRightRadius:5,
                borderTopLeftRadius:5,
@@ -151,12 +154,22 @@ fetchData= async() => {
                height:Metrics.screenHeight/6,
                width:Metrics.screenWidth/2.4,
                resizeMode:'stretch'}}/>
+
+               {item.watch_status === 'locked' &&
+                <BlurView tint="light" intensity={40} style={StyleSheet.absoluteFill} >
+         
+                 </BlurView>
+               }
            </TouchableOpacity>  
            { item.watch_status === 'watchable' || item.watch_status === 'watched' ?
-           <Image source={Images.check} style={{marginTop:-Metrics.screenHeight/9.3,marginLeft:Metrics.screenWidth/6,alignItems:'center', justifyContent:'center'}}/>
+           <View style={{marginTop:-Metrics.screenHeight/8.8,alignItems:'center', justifyContent:'center'}}>
+              <TouchableOpacity onPress={()=> this.playVideo(item.watch_status,item.id)}>
+           <Image source={Images.play} />
+           </TouchableOpacity>
+           </View>
             :
            
-           <Image source={Images.lockgreen} style={{marginTop:-Metrics.screenHeight/9.3,marginLeft:Metrics.screenWidth/6,alignItems:'center', justifyContent:'center'}}/>
+           <Image source={Images.lock} style={{marginTop:-Metrics.screenHeight/8.8,marginLeft:Metrics.screenWidth/6.3,alignItems:'center', justifyContent:'center'}}/>
          
             }
            </View>
@@ -167,17 +180,17 @@ fetchData= async() => {
              flexDirection:'column',
               marginLeft:Metrics.screenWidth/30,}}>
               <View  style={{alignItems:'flex-start',justifyContent:"center",marginTop:Metrics.screenHeight/120,flex:0.2, }}>
-                 <Text style={{color:'#333333', fontSize:13,}}>{item.title} </Text>
+                 <Text style={{color:'#333333', fontSize:15,}}>{item.title} </Text>
               </View>
 
               <View style={{flex:0.5, }}>
-                 <Text style={{color:'#878787', fontSize:10}}>{item.description} ...</Text>
+                 <Text style={{color:'#878787', fontSize:11}}>{item.description} ...</Text>
               </View>  
 
               <View style={{ flex:0.3,}}>
                <TouchableOpacity style={{alignItems:'center', flexDirection:'row',}} onPress={ ()=> this.playVideo(item.watch_status,item.id,)}>
                <Image source={Images.viewdetail} style={{marginRight:Metrics.screenWidth/60,}}/>
-               <Text style={{fontSize:11, color:'#333333', justifyContent:'center'}}>View Detail</Text>
+               <Text style={{fontSize:12, color:'#333333', justifyContent:'center'}}>View Detail</Text>
               </TouchableOpacity>
 
               </View>  

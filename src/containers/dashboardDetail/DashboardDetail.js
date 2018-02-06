@@ -13,9 +13,14 @@ import {
   View,
   Image,
   StatusBar,
-  AsyncStorage
+  AsyncStorage,
+  Alert,
+  Button,
+  Dimensions
 } from 'react-native';
 import {Content} from 'native-base';
+
+
 import styles from './DashboardDetailStyles';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
 import {Video, ScreenOrientation,} from 'expo';
@@ -23,8 +28,11 @@ import Modal from 'react-native-simple-modal';
 import {Actions as NavAction} from 'react-native-router-flux';
 import VideoPlayer from '@expo/videoplayer';
 import PropTypes, {any, object} from 'prop-types';
+import BaseScreen from './baseScreen';
 
-export default class DashboardDetail extends Component { 
+
+
+export default class DashboardDetail extends BaseScreen {
   constructor(props){
     super(props);
     this.state= {
@@ -39,8 +47,10 @@ export default class DashboardDetail extends Component {
       dataSecond:[],
       status:undefined,
       termsCondition:false,
-      finish:false
-   
+      finish:false,
+      thankAlert:false,
+     
+     
     }
   }
   static  propTypes = {
@@ -50,6 +60,10 @@ export default class DashboardDetail extends Component {
     watch_status:PropTypes.string
   
   };
+  backToDashboard = () =>{
+   this.setState({thankAlert:false});
+   NavAction.drawer();
+  }
   changeState =()=>{
     this.setState({termsCondition:true});
   }
@@ -82,15 +96,19 @@ export default class DashboardDetail extends Component {
     
     const response = await fetch( `http://s2.staging-host.com/birddog-express/api/video/update_watched_video_status/${this.state.id}`,data);
     const json = await response.json();
+    if(json.status === 200){
+      this.setState({thankAlert:true})
+    }
     
    console.log("UPDATE STATUS",json);
       }
   }
-  
+ 
+
+
   componentWillMount = async () => {
 
-   
-
+  
     const token = await AsyncStorage.getItem('token');
     const  Usertoken = JSON.parse(token);
 
@@ -138,29 +156,37 @@ export default class DashboardDetail extends Component {
   }
 
     render() {
+      console.log("sdjkfdsjk",this.state.isPortrait)
         return (
           <View style={{flex:1, flexDirection:'column', }}>
 
 
       <View style={{flex:0.33,}}>
      
-      <VideoPlayer
+      <VideoPlayer 
+ 
         data={()=>this.onChangeFinished()}
-
-
+       
+        
          videoProps={{
-          switchToLandscape:true,
-        shouldPlay: true,
+          //isLooping:true,
+      
+          shouldPlay: true,
        resizeMode: Video.RESIZE_MODE_CONTAIN,
           source: {
          uri: this.state.data.file_path ,
+         
        },
        
       }}
-
-  isPortrait={true}
-  playFromPositionMillis={0}
-  style={{flex:1,width: Metrics.screenWidth,}}
+            showFullscreenButton={false}
+            isPortrait={true}
+            switchToLandscape={this.switchToLandscape.bind(this)}
+            switchToPortrait={this.switchToPortrait.bind(this)}
+            playFromPositionMillis={0}
+    
+  
+ style={{flex:1,width: Metrics.screenWidth}}
     />
        <TouchableOpacity onPress={()=> NavAction.drawer()}
         style={{ marginTop:-Metrics.screenHeight/3.4,marginLeft:Metrics.screenWidth/24,width:Metrics.screenWidth/13}}>
@@ -182,9 +208,9 @@ export default class DashboardDetail extends Component {
       
        
                   }}>
-               <Text style={{fontSize:17}}> {this.state.data.title}</Text>
+               <Text style={{fontSize:20}}> {this.state.data.title}</Text>
             
-               <Text style={{color:'#878787', fontSize:10,marginTop:Metrics.screenHeight/50,flex:1,}}>
+               <Text style={{color:'#878787', fontSize:15,marginTop:Metrics.screenHeight/50,flex:1,}}>
 
                            {this.state.data.description}
                </Text>
@@ -340,9 +366,62 @@ export default class DashboardDetail extends Component {
              </View>   
              </Content>
 </Modal>
+
+
+<Modal
+	        open={this.state.thankAlert}
+	        offset={0}
+	        overlayBackground={'rgba(0, 0, 0, 0.75)'}
+	         animationDuration={200}
+         	animationTension={40}
+	         modalDidOpen={() => undefined}
+       	modalDidClose={() => this.setState({thankAlert:false})}
+        	closeOnTouchOutside={false}
+       	containerStyle={{
+              justifyContent: 'center',
+              alignItems:'center'
+	          }}
+	        modalStyle={{
+         height:Metrics.screenHeight/3,
+         width:Metrics.screenWidth/1.1,
+	       borderRadius: 2,
+	        margin: 20,
+	        padding: 10,
+         backgroundColor: 'white',
+       
+	}}
+  disableOnBackPress={false}>
+        <Content>
+            <View style={{ 
+          
+             marginLeft:Metrics.screenWidth/40 ,
+             marginRight:Metrics.screenWidth/40,
+             
+              }}>
+             
+              <Text style={{color:'black', fontSize:17, marginTop:Metrics.screenHeight/30}}> Birddog Express </Text>
+               <Text style={{color:'gray', fontSize:12,marginTop:Metrics.screenHeight/70}}>Thanks for accepting terms & conditions.</Text>
+             <Text style={{color:'gray', fontSize:12}}>Congrats! You have unlocked next training video.</Text>
+             <TouchableOpacity onPress={()=>this.backToDashboard()} 
+             style={{borderRadius:20,
+              height:35,
+            justifyContent:"center",
+            alignItems:"center",
+           backgroundColor:'#8CB102',
+           marginTop:Metrics.screenHeight/20
+           }}>
+             <Text style={{color:'white', fontSize:16}}>OK</Text></TouchableOpacity>
+
+
+             </View>   
+             </Content>
+</Modal>
           </View>
         );
       }
     }
     
+
+
     
+

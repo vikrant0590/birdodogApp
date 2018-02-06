@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
 import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight} from 'react-native';
-import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-base';
+import { Container, Content,  Form, Item, Input, Label , Row,Col,Textarea} from 'native-base';
  import {Metrics, Images,} from '../../theme';
  import { ImagePicker } from 'expo';
  import ModalDropdown from 'react-native-modal-dropdown';
@@ -404,7 +404,10 @@ onPressSubmit = () => {
       console.log("FINAL Detail",this.state.detailsArray);
       console.log(" Detail array",finalDetail);
 
-      if(!this.state.error && this.state.checkTicked!==0 && this.state.imageSelected!==0){
+      if(!this.state.error && this.state.checkTicked!==0 && this.state.imageSelected!==0 && this.state.Notes !== undefined && this.state.Notes !=='' 
+          && this.state.cityy!== undefined  && this.state.cityy!=='' && this.state.statee!== undefined && this.state.statee!==''
+          && this.state.zipp!== undefined && this.state.zipp!=='' && this.state.Address!== undefined && this.state.Address!==''
+          && this.state.Street!== undefined && this.state.Street!=='' && this.state.Country!== undefined && this.state.Country!=='' ){
        
         this.state.isVisible = true;
         if(this.property_type ==='self'){
@@ -464,7 +467,28 @@ onPressSubmit = () => {
     });
     
   } else {
-    toast('Please Correct your form data.');
+    if(this.state.cityy === null || this.state.cityy ===undefined){
+      this.setState({emptyCity:true})
+    }
+    if(this.state.statee === null || this.state.statee ===undefined){
+      this.setState({emptyState:true})
+    }
+    if(this.state.Street === null || this.state.Street ===undefined){
+      this.setState({emptyStreet:true})
+    }
+    if(this.state.Address === null || this.state.Address ===undefined){
+      this.setState({emptyAddress:true})
+    }
+    if(this.state.zipp === null || this.state.zipp ===undefined){
+      this.setState({emptyZip:true})
+    }
+    if(this.state.Country === null || this.state.Country ===undefined){
+      this.setState({emptyCountry:true})
+    }
+    if(this.state.Notes === null || this.state.Notes ===undefined){
+      this.setState({emptyNotes:true})
+    }
+    toast('Form fields data missing or invalid Information .');
   }
 }
 
@@ -1253,10 +1277,10 @@ uncheckBoxDetail(id){
 
            <View>
            <View style={{ marginTop:Metrics.screenHeight/20,}}>
-               
+              
                      <Text style={{ fontSize:12,color:'#333333'}}>Property Detail</Text> 
-               
-                
+            
+              
         </View>
 
 
@@ -1860,7 +1884,7 @@ uncheckBoxDetail(id){
                         </View>
 
 
-                        <View style={{marginTop:Metrics.screenHeight/30,flexDirection:'column'}}>
+                        {/* <View style={{marginTop:Metrics.screenHeight/30,flexDirection:'column'}}>
                         <View>
                         {this.state.emptyNotes &&
                          <Text style={{fontSize:12,color:'red'}}>*This field is required.</Text>
@@ -1885,7 +1909,45 @@ uncheckBoxDetail(id){
                         onBlur={()=>this.onDeactiveNotes()} 
                         onTouchStart={()=>this.onActiveNotes()}
                           onChangeText={(notes)=>this.setState({ Notes:notes, emptyNotes:false})}/>
-                        </View>  
+                        </View>   */}
+
+<View style={{marginTop:Metrics.screenHeight/30}}>
+               {this.state.emptyNotes &&
+                         <Text style={{fontSize:12,color:'red'}}>*This field is required.</Text>
+                         }
+</View>
+
+<Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/90}}>Notes *</Label>
+                  <Item style={{marginTop:Metrics.screenHeight/70,backgroundColor:'transparent',borderBottomWidth: 0}}>
+                   <Textarea
+                    returnKeyType={"done"}
+                    multiline={true}
+                    placeholder='Type here'
+                    blurOnSubmit={true}
+                     style={{fontSize:15,height: Metrics.screenHeight/10,width:Metrics.screenWidth - Metrics.screenWidth/13}}
+                   value={this.state.message}
+           
+                    maxLength={250}
+                    autoCapitalize={'none'}
+                     autoCorrect={false}
+                     onBlur={()=>this.onDeactiveNotes()} 
+                     onTouchStart={()=>this.onActiveNotes()}
+                     autoFocus ={false}
+                     onChangeText={(message) => {
+                        this.setState({Notes:message,emptyNotes:false});
+                      }}
+                   />
+                  </Item>
+
+                  { this.state.notes === false ?
+               <Image source={Images.bar} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:Metrics.screenHeight/60 }}
+          /> :
+          <Image source={Images.bar_green} resizeMode="contain" 
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:Metrics.screenHeight/60, }}
+          />
+               }
+
 
                  <View>
                         <TouchableOpacity  
