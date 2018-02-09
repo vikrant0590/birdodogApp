@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image,BackHandler, } from 'react-native';
+import { Text, View, TouchableOpacity, Image,BackHandler,NetInfo, } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button, Icon} from 'native-base';
 import styles from './LoginStyle';
 import {Actions as NavAction} from 'react-native-router-flux';
@@ -7,7 +7,7 @@ import { ApplicationStyles, Colors, Metrics, Images, Fonts } from '../../theme';
 import { validationOnEmail} from '../../helpers/EmailValidation';
 import { login } from '../../redux/modules/auth';
 import Spinner from 'react-native-loading-spinner-overlay';
-
+import {Font} from 'expo';
 import PropTypes from 'prop-types';
 
 
@@ -30,13 +30,51 @@ export default class Login extends Component {
       refresh:false,
       email: undefined,
       password:undefined ,
-      isVisible: false
+      isVisible: false,
+      isload:false,
+      isConnected:true
     }
   }
-  componentWillMount=()=>{
-  this.setState({ email:'',password:''})
+  async componentWillMount(){
+  this.setState({ email:'',password:''});
+  NetInfo.isConnected.removeEventListener(
+    'change',
+    this._handleConnectivityChange
+  );
   }
-
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      toast('Your internet connection has been lost.');
+    }
+  }
+  async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+    });
+    this.setState({isload:true});
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
   onPressLoginButton = () => {
    
     const {email, password} = this.state;
@@ -77,7 +115,9 @@ export default class Login extends Component {
         return(
         
      <Content style={{flex:1}}>
+              {this.state.isload ?
         <Container style={styles.container}>
+       
         <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
 
           <View style={{flex:0.4,}}>
@@ -103,6 +143,7 @@ export default class Login extends Component {
            onChangeText={(email) => {
              this.setState({email});
            }}
+           style={{marginLeft:Metrics.screenWidth/60}}
            />
         </Item>
         
@@ -115,6 +156,7 @@ export default class Login extends Component {
            onChangeText={(password) => {
              this.setState({password});
            }}
+           style={{marginLeft:Metrics.screenWidth/40}}
            />
         </Item>
 
@@ -130,11 +172,11 @@ export default class Login extends Component {
                   
                    }}>
 
-                   <Text style={styles.siginButtonText}>SIGN IN</Text>
+                   <Text style={[{fontFamily:'regular'}, styles.siginButtonText]}>SIGN IN</Text>
                     
                    </TouchableOpacity>
                    <TouchableOpacity onPress={NavAction.forgotPassword}>
-                   <Text style={{fontSize:16,marginTop:Metrics.screenHeight/30,color:"#333333"}}>Forgot Password?</Text>
+                   <Text style={{fontSize:15,marginTop:Metrics.screenHeight/30,color:"#333333",fontFamily:'robotoRegular'}}>Forgot Password?</Text>
                    </TouchableOpacity>
 
         </View>
@@ -147,17 +189,20 @@ export default class Login extends Component {
            marginLeft:Metrics.screenWidth/10,
            marginRight:Metrics.screenWidth/10,
            }}>
-           <Text style={{fontSize:14, color:"#797979",marginTop:Metrics.screenHeight/30,}}>Don't have an Account?</Text>
+ 
+ 
+            
+           <Text style={{fontSize:14, color:"#797979",marginTop:Metrics.screenHeight/30,fontFamily:'robotoMedium'}}>Don't have an Account?</Text>
            <TouchableOpacity onPress={NavAction.signup}>
-               <Text style={{fontSize:15,marginLeft:3, color:'#333333',marginTop:Metrics.screenHeight/30, }}>SIGN UP NOW</Text>
+               <Text style={{fontSize:15,marginLeft:3, color:'#333333',marginTop:Metrics.screenHeight/30,fontFamily:'robotoMedium' }}>SIGN UP NOW</Text>
                </TouchableOpacity>
 
           </View>
      
-        
-     
+          
+ 
       </Container>
-   
+: null }
         </Content>
     
     );

@@ -49,6 +49,7 @@ export default class DashboardDetail extends BaseScreen {
       termsCondition:false,
       finish:false,
       thankAlert:false,
+      isPortrait:true
      
      
     }
@@ -60,8 +61,8 @@ export default class DashboardDetail extends BaseScreen {
     watch_status:PropTypes.string
   
   };
-  backToDashboard = () =>{
-   this.setState({thankAlert:false});
+  backToDashboard = async() =>{
+   this.setState({thankAlert:false,finish:false});
    NavAction.drawer();
   }
   changeState =()=>{
@@ -97,7 +98,7 @@ export default class DashboardDetail extends BaseScreen {
     const response = await fetch( `http://s2.staging-host.com/birddog-express/api/video/update_watched_video_status/${this.state.id}`,data);
     const json = await response.json();
     if(json.status === 200){
-      this.setState({thankAlert:true})
+      this.setState({thankAlert:true,})
     }
     
    console.log("UPDATE STATUS",json);
@@ -161,7 +162,7 @@ export default class DashboardDetail extends BaseScreen {
           <View style={{flex:1, flexDirection:'column', }}>
 
 
-      <View style={{flex:0.33,}}>
+      <View style={{ flex:0.33,}}>
      
       <VideoPlayer 
  
@@ -179,8 +180,8 @@ export default class DashboardDetail extends BaseScreen {
        },
        
       }}
-            showFullscreenButton={false}
-            isPortrait={true}
+            showFullscreenButton={true}
+            isPortrait={this.state.isPortrait}
             switchToLandscape={this.switchToLandscape.bind(this)}
             switchToPortrait={this.switchToPortrait.bind(this)}
             playFromPositionMillis={0}
@@ -188,14 +189,15 @@ export default class DashboardDetail extends BaseScreen {
   
  style={{flex:1,width: Metrics.screenWidth}}
     />
-       <TouchableOpacity onPress={()=> NavAction.drawer()}
+  {this.state.isPortrait && 
+       <TouchableOpacity onPress={()=> NavAction.pop()}
         style={{ marginTop:-Metrics.screenHeight/3.4,marginLeft:Metrics.screenWidth/24,width:Metrics.screenWidth/13}}>
         <Image  source={Images.backwhite} style={{ resizeMode:'contain',}}/>
        </TouchableOpacity>
-                
+  }
        </View>
     
-
+{this.state.isPortrait && 
               <View style={{
      
                  flex:0.48, 
@@ -216,12 +218,16 @@ export default class DashboardDetail extends BaseScreen {
                </Text>
 
             </View>  
+}
 
-{ this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && 
+
+{ this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && this.state.isPortrait &&
           <View style={{flex:0.001, backgroundColor:'#878787',}}></View>
                 }
 
-  { this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && 
+  
+
+  { this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && this.state.isPortrait &&
             <View style={{flex:0.16,
               marginLeft:Metrics.screenWidth/20,
                   marginRight:Metrics.screenWidth/20,
@@ -259,6 +265,7 @@ export default class DashboardDetail extends BaseScreen {
                
                  
                </View>    
+               
          
                <View style={{ flex:0.4,justifyContent:'flex-end',marginTop:Metrics.screenHeight/20}}>
                <TouchableOpacity  
@@ -382,7 +389,7 @@ export default class DashboardDetail extends BaseScreen {
               alignItems:'center'
 	          }}
 	        modalStyle={{
-         height:Metrics.screenHeight/3,
+         height:Metrics.screenHeight/4,
          width:Metrics.screenWidth/1.1,
 	       borderRadius: 2,
 	        margin: 20,
@@ -416,7 +423,9 @@ export default class DashboardDetail extends BaseScreen {
              </View>   
              </Content>
 </Modal>
+
           </View>
+
         );
       }
     }
@@ -425,3 +434,4 @@ export default class DashboardDetail extends BaseScreen {
 
     
 
+    

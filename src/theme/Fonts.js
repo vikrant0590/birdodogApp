@@ -7,8 +7,6 @@ const pixelRatio = PixelRatio.get();
 
 async function openSans() {
   if(Platform.OS ==='ios'){
-    
- 
   await Expo.Font.loadAsync({
     bold: require('../fonts/OpenSans-Bold.ttf'),
     boldItalic: require('../fonts/OpenSans-BoldItalic.ttf'),
@@ -76,7 +74,7 @@ const size = {
 const style = {
 
   regularFont: {
-      fontFamily: openSans.emphasis,
+      fontFamily: openSans.bold,
       fontSize: size.medium,
   },
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, ListItem, H3,Left,Right} from 'native-base';
-import { View, Text, Image, Platform, TouchableOpacity, Switch, Share,AsyncStorage } from 'react-native'
+import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, ListItem, H3,Left,Right,} from 'native-base';
+import { View, Text, Image, Platform, TouchableOpacity, Switch, Share,AsyncStorage ,NetInfo} from 'react-native'
 import { Colors, Images, Metrics } from '../../theme';
 import styles from './MenuLeftDrawerStyles';
 import {MyProfile}  from '../../containers';
@@ -9,7 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { toast } from '../../helpers/ToastMessage';
 
 import { Actions as NavActions } from 'react-native-router-flux';
-import { logout, getProfile, getDetails, getTrackList } from '../../redux/modules/auth';
+import { logout, getProfile, getDetails, getTrackList, login } from '../../redux/modules/auth';
 import { connect } from 'react-redux';
 
 
@@ -24,7 +24,8 @@ import { connect } from 'react-redux';
     click:0,
     user:this.props.auth.userProfile,
     data:[],
-    FirstNameChar:undefined
+    FirstNameChar:undefined,
+    isConnected:true
     }
   }
   static  propTypes = {
@@ -38,15 +39,52 @@ import { connect } from 'react-redux';
         store: PropTypes.object,
         getProfile: PropTypes.object
       };
-      
- componentWillMount= ()=>{
-  this.UserToken = this.props.auth.user.data.token;
-  console.log("SIGUP TOKEN", this.UserToken);
+        // internet connection
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      toast('Your internet connection has been lost')
+    }
+  };
+      componentWillMount = async () => {
+        const userCredential = await AsyncStorage.getItem('userCredentials');
+        const  savedUserParams = JSON.parse(userCredential);
+        const password = savedUserParams.password;
+        const {store: {dispatch}} = this.context;
+        if(password){
+          dispatch(login(savedUserParams, true))
+        } 
+
+        const token = await AsyncStorage.getItem('token');
+        const  Tokken = JSON.parse(token);
+        console.log("*****************************",Tokken.data.token)
+  this.state.UserToken = Tokken.data.token;
+  console.log("SIGUP TOKEN", this.state.UserToken);
   this.fetchData();
  }
 
  fetchData= async() => {
-  this.state.UserToken = this.props.auth.user.data.token;
+  //this.state.UserToken = this.props.auth.user.data.token;
     this.setState({loading:true})
   const data = {
       method: 'GET',
@@ -82,7 +120,7 @@ import { connect } from 'react-redux';
         }
         else if(item.index === 1){
           const {store: {dispatch}} = this.context;
-          dispatch(getDetails(this.UserToken))
+          dispatch(getDetails(this.state.UserToken))
           //check here
          .then((res) => {
                    console.log("Details Response",res)

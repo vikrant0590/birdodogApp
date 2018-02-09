@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image } from 'react-native';
+import { Text, View, TouchableOpacity, Image,NetInfo } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button,Icon} from 'native-base';
 import styles from './signupStyles';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
@@ -20,10 +20,39 @@ export default class Signup extends Component {
       confirmPassword:undefined,
       name:undefined,
     
-      isVisible: false
+      isVisible: false,
+      isConnected:undefined
     };
   }
 
+  // internet connection
+
+  componentDidMount() {
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      SnackBar.show('Your internet connection has been lost')
+    }
+  };
   static contextTypes = {
     store: PropTypes.object,
     register: PropTypes.object
@@ -67,7 +96,7 @@ export default class Signup extends Component {
                 if(res.status === 200){
                 this.setState({isVisible: false,name:'',email:'',password:'',confirmPassword:''});
                 toast('Successfully Register!');
-               // NavAction.drawer();
+                NavAction.drawer();
                 }else if (res.status === 400){
                   if(res.data.name){
                     this.setState({isVisible: false});

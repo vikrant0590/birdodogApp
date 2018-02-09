@@ -38,7 +38,7 @@ class NavigationDrawer extends React.Component {
         })}
       >
         <DefaultRenderer
-          navigationState={children[children.length - 1 ]}
+          navigationState={children[0 ]}
           onNavigate={this.props.onNavigate}
         />
       </Drawer>

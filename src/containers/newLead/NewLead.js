@@ -9,7 +9,7 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col,Textarea} from 
  import Spinner from 'react-native-loading-spinner-overlay';
  import PropTypes, {any, object} from 'prop-types';
  import { connect } from 'react-redux';
-
+import { getProfile } from '../../redux/modules/auth';
  import config from '../../config/app';
  import api from '../../helpers/ApiClient';
 import { toast } from '../../helpers/ToastMessage';
@@ -19,8 +19,8 @@ import { Actions } from 'react-native-router-flux';
  const checkboxArray =[];
 
  class NewLead extends Component {
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state= {
             newProperty: true,
             ownerProperty: false,
@@ -74,7 +74,7 @@ import { Actions } from 'react-native-router-flux';
             street:false,
             zip:false,
             country:false,
-            notes:false,
+            notess:false,
             cityy:undefined,
             statee:undefined,
             zipp:undefined,
@@ -114,7 +114,6 @@ import { Actions } from 'react-native-router-flux';
   
     componentWillMount(){
   
-   
       this.state.UserToken = this.props.auth.user.data.token;
       console.log("DELETE PERSON TOKEN", this.state.UserToken);
 
@@ -495,7 +494,7 @@ onPressSubmit = () => {
 
   //New Property Function
   onActiveStreet(){
-    this.setState({ street:true,city:false,State:false,zip:false,country:false,address:false,notes:false,emptyStreet:false,streetError:false })
+    this.setState({ street:true,city:false,State:false,zip:false,country:false,address:false,notess:false,emptyStreet:false,streetError:false })
   }
   onDeactiveStreet(){
     this.setState({ street:false});
@@ -512,7 +511,7 @@ onPressSubmit = () => {
 
   }
   onActiveCity(){
-    this.setState({ street:false,city:true,State:false,zip:false,country:false,address:false,notes:false, emptyCity:false,cityError:false })
+    this.setState({ street:false,city:true,State:false,zip:false,country:false,address:false,notess:false, emptyCity:false,cityError:false })
   }
   onDeactiveCity(){
     this.setState({ city:false});
@@ -528,7 +527,7 @@ onPressSubmit = () => {
   }
   }
   onActiveState(){
-    this.setState({ street:false,city:false,State:true,zip:false,country:false,address:false,notes:false,emptyState:false,stateError:false })
+    this.setState({ street:false,city:false,State:true,zip:false,country:false,address:false,notess:false,emptyState:false,stateError:false })
   }
   onDeactiveState(){
     this.setState({ State:false});
@@ -546,7 +545,7 @@ onPressSubmit = () => {
   }
 
   onActiveCountry(){
-    this.setState({ street:false,city:false,State:false,zip:false,country:true,address:false,notes:false,emptyCountry:false, countryError:false })
+    this.setState({ street:false,city:false,State:false,zip:false,country:true,address:false,notess:false,emptyCountry:false, countryError:false })
   }
   onDeactiveCountry (){
     this.setState({ country:false});
@@ -563,7 +562,7 @@ onPressSubmit = () => {
 
   }
   onActiveZip(){
-    this.setState({ street:false,city:false,State:false,zip:true ,country:false,address:false,notes:false,emptyZip:false,zipError:false,ziplength:false})
+    this.setState({ street:false,city:false,State:false,zip:true ,country:false,address:false,notess:false,emptyZip:false,zipError:false,ziplength:false})
   }
 
   onDeactiveZip(){
@@ -584,7 +583,7 @@ onPressSubmit = () => {
   }
 
   onActiveAddress(){
-    this.setState({ street:false,city:false,State:false,zip:false,country:false, address:true ,notes:false, emptyAddress:false,})
+    this.setState({ street:false,city:false,State:false,zip:false,country:false, address:true ,notess:false, emptyAddress:false,})
   }
   onDeactiveAddress(){
       this.setState({ address:false});
@@ -596,10 +595,10 @@ onPressSubmit = () => {
   }
 
   onActiveNotes(){
-    this.setState({ street:false,city:false,State:false,zip:false,country:false, address:false, notes:true,emptyNotes:false });
+    this.setState({ street:false,city:false,State:false,zip:false,country:false, address:false, notess:true,emptyNotes:false });
   }
   onDeactiveNotes(){
-    this.setState({ notes:false});
+    this.setState({ notess:false});
     
     if(this.state.Notes ==='' || this.state.Notes=== undefined){
       this.setState({emptyNotes:true, error: true})
@@ -1939,7 +1938,7 @@ uncheckBoxDetail(id){
                    />
                   </Item>
 
-                  { this.state.notes === false ?
+                  { this.state.notess === false ?
                <Image source={Images.bar} resizeMode="contain" 
           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:Metrics.screenHeight/60 }}
           /> :

@@ -100,7 +100,7 @@ import { needHelp } from '../../redux/modules/auth';
                     autoCapitalize={'none'}
                      autoCorrect={false}
                      
-                     autoFocus ={true}
+                     autoFocus ={false}
                      onChangeText={(message) => {
                         this.setState({message});
                       }}

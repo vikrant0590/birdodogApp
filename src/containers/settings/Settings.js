@@ -38,14 +38,13 @@ export default class Settings extends Component {
                         <List
              dataArray={items}
              renderRow={(item) =>
-               <ListItem
+               <ListItem 
                  style={{
                    alignItems: 'center',
                    justifyContent: 'center',
                    marginLeft: 1,
                    borderColor: '#A3A3A3',
                    backgroundColor:"transparent",
-              
                
                  }}>
                  <TouchableOpacity
@@ -55,10 +54,11 @@ export default class Settings extends Component {
                    <Left
                      style={{
                        justifyContent: 'center',
-                       top: 8,
+                    
+                       top: 5,
                        marginLeft:Metrics.screenWidth/25
                      }}>
-             <Image source={item.image}></Image>
+             <Image source={item.image} resizeMode="contain"></Image>
                      <Text style={styles.itemList}>{item.title}</Text>
                    </Left>
                    <Right

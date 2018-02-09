@@ -8,7 +8,7 @@ import styles from './DashboardStyles';
 import { Actions as NavActions } from 'react-native-router-flux';
 import PropTypes from 'prop-types';
 import { ApplicationStyles, Colors, Metrics, Images , Fonts} from '../../theme';
-
+import DashboardDetail from '../dashboardDetail';
 const propTypes = {
   homeSection: PropTypes.any,
 
@@ -30,7 +30,7 @@ export default class Dashboard extends Component {
 
 
   componentWillMount = async () => {
-   // ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
+    ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
     //this.props.homeSection;
     const token = await AsyncStorage.getItem('token');
     const  Usertoken = JSON.parse(token);
@@ -53,6 +53,9 @@ export default class Dashboard extends Component {
          if(watch_status ==='watchable' || watch_status === 'watched'){
            console.log("Watch STATUS", watch_status);
          NavActions.dashboarddetail({id:video_Id,watch_status:watch_status})
+       
+      
+       
          }
         }
 
