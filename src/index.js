@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import TimerMixin from 'react-timer-mixin';
-import {Text, StyleSheet, View,  Stack, NativeAppEventEmitter, Alert, BackAndroid, BackHandler, AsyncStorage} from 'react-native';
+import {Text, StyleSheet, Platform, View,  Stack, NativeAppEventEmitter, Alert, BackAndroid, BackHandler, AsyncStorage} from 'react-native';
 import {
     Login,
     Signup,
@@ -55,11 +55,26 @@ const Styles = {
  
   
  
-
+  renderTitleStyle: {
+    alignSelf: 'center',
+    width: null,
+    ...Platform.select({
+      ios: {
+        top:  30, 
+      },
+      android: {
+        top: 20,
+      },
+    }),
+    right: 0,
+  },
   titleTextStyle: {
     textAlign: 'center',
-    color: Colors.white,
+    color:'white',
+    fontSize: 17,
+  //  fontFamily: Fonts.Walkthrough.medium
   },
+ 
 
 };
 
@@ -148,7 +163,12 @@ export default class AppRouter extends Component {
                  <Scene key="editprofile" component={EditProfile} hideNavBar={false}   title="EDIT PROFILE"/>
                  <Scene key="faq" component={Faq} hideNavBar={false} title="FAQ" />
                  <Scene key="help"component={NeedHelp} hideNavBar={false} title="NEED HELP?" />
-                 <Scene key="termsCondition" component={TermsCondition} hideNavBar={false} title="TERMS AND CONDITIONS"/>
+                 <Scene key="termsCondition" component={TermsCondition} hideNavBar={false} 
+                  renderTitle={() =>
+                    <View style={Styles.renderTitleStyle}>
+                       <Text style={Styles.titleTextStyle}>TERMS AND CONDITIONS </ Text>
+                    </View>
+               }/>
 
 
 

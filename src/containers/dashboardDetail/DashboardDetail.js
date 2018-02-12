@@ -73,6 +73,10 @@ export default class DashboardDetail extends BaseScreen {
     this.setState({finish:true})
   }
 
+backMe=()=>{
+  setTimeout(()=> {NavAction.refresh({refresh: true})}, 500); NavAction.pop();
+}
+
   updateStatus = async () =>{
     console.log("IDIDIDIDIID",this.state.id);
  
@@ -105,6 +109,7 @@ export default class DashboardDetail extends BaseScreen {
       }
   }
  
+
 
 
   componentWillMount = async () => {
@@ -190,7 +195,7 @@ export default class DashboardDetail extends BaseScreen {
  style={{flex:1,width: Metrics.screenWidth}}
     />
   {this.state.isPortrait && 
-       <TouchableOpacity onPress={()=> NavAction.pop()}
+       <TouchableOpacity onPress={()=>this.backMe() }
         style={{ marginTop:-Metrics.screenHeight/3.4,marginLeft:Metrics.screenWidth/24,width:Metrics.screenWidth/13}}>
         <Image  source={Images.backwhite} style={{ resizeMode:'contain',}}/>
        </TouchableOpacity>
@@ -322,7 +327,7 @@ export default class DashboardDetail extends BaseScreen {
 
                    <View style={{flex:0.2, alignItems:'flex-end',}}>
                      <TouchableOpacity onPress={()=>this.setState({open:false})}>
-                        <Image source={Images.backgreen} />
+                        <Image source={Images.backgreen} resizeMode="contain"/>
                    </TouchableOpacity>
                    </View>
               </View>
@@ -434,4 +439,3 @@ export default class DashboardDetail extends BaseScreen {
 
     
 
-    

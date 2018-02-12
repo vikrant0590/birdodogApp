@@ -59,7 +59,8 @@ const initialState = {
   userProfile:undefined,
   detail:undefined,
   trackListData:undefined,
-  videoFinish:undefined
+  videoFinish:undefined,
+  email:undefined
   
 };
 
@@ -69,7 +70,7 @@ export default function reducer(state = initialState, action = {}) {
     case LOGIN:
       return { ...state };
     case LOGIN_SUCCESS:
-      return { ...state, user: action.result };
+      return { ...state, user: action.result, email:action.email };
     case LOGIN_FAIL:
       return { ...state };
 
@@ -78,7 +79,7 @@ export default function reducer(state = initialState, action = {}) {
       case REGISTER:
       return { ...state };
     case REGISTER_SUCCESS:
-      return { ...state,user: action.result };
+      return { ...state,user: action.result,  email:action.email };
     case REGISTER_FAIL:
       return { ...state, };
 
@@ -174,7 +175,7 @@ export function login(data) {
       .then((res) => {
         console.log("LOGIN response",res);
         
-        dispatch({ type: LOGIN_SUCCESS, result: res });
+        dispatch({ type: LOGIN_SUCCESS, result: res ,email:data.email});
         AsyncStorage.setItem('userCredentials', JSON.stringify(data));
         AsyncStorage.setItem('token', JSON.stringify(res));
         AsyncStorage.setItem('UserType',JSON.stringify(res.data.type));
@@ -199,7 +200,7 @@ export  function register(data) {
       .post('user/signup', data)
       .then((res) => {
         console.log("SIGNUP RESPONSE",res);
-        dispatch({ type: REGISTER_SUCCESS, result: res });
+        dispatch({ type: REGISTER_SUCCESS, result: res,email:data.email });
      
         AsyncStorage.setItem('userCredentials', JSON.stringify(data));
         AsyncStorage.setItem('token', JSON.stringify(res));
@@ -290,13 +291,12 @@ export function changepassword(data,UserToken) {
       .post('user/change_password', data,UserToken)
       .then((res) => {
         console.log("API CHANGE RESPONSE",res)
-       if(res.status === 200){
-       
         dispatch({type:RESETPASSWORD_SUCCESS, result:res});
+      
         resolve(res);
-       }else {
-         resolve(res);
-       }
+        
+        
+      
       })
       .catch((ex) => {
         reject(ex);
@@ -344,10 +344,14 @@ export function deleteImage(data, UserToken) {
   get('lead/lead_image_delete/' + data.fileid, UserToken)
   .then((res) => {
     console.log("DELETE IMAGE API RESPONSE",res);
-  
+    if(res.status===200){
+    //AsyncStorage.setItem('userCredentials',JSON.stringify({'email':this.state.userProfile.data.email,'password':data.new_password}) );
+
 
       resolve(res);
-  
+    }else{
+          resolve(res);
+    }
   })
   .catch((ex) => {
 

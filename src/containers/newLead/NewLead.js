@@ -633,13 +633,11 @@ onPressSubmit = () => {
     this.setState({ Ophone:false});
     if(this.state.ophone === '' || this.state.ophone === undefined){
       this.setState({ emptyPhone:true,error:true});
+    }else if(this.state.ophone.length <10){
+      this.setState({emptyPhone:false,mobileLengthError:true,error:true})
+  
     }else{
       this.setState({ emptyPhone:false,error:false})
-    }
-
-
-    if(this.state.ophone.length <10){
-      this.setState({emptyPhone:false,mobileLengthError:true,error:true})
     }
 
   }

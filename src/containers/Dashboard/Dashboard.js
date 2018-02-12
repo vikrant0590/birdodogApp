@@ -6,12 +6,12 @@ import { Text, View, TouchableOpacity, Image, StatusBar, Platform ,AsyncStorage,
 import {Container, Content, Header, Form, Item, Input, Label , Button,} from 'native-base';
 import styles from './DashboardStyles';
 import { Actions as NavActions } from 'react-native-router-flux';
-import PropTypes from 'prop-types';
+import PropTypes, { any } from 'prop-types';
 import { ApplicationStyles, Colors, Metrics, Images , Fonts} from '../../theme';
 import DashboardDetail from '../dashboardDetail';
 const propTypes = {
   homeSection: PropTypes.any,
-
+test:any
 };
 
 export default class Dashboard extends Component {
@@ -24,9 +24,20 @@ export default class Dashboard extends Component {
       loading:false,
       message:undefined,
       page:1,
-      UserType:undefined
+      UserType:undefined,
+      refresh:false
     }
   }
+
+  componentWillReceiveProps(nextProps){
+  NavActions.dashboard();
+    }
+
+  //   componentWillUpdate(prevProps, prevState){
+  //     console.log("previous",prevProps);
+  //     console.log("previous state",prevState);
+    
+  // }
 
 
   componentWillMount = async () => {
@@ -44,6 +55,11 @@ export default class Dashboard extends Component {
 
     this.fetchData();
 }
+
+
+
+
+
 
     //on click video 
     

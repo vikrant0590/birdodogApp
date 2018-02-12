@@ -21,7 +21,9 @@ class ChangePassword extends Component {
       confirmPassword: undefined,
       token: undefined,
       UserToken:undefined,
-      isVisible:false
+      isVisible:false,
+      email:undefined
+    
     };
   }
  
@@ -30,6 +32,9 @@ class ChangePassword extends Component {
     store: PropTypes.object,
     changepassword: PropTypes.object
   };
+  componentWillMount(){
+    this.setState({email:this.props.auth.email})
+  }
 
   onPressSubmitButton =() =>{
     this.UserToken = this.props.auth.user.data.token,
@@ -41,7 +46,7 @@ class ChangePassword extends Component {
       'password':this.state.password,
       'new_password': this.state.new_password,
     };
-    console.log("TOKEN",data.token);
+   
 
     const {store: {dispatch}} = this.context;
 
@@ -50,17 +55,19 @@ class ChangePassword extends Component {
         this.setState({isVisible:true})
         dispatch(changepassword(data, this.UserToken))
           .then((res)=>{
-            console.log("CHANGE PASSWORD RESPONSE",res)
-            this.setState({isBusy:false});
-           this.setState({
-             new_password:'',
-             password:'',
-             confirmPassword:'',
-             isVisible:false
-           })
+            console.log("CHANGE PASSWORD RESPONSE",res.status)
+           
+            this.setState({isVisible:false});
            if(res.status === 200){
-             this.setState({isVisible:false});
-            AsyncStorage.setItem('userCredentials',JSON.stringify({'email':this.props.auth.userProfile.data.email,'password':data.new_password}) );
+          
+           AsyncStorage.setItem('userCredentials',JSON.stringify({'email':this.state.email,'password':data.new_password}) );
+          
+            this.setState({
+              new_password:'',
+              password:'',
+              confirmPassword:'',
+              isVisible:false
+            })
             toast("Password changed successfully.");
            } else {
              this.setState({isVisible:false})
@@ -70,7 +77,8 @@ class ChangePassword extends Component {
            
           })
           .catch(() => {
-            this.setState({isVisible:false})
+            this.setState({isVisible:false});
+            toast("INVALID DATA")
           })
       } else {
         this.setState({isVisible:false});
@@ -93,7 +101,7 @@ class ChangePassword extends Component {
         </View>
 
           <View style={{ flex:0.45}}>
-             <Item>
+             <Item style={{marginBottom:Metrics.screenHeight/40}}>
                  <Image source={Images.lockgreen}/>
                  <Input placeholder="Old Password" 
                  placeholderTextColor={'#A3A3A3'}
@@ -108,7 +116,7 @@ class ChangePassword extends Component {
                  />
               </Item>
       
-                <Item>
+              <Item style={{marginBottom:Metrics.screenHeight/40}}>
                   <Image source={Images.lockgreen}/>
                   <Input  placeholder="New Password" 
                       placeholderTextColor={'#A3A3A3'}
@@ -123,7 +131,7 @@ class ChangePassword extends Component {
                   />
                </Item>
 
-               <Item >
+               <Item style={{marginBottom:Metrics.screenHeight/40}}>
                  <Image source={Images.lockgreen}/>
                  <Input  placeholder="Confirm Password"  
                      value={this.state.confirmPassword}
