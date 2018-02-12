@@ -82,7 +82,7 @@ class ChangePassword extends Component {
           })
       } else {
         this.setState({isVisible:false});
-        toast("Confirm password do not matched.");
+        toast("Confirm password does not matched.");
       }
     } else {
       this.setState({isVisible:false});
@@ -113,6 +113,7 @@ class ChangePassword extends Component {
                  onChangeText={(password) => {
                    this.setState({password});
                  }}
+                 style={{marginLeft:Metrics.screenWidth/60}}
                  />
               </Item>
       
@@ -128,6 +129,7 @@ class ChangePassword extends Component {
                       onChangeText={(new_password) => {
                         this.setState({new_password});
                       }}
+                      style={{marginLeft:Metrics.screenWidth/60}}
                   />
                </Item>
 
@@ -143,6 +145,7 @@ class ChangePassword extends Component {
                      onChangeText={(confirmPassword) => {
                        this.setState({confirmPassword});
                      }}
+                     style={{marginLeft:Metrics.screenWidth/60}}
                  />
                </Item>
           </View>
@@ -151,14 +154,14 @@ class ChangePassword extends Component {
           <TouchableOpacity  
             onPress={()=>this.onPressSubmitButton()}
            style={{borderRadius:20,
-          
-           width:Metrics.screenWidth/1.1,height:40,
+            marginTop:Metrics.screenHeight/5,
+           width:Metrics.screenWidth/1.1,height:45,
            justifyContent:"center",
            alignItems:"center",
             backgroundColor:'#8CB102',
          
       }}>
-       <Text style={{color:"white", fontSize:14}}>CHANGE PASSWORD</Text>
+       <Text style={{color:"white", fontSize:16}}>CHANGE PASSWORD</Text>
        
       </TouchableOpacity>
       </View>

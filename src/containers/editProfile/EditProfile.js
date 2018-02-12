@@ -122,26 +122,26 @@ import {Actions} from 'react-native-router-flux';
            });
 
            if(this.state.name1 ==='' || this.state.name1 === null){
-            this.setState({ emptyName:true,errorName:true})
+            this.setState({ errorName:true})
           }
           if(this.state.mobile1 === '' || this.state.mobile1 === null){
-            this.setState({ emptyMobile:true,errorMobile:true})
+            this.setState({ errorMobile:true})
           }
           if(this.state.city1 === '' || this.state.city1 === null){
-            this.setState({ emptyCity:true,errorCity:true})
+            this.setState({ errorCity:true})
           }
           if(this.state.state1 === '' || this.state.state1 === null){
-            this.setState({ emptyState:true,errorState:true})
+            this.setState({ errorState:true})
           }
           if(this.state.zip1 === '' || this.state.zip1 === null){
-            this.setState({ emptyZip:true,errorZip:true})
+            this.setState({ errorZip:true})
           }
 
           if(this.state.address1 === '' || this.state.address1 === null){
-            this.setState({ emptyAddress:true,errorAddress:true})
+            this.setState({ errorAddress:true})
           }
           if(this.state.txdl1 === '' || this.state.txdl1 === null){
-            this.setState({ emptyTxdl:true,errorTxdl:true})
+            this.setState({ errorTxdl:true})
           }
   }
 
@@ -206,7 +206,7 @@ import {Actions} from 'react-native-router-flux';
   }
   onDeactiveAddress(){
     this.setState({ address:false})
-    if(this.state.address1 === '' || this.state.address == null){
+    if(this.state.address1 === '' || this.state.address1 == null){
       this.setState({
         emptyAddress:true,
         errorAddress:true
@@ -280,7 +280,7 @@ import {Actions} from 'react-native-router-flux';
   onDeactiveTxd(){
     const txdlValdiation =/^[0-9a-zA-Z]*$/; 
     this.setState({ txd:false})
-  if(this.state.txdl1 === '' || this.setState.txd === null){
+  if(this.state.txdl1 === '' || this.state.txdl1 === null){
        this.setState({ emptyTxdl: true, errorTxdl: true })
   }else {
     if(txdlValdiation.test(this.state.txdl1)){
@@ -294,6 +294,29 @@ import {Actions} from 'react-native-router-flux';
 }
 
   checkError = ()=>{
+    if(this.state.name1 ==='' || this.state.name1 === null){
+      this.setState({ emptyName:true})
+    }
+    if(this.state.mobile1 === '' || this.state.mobile1 === null){
+      this.setState({ emptyMobile:true})
+    }
+    if(this.state.city1 === '' || this.state.city1 === null){
+      this.setState({ emptyCity:true})
+    }
+    if(this.state.state1 === '' || this.state.state1 === null){
+      this.setState({ emptyState:true})
+    }
+    if(this.state.zip1 === '' || this.state.zip1 === null){
+      this.setState({ emptyZip:true})
+    }
+
+    if(this.state.address1 === '' || this.state.address1 === null){
+      this.setState({ emptyAddress:true})
+    }
+    if(this.state.txdl1 === '' || this.state.txdl1 === null){
+      this.setState({ emptyTxdl:true})
+    }
+
     if(this.state.errorName || this.state.errorCity || this.state.errorZip || this.state.errorTxdl || this.state.errorMobile  || this.state.errorState || this.state.errorAddress){
 
       toast("Please fill the required fields. ");
