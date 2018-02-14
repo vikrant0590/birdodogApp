@@ -7,6 +7,7 @@ const api = create({
 });
 
 function get (endpoint,UserToken) {
+  console.log("get API User Token",UserToken);
   return new Promise((resolve, reject) => {
     console.log('calling url', `${config.apiUrl}${endpoint}`);
     fetch(`${config.apiUrl}${endpoint}`, {
@@ -19,6 +20,7 @@ function get (endpoint,UserToken) {
      
     }).then(async (res) => {
       let response = await res.json();
+      console.log("apiClient",response)
       if (!res.ok) {
         return reject(response);
       }

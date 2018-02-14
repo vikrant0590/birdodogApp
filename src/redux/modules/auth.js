@@ -28,6 +28,9 @@ const USERPROFILE ='auth/USERPROFILE';
 const USERPROFILE_SUCCESS ='auth/USERPROFILE_SUCCESS';
 const USERPROFILE_FAIL ='auth/USERPROFILE_FAIL';
 
+const DASHBOARD ='auth/DASHBOARD';
+const DASHBOARD_SUCCESS ='auth/DASHBOARD_SUCCESS';
+
 const USER_UPDATE ="auth/USER_UPDATE";
 const USER_UPDATE_SUCCESS = 'auth/USER_UPADTE_SUCCESS';
 
@@ -52,7 +55,7 @@ const NEED_HELP="auth/NEED_HELP";
 
 const CLEAR_PROFILE = 'CLEAR_PROFILE';
 
-const VIDEO_FINISH ="auth/VIDEO_VIDEO_FINSH"
+const VIDEO_FINISH ="auth/VIDEO_VIDEO_FINSH";
 
 const initialState = {
   user: undefined,
@@ -60,7 +63,8 @@ const initialState = {
   detail:undefined,
   trackListData:undefined,
   videoFinish:undefined,
-  email:undefined
+  email:undefined,
+  dash:undefined
   
 };
 
@@ -160,6 +164,11 @@ export default function reducer(state = initialState, action = {}) {
     //Video FInsihed
     case VIDEO_FINISH:
     return {...state,videoFinish:true}
+
+    case DASHBOARD:
+    return {...state}
+    case DASHBOARD_SUCCESS:
+    return {...state,dash:action.result }
 
     default:
       return state;
@@ -423,6 +432,30 @@ export function needHelp(data,UserToken){
   .then((res)=> {
     console.log("help Res", res)
     resolve(res);
+  })
+  .catch((ex) => {
+
+    reject(ex);
+  });
+})
+
+}
+
+
+
+
+export function dashboard(page,UserToken){
+  return (dispatch,getState)=> new Promise((resolve, reject)=> {
+ 
+  api.
+  get(`video/list/${page}`,UserToken)
+  .then((res)=> {
+    console.log("Dashboard *******************************", res.data);
+    if(res.status=== 200){
+      dispatch({type:DASHBOARD_SUCCESS, result:res})
+      resolve(res);
+    }
+    //resolve(res);
   })
   .catch((ex) => {
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image,BackHandler,NetInfo, } from 'react-native';
+import { Text, View, TouchableOpacity, Image,BackHandler,NetInfo,TextInput } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button, Icon} from 'native-base';
 import styles from './LoginStyle';
 import {Actions as NavAction} from 'react-native-router-flux';

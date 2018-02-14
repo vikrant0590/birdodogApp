@@ -11,7 +11,7 @@ import { toast } from '../../helpers/ToastMessage';
 import { Actions as NavActions } from 'react-native-router-flux';
 import { logout, getProfile, getDetails, getTrackList, login } from '../../redux/modules/auth';
 import { connect } from 'react-redux';
-
+import {Font} from 'expo';
 
 
 
@@ -25,7 +25,8 @@ import { connect } from 'react-redux';
     user:this.props.auth.userProfile,
     data:[],
     FirstNameChar:undefined,
-    isConnected:true
+    isConnected:true,
+    isload:false,
     }
   }
   static  propTypes = {
@@ -41,7 +42,29 @@ import { connect } from 'react-redux';
       };
         // internet connection
 
-  componentDidMount() {
+        async componentDidMount() {
+          await Font.loadAsync({
+          robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+          robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+          robotoMediumItalic:require('../../fonts/Roboto-MediumItalic.ttf'),
+          robotoBlackItalic:require('../../fonts/Roboto-BlackItalic.ttf'),
+          robotoBold:require('../../fonts/Roboto-Bold.ttf'),
+          robotoBoldItalic:require('../../fonts/Roboto-BoldItalic.ttf'),
+          robotoLight:require('../../fonts/Roboto-Light.ttf'),
+          robotoLightItalic:require('../../fonts/Roboto-LightItalic.ttf'),
+          robotoThin:require('../../fonts/Roboto-Thin.ttf'),
+          robotoThinItalic:require('../../fonts/Roboto-ThinItalic.ttf'),
+          robotoCondensedBold:require('../../fonts/RobotoCondensed-Bold.ttf'),
+          robotoCondensedBoldItalic:require('../../fonts/RobotoCondensed-BoldItalic.ttf'),
+          robotoCondensedItalic:require('../../fonts/RobotoCondensed-Italic.ttf'),
+          robotoCondensedLight:require('../../fonts/RobotoCondensed-Light.ttf'),
+          robotoCondensedLightItalic:require('../../fonts/RobotoCondensed-LightItalic.ttf'),
+          robotoCondensedRegular:require('../../fonts/RobotoCondensed-Regular.ttf')
+
+          
+          });
+          this.setState({isload:true});
+
     NetInfo.isConnected.addEventListener(
       'change',
       this._handleConnectivityChange
@@ -166,6 +189,10 @@ import { connect } from 'react-redux';
        //this.props.homeSection();
        AsyncStorage.removeItem('userCredentials');
        AsyncStorage.removeItem('token');
+       AsyncStorage.removeItem('UserType');
+       AsyncStorage.removeItem('token');
+       AsyncStorage.removeItem('video_id');
+       AsyncStorage.removeItem('w_status');
         const {store: {dispatch}} = this.context;
         dispatch(logout());
     
@@ -185,14 +212,17 @@ import { connect } from 'react-redux';
         {index: 5, title: 'Settings', image:require('../../images/settingsidenav.png')}]
        
     return(
+      <Container>
+          { this.state.isload && 
           <View style={{flex:1,flexDirection:"column"}}>
+           
                  <View style={{flex:0.15,backgroundColor:'#212121',flexDirection:'row', alignItems:"center"}}>
                  <View style={{borderRadius: 30,width: 60,height: 60, 
                    backgroundColor:'#74930A',marginLeft:Metrics.screenWidth/25, justifyContent:"center",alignItems:"center"}}>
-                  <H3 style={{color:'white',  backgroundColor:'transparent'}}>{this.state.FirstNameChar}</H3>
+                  <H3 style={{color:'white',  backgroundColor:'transparent', fontFamily:'robotoRegular'}}>{this.state.FirstNameChar}</H3>
                 </View>
             <View style={{flex:1,marginLeft:5}}>
-             <Text style={{color:'white',fontSize:15}}>{this.state.data.name}</Text>
+             <Text style={{color:'white',fontSize:15, fontFamily:'robotoRegular'}}>{this.state.data.name}</Text>
             </View>
             <View style={{marginRight:Metrics.screenWidth/14}}>
             <TouchableOpacity onPress= {()=>this.onPressLogout()}>
@@ -250,12 +280,15 @@ import { connect } from 'react-redux';
 
         </View>
 
-        
+            
          </View>
-       
+          }
+         </Container>
+            
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     auth: state.auth

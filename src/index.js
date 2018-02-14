@@ -18,7 +18,8 @@ import {
     Faq,
     NeedHelp,
     TermsCondition,
-    DashboardDetail
+    DashboardDetail,
+  
 } from './containers';
 
 
@@ -169,14 +170,15 @@ export default class AppRouter extends Component {
                        <Text style={Styles.titleTextStyle}>TERMS AND CONDITIONS </ Text>
                     </View>
                }/>
-
+             
 
 
            <Scene key="drawer" component={NavigationDrawer} type="replace" >
               <Scene key="drawerChildrenWrapper" titleStyle={{ color:'white' }} >
                  <Scene key="dashboard" component={Dashboard} hideNavBar={false} title="DASHBOARD" refresh={true} type="replace" initial/>
-                 <Scene key="dashboarddetail"component={DashboardDetail} hideNavBar={true}  />
-              
+               
+                 <Scene key="dashboarddetail" component={DashboardDetail} hideNavBar = {true} hideDrawer/>
+
                  <Scene key="myprofile" component={MyProfile} hideNavBar={false} refresh={true}   title="MY PROFILE" type="replace"/>
                  <Scene key="tracklead"component={TrackLead} hideNavBar={false} title="TRACK LEAD" type="replace" />
                  <Scene key="newlead" component={NewLead} hideNavBar={false} title="ADD NEW LEAD"  type="replace" />

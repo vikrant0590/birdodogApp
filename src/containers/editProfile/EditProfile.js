@@ -343,11 +343,11 @@ import {Actions} from 'react-native-router-flux';
           zipcode:zip1     
         };
         this.setState({isVisible: true});
-        dispatch(userupdate(data,this.UserToken ))
+        dispatch(userupdate(data,this.state.UserToken ))
           .then((res) => {
             this.setState({ isVisible:false})
             if(res.status === 200){
-               dispatch(getProfile(this.UserToken));
+               dispatch(getProfile(this.state.UserToken));
             this.setState({isVisible: false});
            
             toast('Successfully Updated!');
@@ -384,15 +384,15 @@ import {Actions} from 'react-native-router-flux';
                 <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10}}>Personel Information</Text>
               <Form style={{ marginBottom:20}}>
               <View style={{flex:1,flexDirection:'row',marginLeft:Metrics.screenWidth/8.5,marginTop:Metrics.screenHeight/45,marginBottom:-10,}}>
-                   <View style={{flex:0.3}}>
-                      <Text style={{fontSize:13,color:'#A3A3A3'}}>Name</Text> 
+                   <View style={{flex:0.4}}>
+                      <Text style={{fontSize:13,color:'#A3A3A3'}}>Name *</Text> 
                  </View>
-                 <View style={{flex:0.7, alignItems:'flex-start'}}>
+                 <View style={{flex:0.6, alignItems:'flex-start'}}>
                      { this.state.nameError &&
-                   <Text style={{fontSize:12, color:'red'}}>* Only Characters allowed.</Text> 
+                   <Text style={{fontSize:12, color:'red'}}>Only Characters allowed.</Text> 
                     }
                         { this.state.emptyName &&
-                   <Text style={{fontSize:12, color:'red'}}>*This field is required.</Text> 
+                   <Text style={{fontSize:12, color:'red'}}>This field is required.</Text> 
                     }
                   </View> 
               </View>
@@ -462,18 +462,18 @@ import {Actions} from 'react-native-router-flux';
 
 
        <View style={{flex:1,flexDirection:'row',marginLeft:Metrics.screenWidth/8.5,marginTop:Metrics.screenHeight/45,marginBottom:-10,}}> 
-              <View style={{flex:0.3}}>  
-                <Text style={{fontSize:13,color:'#A3A3A3'}} >Phone Number</Text>
+              <View style={{flex:0.4}}>  
+                <Text style={{fontSize:13,color:'#A3A3A3'}} >Phone Number *</Text>
                </View> 
-                 <View  style={{flex:0.7,alignItems:'flex-start'}}>
+                 <View  style={{flex:0.6,alignItems:'flex-start'}}>
                  { this.state.mobileSyntaxError &&
-              <Text style={{fontSize:12, color:'red'}}>*Phone number not valid.</Text> 
+              <Text style={{fontSize:12, color:'red'}}>Phone number not valid.</Text> 
               }
                 { this.state.mobileError &&
-              <Text style={{fontSize:12, color:'red'}}>*Min 10 digits required.</Text> 
+              <Text style={{fontSize:12, color:'red'}}>Min 10 digits required.</Text> 
               }
                     { this.state.emptyMobile &&
-                   <Text style={{fontSize:12, color:'red'}}>*This field is required.</Text> 
+                   <Text style={{fontSize:12, color:'red'}}>This field is required.</Text> 
                     }
               </View>
 
@@ -512,11 +512,11 @@ import {Actions} from 'react-native-router-flux';
                   <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10,marginRight:10}}>Location</Text>
                   <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                   <View style={{flex:0.2}}>
-                  <Text style={{fontSize:13,color:'#A3A3A3'}}>Address</Text>
+                  <Text style={{fontSize:13,color:'#A3A3A3'}}>Address *</Text>
                   </View>
                      <View style={{flex:0.8, alignItems:'flex-start'}}>
                      {this.state.emptyAddress &&
-                  <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
+                  <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
                      }
                   </View>
                  </View>
@@ -547,14 +547,14 @@ import {Actions} from 'react-native-router-flux';
       
             <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-               <Text style={{fontSize:13,color:'#A3A3A3'}}>City</Text>
+               <Text style={{fontSize:13,color:'#A3A3A3'}}>City *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   { this.state.cityError &&
-               <Text style={{ color:'red',fontSize:12}}>*City not valid.</Text>
+               <Text style={{ color:'red',fontSize:12}}>City not valid.</Text>
                   }
                      { this.state.emptyCity &&
-               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
                   }
                </View>
             </View>
@@ -583,14 +583,14 @@ import {Actions} from 'react-native-router-flux';
 
             <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-                   <Text style={{fontSize:13,color:'#A3A3A3'}}>State</Text>
+                   <Text style={{fontSize:13,color:'#A3A3A3'}}>State *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   {this.state.stateError &&
-                      <Text style={{ color:'red',fontSize:12}}>* State not valid.</Text>
+                      <Text style={{ color:'red',fontSize:12}}>State not valid.</Text>
                   }
                      { this.state.emptyState &&
-               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
                   }
                </View>
             </View>
@@ -621,17 +621,17 @@ import {Actions} from 'react-native-router-flux';
       
          <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-                   <Text style={{fontSize:13,color:'#A3A3A3'}}>Zip</Text>
+                   <Text style={{fontSize:13,color:'#A3A3A3'}}>Zip *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   { this.state.zipError &&
-                     <Text style={{ color:'red',fontSize:12}}>*Zipcode not valid.</Text>
+                     <Text style={{ color:'red',fontSize:12}}>Zipcode not valid.</Text>
                   }
                      { this.state.emptyZip &&
                <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
                   }
                        { this.state.zipLength &&
-               <Text style={{ color:'red',fontSize:12}}>*Min 4 Characters required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>Min 4 Characters required.</Text>
                   }
                </View>
             </View>
@@ -663,14 +663,14 @@ import {Actions} from 'react-native-router-flux';
                  
             <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-               <Text style={{fontSize:13,color:'#A3A3A3'}}>TXTDL</Text>
+               <Text style={{fontSize:13,color:'#A3A3A3'}}>TXTDL *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   {this.state.txdlError &&
-               <Text style={{ color:'red',fontSize:12}}>*txtdl not valid.</Text>
+               <Text style={{ color:'red',fontSize:12}}>txtdl not valid.</Text>
                   }
                      {this.state.emptyTxdl &&
-               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
                   }
                </View>
             </View>

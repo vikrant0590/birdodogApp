@@ -9,6 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import PropTypes from 'prop-types';
 import { validationOnEmail, passwordMatch} from '../../helpers/EmailValidation';
 import { toast } from '../../helpers/ToastMessage';
+import {Font} from 'expo';
 export default class Signup extends Component {
   constructor() {
     super();
@@ -21,13 +22,28 @@ export default class Signup extends Component {
       name:undefined,
     
       isVisible: false,
-      isConnected:undefined
+      isConnected:true,
+      isload:false,
     };
   }
 
   // internet connection
 
-  componentDidMount() {
+  async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+  
+    });
+    this.setState({isload:true});
     NetInfo.isConnected.addEventListener(
       'change',
       this._handleConnectivityChange
@@ -50,9 +66,14 @@ export default class Signup extends Component {
     });
     console.log('connectionInfo', isConnected);
     if(!this.state.isConnected){
-      SnackBar.show('Your internet connection has been lost')
+      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+        style: { marginBottom: 20 },
+        backgroundColor: Colors.snackBarColor,
+        textColor: Colors.white
+      });
     }
   };
+
   static contextTypes = {
     store: PropTypes.object,
     register: PropTypes.object
@@ -113,9 +134,9 @@ export default class Signup extends Component {
                   toast('Oops, something went wrong. Please try again later!');
                 }
               })
-              .catch(ex => {
+              .catch((ex) => {
                 this.setState({isVisible: false});
-                alert(ex.error.message);
+                console.log(ex.error.message);
               });
           }else{
         
@@ -137,13 +158,14 @@ export default class Signup extends Component {
     render(){
         return(
         <Container style={{flex:1,marginTop:Metrics.navBarHeight}}>
-                <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
+                <Spinner visible={this.state.isVisible} textContent={"Registering..."} textStyle={{color:'white'}} />
 
           <Content>
+          {this.state.isload &&
         <View style={styles.container}> 
         <View style={{flex:1,flexDirection:"column",}}>
           <View style={{flex:1,marginTop:Metrics.screenHeight/15,marginBottom:Metrics.screenHeight/50}}>
-                <Text>Personal Information</Text>
+                <Text  style={{fontFamily:'robotoMedium'}}>Personal Information</Text>
                         </View>
 
             <View style={{flex:1}}> 
@@ -189,7 +211,7 @@ export default class Signup extends Component {
            </View>
 
            <View style={{flex:1,marginTop:Metrics.screenHeight/15,marginBottom:Metrics.screenHeight/50}}>
-            <Text>Set Password</Text>
+            <Text style={{fontFamily:'robotoMedium'}}>Set Password</Text>
             </View>
             <View style={{flex:1}}>
                <Item>
@@ -223,14 +245,14 @@ export default class Signup extends Component {
               <Button rounded 
               onPress={()=>this.handleSubmit()}
         style={{width:Metrics.screenWidth/1.15, marginTop:Metrics.screenHeight/10,justifyContent:"center",alignItems:"center",backgroundColor:"#8CB102"}}>
-            <Text style={{color:"white",fontSize:18}}>SIGN UP</Text>
+            <Text style={{color:"white",fontSize:16, fontFamily:'regular'}}>SIGN UP</Text>
           </Button>
            </View>
 
         </View>
      
       </View>
-    
+          }
       </Content>  
       </Container>
    

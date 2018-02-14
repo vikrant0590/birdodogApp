@@ -16,9 +16,10 @@ import {
   AsyncStorage,
   Alert,
   Button,
-  Dimensions
+  Dimensions,
+  NetInfo
 } from 'react-native';
-import {Content} from 'native-base';
+import {Content,Container} from 'native-base';
 
 
 import styles from './DashboardDetailStyles';
@@ -29,10 +30,12 @@ import {Actions as NavAction} from 'react-native-router-flux';
 import VideoPlayer from '@expo/videoplayer';
 import PropTypes, {any, object} from 'prop-types';
 import BaseScreen from './baseScreen';
+import Dasboard from '../dashboard';
+
+import {Font} from 'expo';
 
 
-
-export default class DashboardDetail extends BaseScreen {
+export default class DashboardDetail extends BaseScreen   {
   constructor(props){
     super(props);
     this.state= {
@@ -49,32 +52,41 @@ export default class DashboardDetail extends BaseScreen {
       termsCondition:false,
       finish:false,
       thankAlert:false,
-      isPortrait:true
+      isPortrait:true,
+      termrepeat:0,
      
-     
+      isConnected:true,
+      isload:false,
     }
   }
   static  propTypes = {
    
 
     id:PropTypes.string,
-    watch_status:PropTypes.string
+    watch_status:PropTypes.string,
+   call:PropTypes.func
   
   };
   backToDashboard = async() =>{
-   this.setState({thankAlert:false,finish:false});
-   NavAction.drawer();
+   this.setState({thankAlert:false,finish:false,});
+      //NavAction.drawer();
   }
   changeState =()=>{
     this.setState({termsCondition:true});
   }
 
   onChangeFinished =() =>{
-    this.setState({finish:true})
+    this.setState({finish:true,termrepeat:this.state.termrepeat +1})
   }
 
-backMe=()=>{
-  setTimeout(()=> {NavAction.refresh({refresh: true})}, 500); NavAction.pop();
+backMe = async()=>{
+  if(this.state.UserType ==='free'){
+  this.props.call();
+  NavAction.pop();
+  }else{
+    NavAction.pop();
+  }
+
 }
 
   updateStatus = async () =>{
@@ -110,10 +122,53 @@ backMe=()=>{
   }
  
 
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
 
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      toast('Your internet connection has been lost')
+    }
+  };
 
   componentWillMount = async () => {
+    await Font.loadAsync({
+      robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+      robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+      robotoMediumItalic:require('../../fonts/Roboto-MediumItalic.ttf'),
+      robotoBlackItalic:require('../../fonts/Roboto-BlackItalic.ttf'),
+      robotoBold:require('../../fonts/Roboto-Bold.ttf'),
+      robotoBoldItalic:require('../../fonts/Roboto-BoldItalic.ttf'),
+      robotoLight:require('../../fonts/Roboto-Light.ttf'),
+      robotoLightItalic:require('../../fonts/Roboto-LightItalic.ttf'),
+      robotoThin:require('../../fonts/Roboto-Thin.ttf'),
+      robotoThinItalic:require('../../fonts/Roboto-ThinItalic.ttf'),
+      robotoCondensedBold:require('../../fonts/RobotoCondensed-Bold.ttf'),
+      robotoCondensedBoldItalic:require('../../fonts/RobotoCondensed-BoldItalic.ttf'),
+      robotoCondensedItalic:require('../../fonts/RobotoCondensed-Italic.ttf'),
+      robotoCondensedLight:require('../../fonts/RobotoCondensed-Light.ttf'),
+      robotoCondensedLightItalic:require('../../fonts/RobotoCondensed-LightItalic.ttf'),
+      robotoCondensedRegular:require('../../fonts/RobotoCondensed-Regular.ttf')
 
+      
+      });
+      this.setState({isload:true});
+
+NetInfo.isConnected.addEventListener(
+  'change',
+  this._handleConnectivityChange
+);
+NetInfo.isConnected.fetch().done(
+  (isConnected) => { this.setState({isConnected}); }
+);
   
     const token = await AsyncStorage.getItem('token');
     const  Usertoken = JSON.parse(token);
@@ -164,6 +219,9 @@ backMe=()=>{
     render() {
       console.log("sdjkfdsjk",this.state.isPortrait)
         return (
+        
+        <Container>
+          {this.state.isload && 
           <View style={{flex:1, flexDirection:'column', }}>
 
 
@@ -197,7 +255,7 @@ backMe=()=>{
   {this.state.isPortrait && 
        <TouchableOpacity onPress={()=>this.backMe() }
         style={{ marginTop:-Metrics.screenHeight/3.4,marginLeft:Metrics.screenWidth/24,width:Metrics.screenWidth/13}}>
-        <Image  source={Images.backwhite} style={{ resizeMode:'contain',}}/>
+        <Image  source={Images.backwhite} style={{ resizeMode:'contain'}}/>
        </TouchableOpacity>
   }
        </View>
@@ -209,15 +267,15 @@ backMe=()=>{
                  flexDirection:"column",
                   marginLeft:Metrics.screenWidth/20,
                   marginRight:Metrics.screenWidth/20,
-                  marginTop:Metrics.screenHeight/15,
+                  marginTop:Metrics.screenHeight/19,
                  // marginBottom:Metrics.screenHeight/25,
         
       
        
                   }}>
-               <Text style={{fontSize:20}}> {this.state.data.title}</Text>
+               <Text style={{fontSize:22, fontFamily:'robotoRegular'}}> {this.state.data.title}</Text>
             
-               <Text style={{color:'#878787', fontSize:15,marginTop:Metrics.screenHeight/50,flex:1,}}>
+               <Text style={{color:'#878787', fontSize:15,marginTop:Metrics.screenHeight/50,flex:1,fontFamily:'robotoLight'}}>
 
                            {this.state.data.description}
                </Text>
@@ -226,13 +284,13 @@ backMe=()=>{
 }
 
 
-{ this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && this.state.isPortrait &&
+{ this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && this.state.isPortrait && this.state.termrepeat<=1 &&
           <View style={{flex:0.001, backgroundColor:'#878787',}}></View>
                 }
 
   
 
-  { this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && this.state.isPortrait &&
+  { this.state.status === 'watchable' && this.state.UserType === 'free' && this.state.finish && this.state.isPortrait && this.state.termrepeat<=1 &&
             <View style={{flex:0.16,
               marginLeft:Metrics.screenWidth/20,
                   marginRight:Metrics.screenWidth/20,
@@ -395,7 +453,7 @@ backMe=()=>{
 	          }}
 	        modalStyle={{
          height:Metrics.screenHeight/4,
-         width:Metrics.screenWidth/1.1,
+         width:Metrics.screenWidth/1.3,
 	       borderRadius: 2,
 	        margin: 20,
 	        padding: 10,
@@ -406,8 +464,8 @@ backMe=()=>{
         <Content>
             <View style={{ 
           
-             marginLeft:Metrics.screenWidth/40 ,
-             marginRight:Metrics.screenWidth/40,
+             marginLeft:Metrics.screenWidth/50 ,
+             marginRight:Metrics.screenWidth/50,
              
               }}>
              
@@ -420,7 +478,9 @@ backMe=()=>{
             justifyContent:"center",
             alignItems:"center",
            backgroundColor:'#8CB102',
-           marginTop:Metrics.screenHeight/20
+           marginTop:Metrics.screenHeight/40,
+           marginLeft:Metrics.screenWidth/7,
+           marginRight:Metrics.screenWidth/7
            }}>
              <Text style={{color:'white', fontSize:16}}>OK</Text></TouchableOpacity>
 
@@ -430,6 +490,8 @@ backMe=()=>{
 </Modal>
 
           </View>
+          }
+          </Container>
 
         );
       }
