@@ -25,7 +25,8 @@ export default StyleSheet.create({
         alignSelf:"center",
         justifyContent:'center',
         marginLeft:14,
-        fontSize:15
+        fontSize:15,
+        fontFamily:'robotoRegular'
       },
 
   

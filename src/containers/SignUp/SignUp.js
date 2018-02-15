@@ -41,7 +41,8 @@ export default class Signup extends Component {
     regular: require('../../fonts/OpenSans-Regular.ttf'),
     semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
     semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
-  
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
     });
     this.setState({isload:true});
     NetInfo.isConnected.addEventListener(

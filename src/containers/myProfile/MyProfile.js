@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity , Image}  from 'react-native';
+import { Text, View, TouchableOpacity , Image, NetInfo}  from 'react-native';
  import {Icon, Content, Container, Header, Left,Right, Button, Body, Title} from 'native-base';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
 import { Actions as NavActions } from 'react-native-router-flux';
@@ -9,6 +9,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import {EditProfile} from '../../containers';
 import api from '../../helpers/ApiClient';
+import {Font} from 'expo';
 
 
 class MyProfile extends Component {
@@ -22,7 +23,9 @@ class MyProfile extends Component {
             UserToken:undefined,
             isVisible:false,
             user:this.props.auth.userProfile,
-            UserToken:undefined
+            UserToken:undefined,
+            isConnected:true,
+            isload:false,
   
         }
     }
@@ -34,6 +37,58 @@ class MyProfile extends Component {
         store: PropTypes.object,
         getProfile: PropTypes.object
       };
+
+
+ // internet connection
+
+ async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+    });
+    this.setState({isload:true});
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+        style: { marginBottom: 20 },
+        backgroundColor: Colors.snackBarColor,
+        textColor: Colors.white
+      });
+    }
+  };
+
+
+
     componentWillMount(){
         
        //console.log("********************************",this.props.auth.userProfile);
@@ -87,10 +142,10 @@ class MyProfile extends Component {
 
 
         return (
+            <Container>
+                <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{color:'white'}} />
+                {this.state.isload &&
             <View style={{flex:1}}>
-       <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{color:'white'}} />
-
-
                 <Image source={Images.profile}
                     style={{flex:1,
                         resizeMode:'stretch',
@@ -104,17 +159,17 @@ class MyProfile extends Component {
            flexDirection:"column", alignItems:"center",}}>
                 
                 <View style={{flex:0.25, justifyContent:"center", alignItems:"center", marginTop:Metrics.screenHeight/5,backgroundColor:'transparent'}}>
-                   <Text style={{ fontSize:30,}}>{this.state.data.name}</Text>
+                   <Text style={{ fontSize:30,color:'#333333',fontFamily:'robotoRegular'}}>{this.state.data.name}</Text>
                
                  <Image source={Images.message} style={{ marginTop:Metrics.screenHeight/27}} />
 
-                   <Text style={{ fontSize:16, color:'gray', marginTop:Metrics.screenHeight/85}}>{this.state.data.email}</Text>
+                   <Text style={{ fontSize:16, color:'#7a7a7a', marginTop:Metrics.screenHeight/85,fontFamily:'robotoRegular'}}>{this.state.data.email}</Text>
                 </View>
 
                 
                 <View style={{flex:0.15, justifyContent:"center", alignItems:"center", backgroundColor:'transparent'}}>
                  <Image source={Images.phone}  />
-                   <Text style={{ fontSize:16, color:'gray',marginTop:Metrics.screenHeight/85}}>{this.state.data.mobile}</Text>
+                   <Text style={{ fontSize:16, color:'#7a7a7a',marginTop:Metrics.screenHeight/85,fontFamily:'robotoRegular'}}>{this.state.data.mobile}</Text>
                </View>    
 
                
@@ -122,20 +177,20 @@ class MyProfile extends Component {
                <Image source={Images.location}  />
                <View style={{flexDirection:'column',justifyContent:'center',alignItems:'center',marginTop:Metrics.screenHeight/85,marginLeft:Metrics.screenHeight/50,marginRight:Metrics.screenWidth/50}}>
                <View>
-                <Text style={{fontSize:16, color:'gray'}}>
+                <Text style={{fontSize:16, color:'#7a7a7a',fontFamily:'robotoRegular'}}>
                 {this.state.data.address } 
                </Text>
                </View>
 
              <View>
-             <Text style={{fontSize:16, color:'gray'}}>
+             <Text style={{fontSize:16, color:'#7a7a7a',fontFamily:'robotoRegular'}}>
                 {this.state.data.city} {this.state.data.state} {this.state.data.zipcode}
                </Text>
              </View>
              
 
              <View>
-             <Text style={{fontSize:16, color:'gray'}}>
+             <Text style={{fontSize:16, color:'#7a7a7a',fontFamily:'robotoRegular'}}>
                 {this.state.data.country} 
                </Text>
                </View>
@@ -148,8 +203,8 @@ class MyProfile extends Component {
                
                
                 <View style={{flex:0.1, justifyContent:"center", alignItems:"center",backgroundColor:'transparent'}}>
-                   <Text style={{marginTop:Metrics.screenHeight/27,}}>TXTDL</Text>
-                   <Text style={{color:'gray',marginTop:Metrics.screenHeight/85,fontSize:16,marginBottom:Metrics.screenHeight/85,height:Metrics.screenHeight/16}}>{this.state.data.txdl}</Text>
+                   <Text style={{marginTop:Metrics.screenHeight/27,fontFamily:'robotoRegular'}}>TXTDL</Text>
+                   <Text style={{color:'#7a7a7a',marginTop:Metrics.screenHeight/85,fontSize:16,marginBottom:Metrics.screenHeight/85,height:Metrics.screenHeight/16,fontFamily:'robotoRegular'}}>{this.state.data.txdl}</Text>
 
                      
                    </View>
@@ -157,7 +212,7 @@ class MyProfile extends Component {
                    <TouchableOpacity onPress={()=>this.editProfile()}
                    style={{borderRadius:20,width:Metrics.screenWidth/1.3,height:Metrics.screenHeight/20,justifyContent:"center",alignItems:"center",
                    backgroundColor:'#333333',}}>
-                   <Text style={{color:"white", fontSize:16}}>EDIT PROFILE</Text>
+                   <Text style={{color:"white", fontSize:16, fontFamily:'robotoRegular'}}>EDIT PROFILE</Text>
                     
                    </TouchableOpacity>
                        </View>
@@ -166,6 +221,8 @@ class MyProfile extends Component {
                  </View>
                 </Image>
             </View>
+                }
+            </Container>
 
          
         )

@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight} from 'react-native';
+import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight, NetInfo} from 'react-native';
 import { Container, Content,  Form, Item, Input, Label , Row,Col,Textarea} from 'native-base';
  import {Metrics, Images,} from '../../theme';
  import { ImagePicker } from 'expo';
@@ -14,6 +14,7 @@ import { getProfile } from '../../redux/modules/auth';
  import api from '../../helpers/ApiClient';
 import { toast } from '../../helpers/ToastMessage';
 import { Actions } from 'react-native-router-flux';
+import {Font} from 'expo';
 
 
  const checkboxArray =[];
@@ -63,7 +64,10 @@ import { Actions } from 'react-native-router-flux';
             checkTicked:0,
             imageSelected:0,
             
-            
+           //font and Internet
+           isConnected:true,
+           isload:false,
+
 
 
  // newProperty state
@@ -112,7 +116,58 @@ import { Actions } from 'react-native-router-flux';
       
     };
   
-    componentWillMount(){
+
+
+  // internet connection
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+    });
+    this.setState({isload:true});
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+        style: { marginBottom: 20 },
+        backgroundColor: Colors.snackBarColor,
+        textColor: Colors.white
+      });
+    }
+  };
+
+     componentWillMount(){
+      
   
       this.state.UserToken = this.props.auth.user.data.token;
       console.log("DELETE PERSON TOKEN", this.state.UserToken);
@@ -486,6 +541,15 @@ onPressSubmit = () => {
     }
     if(this.state.Notes === null || this.state.Notes ===undefined){
       this.setState({emptyNotes:true})
+    }
+    if(this.state.oname === null || this.state.oname ===undefined){
+      this.setState({emptyName:true})
+    }
+    if(this.state.ophone === null || this.state.ophone ===undefined){
+      this.setState({emptyPhone:true})
+    }
+    if(this.state.oemail === null || this.state.oemail ===undefined){
+      this.setState({emptyEmail:true})
     }
     toast('Form fields data missing or invalid Information .');
   }
@@ -990,15 +1054,16 @@ uncheckBoxDetail(id){
 }
         let { image, imageSecond, imageThird, imageFourth } = this.state;
         return(
-          <Container
-          style={{flex:1,marginTop: Metrics.navBarHeight }}>
+          <Container style={{flex:1,marginTop: Metrics.navBarHeight }}>
+
               <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
 
           <Content>
+          {this.state.isload &&
                    <View style={{flexDirection:"column",marginBottom: Metrics.screenHeight/8,marginLeft:Metrics.screenWidth/36,marginRight:Metrics.screenHeight/36,}}>
 
                      <View style={{marginTop:Metrics.screenHeight/40}}>
-                         <Text style={{fontSize:11}}>Select Property Type</Text>
+                         <Text style={{fontSize:11,color:'#333333',fontFamily:'robotoBold'}}>Select Property Type</Text>
                      </View>
 
                      <View style={{flexDirection:'row',marginTop:Metrics.screenHeight/50}}>
@@ -1021,7 +1086,7 @@ uncheckBoxDetail(id){
                           
                            <TouchableOpacity 
                               onPress={()=>this.newPropertyOnPress()}>
-                              <Text style={{fontSize:10}}>New Property</Text>
+                              <Text style={{fontSize:10, fontFamily:'robotoRegular',color:this.state.newProperty ? '#333333':'#7a7a7a'}}>New Property</Text>
                               </TouchableOpacity>
                           </View>
 
@@ -1045,7 +1110,7 @@ uncheckBoxDetail(id){
                       <View style={{flex:0.8, alignItems:'flex-start', justifyContent:'center'}}>
                       <TouchableOpacity 
                         onPress={()=>this.newOwnerOnPress()}>
-                              <Text style={{fontSize:10}}>Owner Property</Text>
+                              <Text style={{fontSize:10,fontFamily:'robotoRegular',fontFamily:'robotoRegular',color:this.state.ownerProperty ? '#333333':'#7a7a7a'}}>Owner Property</Text>
                               </TouchableOpacity>
                           </View>
                       </View>
@@ -1055,12 +1120,12 @@ uncheckBoxDetail(id){
 
                      <View style={{flexDirection:'row' ,marginTop:Metrics.screenHeight/30,marginBottom:Metrics.screenHeight/30}}>
                         <View style={{flex:0.3}}>
-                          <Text style={{fontSize:12, color:'#333333'}}>Uplaod Image</Text>
+                          <Text style={{fontSize:12, color:'#333333',fontFamily:'robotoBold'}}>Uplaod Image</Text>
                          </View>
 
                          <View style={{flex:0.7,alignItems:'flex-start'}}>
                          {this.state.image === null && this.state.imageSecond === null && this.state.imageThird === null && this.state.imageFourth===null &&
-                          <Text style={{fontSize:12, color:'gray'}}>( Atleast one image is required.)</Text>
+                          <Text style={{fontSize:12, color:'#7a7a7a',fontFamily:'robotoRegular'}}>( Atleast one image is required.)</Text>
                          }
                          </View>
                      </View>
@@ -1275,7 +1340,7 @@ uncheckBoxDetail(id){
            <View>
            <View style={{ marginTop:Metrics.screenHeight/20,}}>
               
-                     <Text style={{ fontSize:12,color:'#333333'}}>Property Detail</Text> 
+                     <Text style={{ fontSize:12,color:'#333333',fontFamily:'robotoBold'}}>Property Detail</Text> 
             
               
         </View>
@@ -1284,13 +1349,13 @@ uncheckBoxDetail(id){
 
         <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyStreet &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
        {this.state.streetError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid street</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid street</Text>
       }
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30}}>Street *</Text>
+        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30,fontFamily:'robotoRegular'}}>Street *</Text>
         <Input style={{borderBottomWidth: 0}}
           value={this.state.Street}
           maxLength={20}
@@ -1320,14 +1385,14 @@ uncheckBoxDetail(id){
            
       <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyCity &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
         {this.state.cityError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid city.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid city.</Text>
       }
           <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0,}}>
              
-                 <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12}}>City *</Text>
+                 <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12,fontFamily:'robotoRegular'}}>City *</Text>
              
              <Input 
              style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
@@ -1360,13 +1425,13 @@ uncheckBoxDetail(id){
 
       <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyState &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
        {this.state.stateError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid state.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid state.</Text>
       }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>State *</Text>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>State *</Text>
        <Input 
        maxLength={30}
        value={this.state.statee}
@@ -1400,16 +1465,16 @@ uncheckBoxDetail(id){
     
       <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyZip &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
       {this.state.zipError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid Zipcode.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid Zipcode.</Text>
       }
        {this.state.ziplength &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Min 4 characters required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Min 4 characters required.</Text>
       }
           <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-             <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10}}>Zip *</Text>
+             <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10,fontFamily:'robotoRegular'}}>Zip *</Text>
              <Input
              maxLength={10}
              autoCapitalize={'none'}
@@ -1438,10 +1503,10 @@ uncheckBoxDetail(id){
 
       <View style={{marginTop:Metrics.screenHeight/40}}>
         {this.state.emptyAddress &&
-        <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+        <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
         }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>Address * </Text>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>Address * </Text>
        <Input 
        maxLength={50}
        value={this.state.Address}
@@ -1472,13 +1537,13 @@ uncheckBoxDetail(id){
 
       <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyCountry &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
         {this.state.countryError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid country.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid country.</Text>
       }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>Country * </Text>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>Country * </Text>
        <Input 
        maxLength={30}
        value={this.state.Country}
@@ -1523,18 +1588,18 @@ uncheckBoxDetail(id){
                               <View>
             
                    <View style={{ marginTop:Metrics.screenHeight/20}}>
-            <Text style={{ fontSize:12,color:'#333333'}}>Owner Contact Info</Text> 
+            <Text style={{ fontSize:12,color:'#333333', fontFamily:'robotoBold'}}>Owner Contact Info</Text> 
          </View>
 
      <View style={{marginTop:Metrics.screenHeight/40}}>
      {this.state.emptyName &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
         {this.state.nameError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid name.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid name.</Text>
       }
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/16}}>Owner Name *</Text>
+        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/16,fontFamily:'robotoRegular'}}>Owner Name *</Text>
         <Input style={{borderBottomWidth: 0, }} 
         maxLength={30}
         autoCapitalize={'none'}
@@ -1561,17 +1626,17 @@ uncheckBoxDetail(id){
 
        <View style={{marginTop:Metrics.screenHeight/40}}>
        {this.state.emptyPhone &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
         {this.state.phoneError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid phone number.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid phone number.</Text>
       }
 
 {this.state.mobileLengthError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Min 10 digits required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Min 10 digits required.</Text>
       }
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-              <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30}}>Phone Number *</Text>
+              <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30,fontFamily:'robotoRegular'}}>Phone Number *</Text>
               <Input style={{borderBottomWidth: 0}}
               maxLength={10}
               autoCapitalize={'none'}
@@ -1603,13 +1668,13 @@ uncheckBoxDetail(id){
      
        <View style={{marginTop:Metrics.screenHeight/40}}>
        {this.state.emptyEmail &&
-           <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+           <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
         {this.state.emailError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid Email.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid Email.</Text>
       }
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-              <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20}}>Email Address *</Text>
+              <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20,fontFamily:'robotoRegular'}}>Email Address *</Text>
               <Input style={{borderBottomWidth: 0}}
               autoCapitalize={'none'}
               autoCorrect={false}
@@ -1634,18 +1699,18 @@ uncheckBoxDetail(id){
 
 
             <View style={{ marginTop:Metrics.screenHeight/20}}>
-            <Text style={{ fontSize:12,color:'#333333'}}>Property Detail</Text> 
+            <Text style={{ fontSize:12,color:'#333333',fontFamily:'robotoBold'}}>Property Detail</Text> 
          </View>
 
          <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyStreet &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
        {this.state.streetError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid street</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid street</Text>
       }
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30}}>Street *</Text>
+        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30,fontFamily:'robotoRegular'}}>Street *</Text>
         <Input style={{borderBottomWidth: 0}}
         autoCapitalize={'none'}
         autoCorrect={false}
@@ -1673,14 +1738,14 @@ uncheckBoxDetail(id){
           
  <View style={{marginTop:Metrics.screenHeight/40}}>
  {this.state.emptyCity &&
- <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+ <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
  }
    {this.state.cityError &&
- <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid city.</Text>
+ <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid city.</Text>
  }
      <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0,}}>
         
-            <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12}}>City *</Text>
+            <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12,fontFamily:'robotoRegular'}}>City *</Text>
         
         <Input 
         style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
@@ -1711,13 +1776,13 @@ uncheckBoxDetail(id){
 
        <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyState &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
        {this.state.stateError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid state.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid state.</Text>
       }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>State *</Text>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>State *</Text>
        <Input 
        maxLength={30}
        value={this.state.statee}
@@ -1749,17 +1814,17 @@ uncheckBoxDetail(id){
 
 <View style={{marginTop:Metrics.screenHeight/40}}>
 {this.state.emptyZip &&
-<Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+<Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
 }
 {this.state.zipError &&
-<Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid Zipcode.</Text>
+<Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid Zipcode.</Text>
 }
  {this.state.ziplength &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Min 4 characters required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Min 4 characters required.</Text>
       }
 
     <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10}}>Zip *</Text>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10,fontFamily:'robotoRegular'}}>Zip *</Text>
        <Input
        maxLength={10}
        autoCapitalize={'none'}
@@ -1787,10 +1852,10 @@ uncheckBoxDetail(id){
 
 <View style={{marginTop:Metrics.screenHeight/40}}>
         {this.state.emptyAddress &&
-        <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+        <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
         }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20}}>Address * </Text>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20,fontFamily:'robotoRegular'}}>Address * </Text>
        <Input 
        maxLength={50}
        value={this.state.Address}
@@ -1821,13 +1886,13 @@ uncheckBoxDetail(id){
 
       <View style={{marginTop:Metrics.screenHeight/40}}>
       {this.state.emptyCountry &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*This field is required.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*This field is required.</Text>
       }
         {this.state.countryError &&
-      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40}}>*Invalid country.</Text>
+      <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid country.</Text>
       }
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22}}>Country * </Text>
+       <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>Country * </Text>
        <Input 
        maxLength={30}
        value={this.state.Country}
@@ -1865,11 +1930,11 @@ uncheckBoxDetail(id){
                       
                         <View style={{marginTop:Metrics.screenHeight/30, flexDirection:'row'}}>
                            <View style={{flex:0.3}}>
-                              <Text style={{color:'#333333', fontSize:12}}>Details</Text>
+                              <Text style={{color:'#333333', fontSize:12, fontFamily:'robotoBold'}}>Details</Text>
                             </View>
                             <View style={{flex:0.7, alignItems:'flex-start'}}>
                             { this.state.checkTicked === 0 &&
-                               <Text style={{ fontSize:12,color:'gray'}}>(Atleast one detail is required.)</Text> 
+                               <Text style={{ fontSize:12,color:'#7a7a7a',fontFamily:'robotoRegular'}}>(Atleast one detail is required.)</Text> 
                             }
                             </View>
                          </View> 
@@ -1881,40 +1946,15 @@ uncheckBoxDetail(id){
                         </View>
 
 
-                        {/* <View style={{marginTop:Metrics.screenHeight/30,flexDirection:'column'}}>
-                        <View>
-                        {this.state.emptyNotes &&
-                         <Text style={{fontSize:12,color:'red'}}>*This field is required.</Text>
-                         }
-                          </View>
-                        
-                                   <Text style={{color:'#333333',fontSize:12}}>Notes</Text>
-                           
-                              
-                            </View>
-
-                            <View>
-
-                          <Input style={{borderBottomWidth: 0.7, borderColor:'#A3A3A3'}}
-                            autoCapitalize={'none'}
-                            autoCorrect={false}
-                            returnKeyType="next"
-                            autoFocus ={false}
-                           value={this.state.Notes}
-                          multiline={true}
-                          maxLength={250}
-                        onBlur={()=>this.onDeactiveNotes()} 
-                        onTouchStart={()=>this.onActiveNotes()}
-                          onChangeText={(notes)=>this.setState({ Notes:notes, emptyNotes:false})}/>
-                        </View>   */}
+                       
 
 <View style={{marginTop:Metrics.screenHeight/30}}>
                {this.state.emptyNotes &&
-                         <Text style={{fontSize:12,color:'red'}}>*This field is required.</Text>
+                         <Text style={{fontSize:12,color:'red',fontFamily:'robotoRegular'}}>*This field is required.</Text>
                          }
 </View>
 
-<Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/90}}>Notes *</Label>
+<Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/90,fontFamily:'robotoRegular'}}>Notes *</Label>
                   <Item style={{marginTop:Metrics.screenHeight/70,backgroundColor:'transparent',borderBottomWidth: 0}}>
                    <Textarea
                     returnKeyType={"done"}
@@ -1958,15 +1998,17 @@ uncheckBoxDetail(id){
                    marginTop:Metrics.screenHeight/15,
                  
                    }}>
-                   <Text style={{color:"white", fontSize:14}}>SUBMIT LEAD</Text>
+                   <Text style={{color:"white", fontSize:14,fontFamily:'robotoRegular'}}>SUBMIT LEAD</Text>
                     
                    </TouchableOpacity>
 
                </View>
                    </View>  
-       
+          }
             </Content>
+          
             </Container>
+                  
         )
     }
 }

@@ -47,12 +47,7 @@ test:any
 
     this.setState({page:1,data:[]})
     this.componentWillMount();
-    // setTimeout(() => {
-    //   this.setState({ isload: true });
-    //   NavActions.pop();
-    // }, 1000);
-
-   // NavActions.drawer();
+   
 
   }
 
@@ -280,7 +275,7 @@ fetchData= async() => {
              flexDirection:'column',
               marginLeft:Metrics.screenWidth/30,}}>
               <View  style={{alignItems:'flex-start',justifyContent:"center",marginTop:Metrics.screenHeight/120,flex:0.2, }}>
-                 <Text style={{color:'#333333', fontSize:16,fontFamily:'robotoMedium'}}>{item.title} </Text>
+                 <Text style={{color:'#333333', fontSize:16,fontFamily:'robotoBold'}}>{item.title} </Text>
               </View>
 
               <View style={{flex:0.5, }}>
@@ -290,7 +285,7 @@ fetchData= async() => {
               <View style={{ flex:0.3,}}>
                <TouchableOpacity style={{alignItems:'center', flexDirection:'row',}} onPress={ ()=> this.playVideo(item.watch_status,item.id,)}>
                <Image source={Images.viewdetail} style={{marginRight:Metrics.screenWidth/60,}}/>
-               <Text style={{fontSize:12, color:'#333333', justifyContent:'center',fontFamily:'robotoRegular'}}>View Detail</Text>
+               <Text style={{fontSize:12, color:'#333333', justifyContent:'center',fontFamily:'robotoBold'}}>View Detail</Text>
               </TouchableOpacity>
 
               </View>  
@@ -299,7 +294,7 @@ fetchData= async() => {
           </View> 
       </View>
 
-        <View style={{marginTop:12,height:1, backgroundColor:'#D3D3D3'}}>
+        <View style={{marginTop:12,height:0.4, backgroundColor:'#cecece'}}>
 
         </View>
      </View>

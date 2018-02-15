@@ -1,9 +1,10 @@
 import React, { Component} from 'react';
-import { Text, View,TouchableOpacity } from 'react-native';
+import { Text, View,TouchableOpacity, NetInfo } from 'react-native';
 import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, ListItem, H3,Left,Right} from 'native-base';
 import { ApplicationStyles, Colors, Metrics } from '../../theme';
 import {  Actions as NavActions } from 'react-native-router-flux';
 import styles from './FaqStyles';
+import {Font} from 'expo';
 
 export default class Faq extends Component {
     constructor(props){
@@ -14,10 +15,60 @@ export default class Faq extends Component {
             add:false,
             contact:false,
             password:false,
-            address:false
+            address:false,
+            isConnected:true,
+            isload:false,
         };
         
     }
+
+     // internet connection
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+    });
+    this.setState({isload:true});
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+        style: { marginBottom: 20 },
+        backgroundColor: Colors.snackBarColor,
+        textColor: Colors.white
+      });
+    }
+  };
 
     onPress = (item, Itemlength, items) => {
 
@@ -104,6 +155,8 @@ export default class Faq extends Component {
 
 
         return (
+            <Container>
+                {this.state.isload && 
             <View 
             style={{
                 flex:1,
@@ -141,7 +194,7 @@ export default class Faq extends Component {
         height:30,
         alignSelf:"center",
         justifyContent:'center',
-       
+       fontFamily:'robotoRegular',
         fontSize:13,
         color: item.clicked === false ? '#9B9B9B' : "black"}}
         >
@@ -159,7 +212,7 @@ export default class Faq extends Component {
         </TouchableOpacity> 
         {(item.clicked === true) &&
         <View style={{alignSelf:"flex-start"}}>
-       <Text style={{color:'#9B9B9B',fontSize:11}}>{item.answer}</Text>
+       <Text style={{color:'#9B9B9B',fontSize:11, fontFamily:'robotoRegular'}}>{item.answer}</Text>
        </View>
         
         }
@@ -167,6 +220,8 @@ export default class Faq extends Component {
      }
      />
 </View>
+                }
+</Container>
 
 )
 }

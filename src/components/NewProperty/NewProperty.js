@@ -115,39 +115,6 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col} from 'native-b
  </View>
 
 
-       {/* <View>
-       
-         <ModalDropdown options={['PUNJAB', 'HARYANA','HIMACHAL PRADESH']}
-             onTouchStart={()=>this.setState({city:false,street:false,zip:false,State:true})}  
-  onSelect={(idx, value)=>this.setState({state:value,city:false,street:false,zip:false})}
-  dropdownStyle={{width:Metrics.screenWidth-Metrics.screenWidth/15,}}>
-
-     <View  style={{marginTop:10,flexDirection:"column",marginTop:Metrics.screenHeight/20}}>
-        <View style={{flexDirection:'row',}}>
-         <Text style={{fontSize:11,color:'gray'}}>State * </Text>
-        <Text style={{color:'black',marginLeft:Metrics.screenWidth/50}}>{this.state.state}</Text>
-        </View>
-        { this.state.State === false ?
-            <Image source={Images.dropdownbar} resizeMode="contain"
-            style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
-                marginTop:-Metrics.screenHeight/120,
-          
-              
-              }}  />
-            :
-            <Image source={Images.dropdownbar_green} resizeMode="contain"
-            style={{width:Metrics.screenWidth-Metrics.screenWidth/15,  
-                marginTop:-Metrics.screenHeight/120,
-               
-            }}>
-               </Image>
-                }
-
-  </View>
-  </ModalDropdown>
-       </View>  */}
-
-
      
        <View style={{marginTop:Metrics.screenHeight/40}}>
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>

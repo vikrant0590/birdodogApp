@@ -1,11 +1,71 @@
 import React,{ Component} from 'react';
-import { Text, TouchableOpacity, View, Image,AsyncStorage} from 'react-native';
+import { Text, TouchableOpacity, View, Image,AsyncStorage,NetInfo} from 'react-native';
 import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, ListItem, H3,Left,Right} from 'native-base';
 import styles from './SettingsStyles';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
 import {  Actions as NavActions } from 'react-native-router-flux';
+import {Font} from 'expo';
+
 
 export default class Settings extends Component {
+
+constructor(){
+  super();
+  this.state={
+    isConnected:true,
+    isload:false,
+  }
+}
+
+ // internet connection
+
+ async componentDidMount() {
+  await Font.loadAsync({
+    bold: require('../../fonts/OpenSans-Bold.ttf'),
+  boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+  extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+  extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+  italic: require('../../fonts/OpenSans-Italic.ttf'),
+  light: require('../../fonts/OpenSans-Light.ttf'),
+  lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+  regular: require('../../fonts/OpenSans-Regular.ttf'),
+  semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+  semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+  robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+  robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+  });
+  this.setState({isload:true});
+  NetInfo.isConnected.addEventListener(
+    'change',
+    this._handleConnectivityChange
+  );
+  NetInfo.isConnected.fetch().done(
+    (isConnected) => { this.setState({isConnected}); }
+  );
+}
+
+componentWillUnmount() {
+  NetInfo.isConnected.removeEventListener(
+    'change',
+    this._handleConnectivityChange
+  );
+}
+
+_handleConnectivityChange = (isConnected) => {
+  this.setState({
+    isConnected,
+  });
+  console.log('connectionInfo', isConnected);
+  if(!this.state.isConnected){
+    SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+      style: { marginBottom: 20 },
+      backgroundColor: Colors.snackBarColor,
+      textColor: Colors.white
+    });
+  }
+};
+
+
 
     onPress = (item) => {
         console.log("INDEX", item.index);
@@ -33,6 +93,7 @@ export default class Settings extends Component {
             {index: 3, title: 'Need Help',  image:require('../../images/question.png')}];
         return(
           <Container style={{flex:1,marginTop:Metrics.navBarHeight, flexDirection:'column'}}>
+          {this.state.isload && 
             <View style={{flex:1}}>
                        
                         <List
@@ -77,7 +138,7 @@ export default class Settings extends Component {
             </View>
             
 
-
+                }
       
             </Container>
         )

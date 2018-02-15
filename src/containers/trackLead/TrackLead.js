@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component} from 'react';
 
-import { Text, View, Image, FlatList,ActivityIndicator,Platform ,ListView} from 'react-native';
+import { Text, View, Image, FlatList,ActivityIndicator,Platform ,ListView, NetInfo} from 'react-native';
 import { Container, Header, Content, Card, CardItem, Body ,Icon,List } from 'native-base';
 import { connect } from 'react-redux';
 import { getTrackList } from '../../redux/modules/auth';
@@ -9,7 +9,7 @@ import {  Colors , Images, Metrics} from '../../theme';
 import PropTypes, { array, any, object } from 'prop-types';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { register } from '../../redux/modules/auth';
-
+import {Font} from 'expo';
 
  class TrackLead extends Component {
 
@@ -31,12 +31,9 @@ import { register } from '../../redux/modules/auth';
             isVisible:false,
             recordLength:0,
             showMe:false,
+            isConnected:true,
+            isload:false,
 
-
-          
-         
-            
-        
         }
     }
     static  propTypes = {
@@ -49,6 +46,56 @@ import { register } from '../../redux/modules/auth';
       };
      
     
+
+// internet connection
+
+async componentDidMount() {
+  await Font.loadAsync({
+    bold: require('../../fonts/OpenSans-Bold.ttf'),
+  boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+  extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+  extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+  italic: require('../../fonts/OpenSans-Italic.ttf'),
+  light: require('../../fonts/OpenSans-Light.ttf'),
+  lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+  regular: require('../../fonts/OpenSans-Regular.ttf'),
+  semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+  semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+  robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+  robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+  });
+  this.setState({isload:true});
+  NetInfo.isConnected.addEventListener(
+    'change',
+    this._handleConnectivityChange
+  );
+  NetInfo.isConnected.fetch().done(
+    (isConnected) => { this.setState({isConnected}); }
+  );
+}
+
+componentWillUnmount() {
+  NetInfo.isConnected.removeEventListener(
+    'change',
+    this._handleConnectivityChange
+  );
+}
+
+_handleConnectivityChange = (isConnected) => {
+  this.setState({
+    isConnected,
+  });
+  console.log('connectionInfo', isConnected);
+  if(!this.state.isConnected){
+    SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+      style: { marginBottom: 20 },
+      backgroundColor: Colors.snackBarColor,
+      textColor: Colors.white
+    });
+  }
+};
+
+
 
 
    componentWillMount = ()=>{
@@ -109,7 +156,8 @@ import { register } from '../../redux/modules/auth';
       const isIOS = Platform.OS === 'ios';
        // console.log("******Render Data", this.state.data);
         return(
-              
+          <Container>
+            {this.state.isload && 
                <View style={{ marginTop:Metrics.navBarHeight,marginBottom:10,backgroundColor:'white',flex:1}}>
             
 
@@ -135,31 +183,31 @@ import { register } from '../../redux/modules/auth';
 
   <View style={{flexDirection:'row',height:Metrics.screenHeight/30,marginTop:Metrics.screenHeight/35}}>
       <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-     <Text style={{ color: "#8DB103", fontSize:20}}>{this.state.Heading.submitted}</Text>
+     <Text style={{ color: "#8DB103", fontSize:25,fontFamily:'robotoBold'}}>{this.state.Heading.submitted}</Text>
 
       </View>   
 
       <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-      <Text style={{ color: "#F0B20B", fontSize:20}}>{this.state.Heading.in_progress}</Text>
+      <Text style={{ color: "#F0B20B", fontSize:25,fontFamily:'robotoBold'}}>{this.state.Heading.in_progress}</Text>
       </View>  
 
       <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-      <Text style={{ color: "#01A9F2", fontSize:20}}>{this.state.Heading.finalized}</Text>
+      <Text style={{ color: "#01A9F2", fontSize:25,fontFamily:'robotoBold'}}>{this.state.Heading.finalized}</Text>
       </View> 
   </View>    
 
   <View style={{flexDirection:'row',height:15,}}>
       <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-     <Text style={{fontSize:10,color:'#7A7A7A'}}>SUBMITTED</Text>
+     <Text style={{fontSize:10,color:'#7A7A7A',fontFamily:'robotoRegular'}}>SUBMITTED</Text>
 
       </View>   
 
       <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-      <Text style={{fontSize:10,color:'#7A7A7A'}}>IN PROGRESS</Text>
+      <Text style={{fontSize:10,color:'#7A7A7A',fontFamily:'robotoRegular'}}>IN PROGRESS</Text>
       </View>  
 
       <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-      <Text style={{fontSize:10,color:'#7A7A7A'}}>FINALIZED</Text>
+      <Text style={{fontSize:10,color:'#7A7A7A',fontFamily:'robotoRegular'}}>FINALIZED</Text>
       </View> 
   </View>  
   
@@ -197,31 +245,31 @@ import { register } from '../../redux/modules/auth';
 
 <View style={{flexDirection:'row',height:Metrics.screenHeight/30,marginTop:Metrics.screenHeight/35}}>
 <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-<Text style={{ color: "#8DB103", fontSize:20}}>0</Text>
+<Text style={{ color: "#8DB103", fontSize:25,fontFamily:'robotoBold'}}>0</Text>
 
 </View>   
 
 <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-<Text style={{ color: "#F0B20B", fontSize:20}}>0</Text>
+<Text style={{ color: "#F0B20B", fontSize:25,fontFamily:'robotoBold'}}>0</Text>
 </View>  
 
 <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-<Text style={{ color: "#01A9F2", fontSize:20}}>0</Text>
+<Text style={{ color: "#01A9F2", fontSize:25,fontFamily:'robotoBold'}}>0</Text>
 </View> 
 </View>    
 
 <View style={{flexDirection:'row',height:15,}}>
 <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-<Text style={{fontSize:10,color:'#7A7A7A'}}>SUBMITTED</Text>
+<Text style={{fontSize:10,color:'#7A7A7A',fontFamily:'robotoBold'}}>SUBMITTED</Text>
 
 </View>   
 
 <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-<Text style={{fontSize:10,color:'#7A7A7A'}}>IN PROGRESS</Text>
+<Text style={{fontSize:10,color:'#7A7A7A',fontFamily:'robotoBold'}}>IN PROGRESS</Text>
 </View>  
 
 <View style={{flex:1,justifyContent:"center", alignItems:"center"}}>
-<Text style={{fontSize:10,color:'#7A7A7A'}}>FINALIZED</Text>
+<Text style={{fontSize:10,color:'#7A7A7A',fontFamily:'robotoBold'}}>FINALIZED</Text>
 </View> 
 </View>  
 
@@ -263,43 +311,44 @@ import { register } from '../../redux/modules/auth';
     <Card style={{flex:1, height:Metrics.screenHeight/4.5,marginLeft:Metrics.screenWidth/25, marginRight:Metrics.screenWidth/25,}}>
       <CardItem style={{flex:0.30,alignItems:"center", backgroundColor:"#F8F8F8"}}>
       <View style={{flexDirection:"column"}}>
-        <Text style={{ color:'#ADADAD',fontSize:13}}>{item.address} </Text>
-        <Text style={{marginTop:5,color:"#ADADAD", fontSize:11}}>{item.submit_date}</Text>
+        <Text style={{ color:'#333333',fontSize:13,fontFamily:'robotoRegular'}}>{item.address} </Text>
+        <Text style={{marginTop:5,color:"#ADADAD", fontSize:11,fontFamily:'robotoRegular'}}>{item.submit_date}</Text>
         </View>
       </CardItem>
 
-<View style={{ flex:0.01,height:0.1,backgroundColor:'#D3D3D3'}}></View>
-  <CardItem style={{flex:0.58}}>
-    <View style={{flexDirection:"column", flex:1,justifyContent:"center"}}>
+<View style={{ flex:0.01,height:0.1,backgroundColor:'#D3D3D3',}}></View>
+  <CardItem style={{flex:0.67,}}>
+    <View style={{flexDirection:"column", flex:1,justifyContent:"center",}}>
           <View style={{flexDirection:'row',flex:1}}>
              <View style={{flex:0.5, justifyContent:'flex-start', alignItems:'flex-start'}}>
-               <Text style={{ color:'#ADADAD',fontSize:11}}>Lead ID</Text>
+               <Text style={{ color:'#333333',fontSize:11,fontFamily:'robotoRegular'}}>Lead ID</Text>
              </View>
-            <View style={{flex:0.5,justifyContent:'flex-end', alignItems:'flex-end'}}>
-               <Text style={{ color:'#7a7a7a',fontSize:11}}>{item.id}</Text>
+            <View style={{flex:0.5,justifyContent:'flex-start', alignItems:'flex-end'}}>
+               <Text style={{ color:'#7a7a7a',fontSize:11,fontFamily:'robotoRegular'}}>{item.id}</Text>
             </View>
           </View>
 
           <View style={{flexDirection:'row',flex:1}}>
               <View style={{ flex:0.5, justifyContent:'flex-start', alignItems:'flex-start'}}>
-                <Text style={{ color:'#ADADAD',fontSize:11}}>Lead Status</Text>
+                <Text style={{ color:'#333333',fontSize:11,fontFamily:'robotoRegular'}}>Lead Status</Text>
               </View>
 
-               <View style={{flex:0.5, justifyContent:'flex-end', alignItems:'flex-end'}}>
-                 <Text style={{ fontSize:11, color:'gray'}}>{item.status}</Text>
+               <View style={{flex:0.5, justifyContent:'flex-start', alignItems:'flex-end'}}>
+                 <Text style={{ fontSize:11, color:'#7a7a7a',fontFamily:'robotoRegular'}}>{item.status}</Text>
               </View>
           </View>
 
-          <View style={{flexDirection:'row',flex:1}}>
+          <View style={{flexDirection:'row',flex:1,}}>
               <View style={{flex:0.5, justifyContent:'flex-start', alignItems:'flex-start'}}>
-                <Text style={{ color:'#ADADAD',fontSize:11}}>Pay Status</Text>
+                <Text style={{ color:'#333333',fontSize:11,fontFamily:'robotoRegular'}}>Pay Status</Text>
               </View>
 
-               <View style={{flex:0.5, justifyContent:'flex-end', alignItems:'flex-end'}}>
+               <View style={{flex:0.5, justifyContent:'flex-start', alignItems:'flex-end'}}>
                  <Text
                   style={{
                        fontSize:11,
-                       color: item.payment_status === 'PENDING'? '#F1B30B' : item.payment_status ==='PAID' ? '#01a9f2' :  '#333333'                   
+                       color: item.payment_status === 'Pending'? '#F1B30B' : item.payment_status ==='Paid' ? '#01a9f2' :  '#333333',
+                       fontFamily:'robotoBold'                   
                         }}>
                  {item.payment_status}</Text>
               </View>
@@ -316,14 +365,15 @@ import { register } from '../../redux/modules/auth';
     
  :
  <View style={{flex:0.8,marginTop:Metrics.screenHeight/30,alignItems:'center', justifyContent:'center'}}>
- <CardItem style={{flex:0.2,backgroundColor:"#01A9F2"}}>
-  <Text style={{fontSize:16}}>No Records Found!</Text>       
+ <CardItem style={{flex:0.2,backgroundColor:"transparent"}}>
+  <Text style={{fontSize:17,fontFamily:'robotoRegular'}}>No Records Found!</Text>       
   </CardItem>
 </View>          
 
 }
                 </View>
-
+            }
+</Container>
         )
     }
 }

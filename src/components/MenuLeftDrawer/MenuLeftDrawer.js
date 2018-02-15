@@ -219,7 +219,7 @@ import {Font} from 'expo';
                  <View style={{flex:0.15,backgroundColor:'#212121',flexDirection:'row', alignItems:"center"}}>
                  <View style={{borderRadius: 30,width: 60,height: 60, 
                    backgroundColor:'#74930A',marginLeft:Metrics.screenWidth/25, justifyContent:"center",alignItems:"center"}}>
-                  <H3 style={{color:'white',  backgroundColor:'transparent', fontFamily:'robotoRegular'}}>{this.state.FirstNameChar}</H3>
+                  <H3 style={{color:'white',  backgroundColor:'transparent', fontFamily:'robotoBold'}}>{this.state.FirstNameChar}</H3>
                 </View>
             <View style={{flex:1,marginLeft:5}}>
              <Text style={{color:'white',fontSize:15, fontFamily:'robotoRegular'}}>{this.state.data.name}</Text>

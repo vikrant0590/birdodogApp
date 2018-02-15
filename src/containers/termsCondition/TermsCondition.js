@@ -1,12 +1,70 @@
 import React, { Component } from 'react';
-import { View, Text,} from 'react-native';
-import {Content} from 'native-base';
+import { View, Text,NetInfo} from 'react-native';
+import {Content, Container} from 'native-base';
 import { ApplicationStyles, Colors, Metrics } from '../../theme';
+import {Font} from 'expo';
 
 
 export default class TermsCondition extends Component {
+    constructor(){
+        super();
+        this.state={
+            isConnected:true,
+            isload:false,
+        }
+    }
+
+    // internet connection
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+    });
+    this.setState({isload:true});
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+        style: { marginBottom: 20 },
+        backgroundColor: Colors.snackBarColor,
+        textColor: Colors.white
+      });
+    }
+  };
     render(){
         return(
+            <Container>
+                {this.state.isload && 
             <Content>
             
             <View style={{marginTop:Metrics.navBarHeight, 
@@ -14,6 +72,7 @@ export default class TermsCondition extends Component {
              marginLeft:Metrics.screenWidth/25 ,
              marginRight:Metrics.screenWidth/25,
              marginBottom:Metrics.screenHeight/7,
+             fontFamily:'robotoRegular'
               }}>
             
               <Text style={{color:'#878787', fontSize:12, marginTop:Metrics.screenHeight/30}}>
@@ -61,6 +120,8 @@ export default class TermsCondition extends Component {
 
              </View>   
              </Content>
+                }
+             </Container>
         )
     }
 }

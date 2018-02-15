@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity, NetInfo} from 'react-native';
 import { ApplicationStyles, Colors, Metrics } from '../../theme';
 import {Container, Content, Header, Form, Item, Input, Label , Button,Textarea, Icon} from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -7,6 +7,10 @@ import PropTypes from 'prop-types';
 import { toast } from '../../helpers/ToastMessage';
 import { connect } from 'react-redux';
 import { needHelp } from '../../redux/modules/auth';
+import {Font} from 'expo';
+
+
+
  class NeedHelp extends Component {
      constructor(props){
          super(props);
@@ -14,7 +18,9 @@ import { needHelp } from '../../redux/modules/auth';
          UserToken : undefined,
          subject:undefined,
          message:undefined,
-         isVisible:false
+         isVisible:false,
+         isConnected:true,
+       isload:false,
          }
      }
 
@@ -22,6 +28,61 @@ import { needHelp } from '../../redux/modules/auth';
     store: PropTypes.object,
     register: PropTypes.object
   };
+
+
+
+
+
+  // internet connection
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+    });
+    this.setState({isload:true});
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+        style: { marginBottom: 20 },
+        backgroundColor: Colors.snackBarColor,
+        textColor: Colors.white
+      });
+    }
+  };
+
+
+
   componentWillMount(){
     console.log("....",this.state.user);
     this.state.UserToken = this.props.auth.user.data.token;
@@ -60,6 +121,8 @@ import { needHelp } from '../../redux/modules/auth';
         console.log("NEED HELP TOKEN",this.state.UserToken);
         
         return(
+          <Container>
+            {this.state.isload && 
             <View style={{
                 flex:1,
                 marginTop:Metrics.navBarHeight,
@@ -67,11 +130,11 @@ import { needHelp } from '../../redux/modules/auth';
                 marginRight:Metrics.screenWidth/24}}>
                  <Spinner visible={this.state.isVisible} textContent={"Sending..."} textStyle={{color:'white'}} />
                <View style={{marginTop:Metrics.screenHeight/28,flexDirection:"column"}}>
-                   <Text style={{ fontSize:14}}>If you have any query. Please fill below form. We will try to contact you asap.</Text>
+                   <Text style={{ fontSize:14,fontFamily:'robotoRegular'}}>If you have any query. Please fill below form. We will try to contact you asap.</Text>
  
                    <Item floatingLabel
                    style={{marginTop:Metrics.screenHeight/35}}>
-                    <Label style={{color:"#A3A3A3",fontSize:13}}>Write Subject</Label>
+                    <Label style={{color:"#A3A3A3",fontSize:13,fontFamily:'robotoRegular'}}>Write Subject</Label>
 
                     <Input  style={{fontSize:15,}}
                     value={this.state.subject}
@@ -86,7 +149,7 @@ import { needHelp } from '../../redux/modules/auth';
                        this.setState({subject});
                      }}/>
                   </Item>
-                 <Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/55}}>Your Message...</Label>
+                 <Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/55,fontFamily:'robotoRegular'}}>Your Message...</Label>
                   <Item style={{marginTop:Metrics.screenHeight/70}}>
                    <Textarea
                     returnKeyType={"done"}
@@ -111,13 +174,15 @@ import { needHelp } from '../../redux/modules/auth';
                    onPress={()=>this.sendQuery()}
                    style={{borderRadius:20,width:Metrics.screenWidth/1.1,height:35,justifyContent:"center",alignItems:"center",
                    backgroundColor:'#8CB102',}}>
-                   <Text style={{color:"white", fontSize:16}}>SUBMIT QUERY</Text>
+                   <Text style={{color:"white", fontSize:16,fontFamily:'robotoRegular'}}>SUBMIT QUERY</Text>
                     
                    </TouchableOpacity>
                        </View>
                </View>    
 
             </View>    
+            }
+            </Container>
         )
     }
 

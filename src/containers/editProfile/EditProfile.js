@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, NetInfo} from 'react-native';
 import {Content, Form, Item, Label, Input, Icon, Container, StyleProvider, Row, Col} from 'native-base';
 import {  Colors , Images, Metrics} from '../../theme';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -8,7 +8,7 @@ import { userupdate, getProfile } from '../../redux/modules/auth';
 import PropTypes, { any } from 'prop-types';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
-
+import {Font} from 'expo';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -83,7 +83,53 @@ import {Actions} from 'react-native-router-flux';
   };
 
 
+  // internet connection
 
+  async componentDidMount() {
+    await Font.loadAsync({
+      bold: require('../../fonts/OpenSans-Bold.ttf'),
+    boldItalic: require('../../fonts/OpenSans-BoldItalic.ttf'),
+    extraBold: require('../../fonts/OpenSans-ExtraBold.ttf'),
+    extraBoldItalic:require('../../fonts/OpenSans-ExtraBoldItalic.ttf'),
+    italic: require('../../fonts/OpenSans-Italic.ttf'),
+    light: require('../../fonts/OpenSans-Light.ttf'),
+    lightItalic: require('../../fonts/OpenSans-LightItalic.ttf'),
+    regular: require('../../fonts/OpenSans-Regular.ttf'),
+    semiBoldItalic: require('../../fonts/OpenSans-SemiboldItalic.ttf'),
+    semiBold: require('../../fonts/OpenSans-Semibold.ttf'),
+    robotoRegular: require('../../fonts/Roboto-Regular.ttf'),
+    robotoMedium:require('../../fonts/Roboto-Medium.ttf'),
+    });
+    this.setState({isload:true});
+    NetInfo.isConnected.addEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+    NetInfo.isConnected.fetch().done(
+      (isConnected) => { this.setState({isConnected}); }
+    );
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener(
+      'change',
+      this._handleConnectivityChange
+    );
+  }
+
+  _handleConnectivityChange = (isConnected) => {
+    this.setState({
+      isConnected,
+    });
+    console.log('connectionInfo', isConnected);
+    if(!this.state.isConnected){
+      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+        style: { marginBottom: 20 },
+        backgroundColor: Colors.snackBarColor,
+        textColor: Colors.white
+      });
+    }
+  };
   
   componentWillMount(){
     this.state.UserToken = this.props.auth.user.data.token;
@@ -379,20 +425,22 @@ import {Actions} from 'react-native-router-flux';
           <Container>
           
           <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{color:'white'}} />
-
-             <Content style={{flex:1,marginTop:Metrics.navBarHeight, }}>
-                <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10}}>Personel Information</Text>
+         <View style={{flex:1,marginTop:Metrics.navBarHeight, }}>
+         {this.state.isload && 
+             <Content >
+       
+                <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10, fontFamily:'robotoRegular'}}>Personel Information</Text>
               <Form style={{ marginBottom:20}}>
               <View style={{flex:1,flexDirection:'row',marginLeft:Metrics.screenWidth/8.5,marginTop:Metrics.screenHeight/45,marginBottom:-10,}}>
                    <View style={{flex:0.4}}>
-                      <Text style={{fontSize:13,color:'#A3A3A3'}}>Name *</Text> 
+                      <Text style={{fontSize:13,color:'#A3A3A3',fontFamily:'robotoRegular'}}>Name *</Text> 
                  </View>
                  <View style={{flex:0.6, alignItems:'flex-start'}}>
                      { this.state.nameError &&
-                   <Text style={{fontSize:12, color:'red'}}>Only Characters allowed.</Text> 
+                   <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>Only Characters allowed.</Text> 
                     }
                         { this.state.emptyName &&
-                   <Text style={{fontSize:12, color:'red'}}>This field is required.</Text> 
+                   <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>This field is required.</Text> 
                     }
                   </View> 
               </View>
@@ -403,7 +451,7 @@ import {Actions} from 'react-native-router-flux';
                   <Input type="text"
                   value={this.state.name1}
                  
-                   autoCapitalize="none" 
+                   autoCapitalize="words" 
                    autoCorrect={false}
                    returnKeyType="next"
                    autoFocus ={false}
@@ -463,17 +511,17 @@ import {Actions} from 'react-native-router-flux';
 
        <View style={{flex:1,flexDirection:'row',marginLeft:Metrics.screenWidth/8.5,marginTop:Metrics.screenHeight/45,marginBottom:-10,}}> 
               <View style={{flex:0.4}}>  
-                <Text style={{fontSize:13,color:'#A3A3A3'}} >Phone Number *</Text>
+                <Text style={{fontSize:13,color:'#A3A3A3',fontFamily:'robotoRegular'}} >Phone Number *</Text>
                </View> 
                  <View  style={{flex:0.6,alignItems:'flex-start'}}>
                  { this.state.mobileSyntaxError &&
-              <Text style={{fontSize:12, color:'red'}}>Phone number not valid.</Text> 
+              <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>Phone number not valid.</Text> 
               }
                 { this.state.mobileError &&
-              <Text style={{fontSize:12, color:'red'}}>Min 10 digits required.</Text> 
+              <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>Min 10 digits required.</Text> 
               }
                     { this.state.emptyMobile &&
-                   <Text style={{fontSize:12, color:'red'}}>This field is required.</Text> 
+                   <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>This field is required.</Text> 
                     }
               </View>
 
@@ -509,14 +557,14 @@ import {Actions} from 'react-native-router-flux';
 
 
 
-                  <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10,marginRight:10}}>Location</Text>
+                  <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10,marginRight:10,fontFamily:'robotoRegular'}}>Location</Text>
                   <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                   <View style={{flex:0.2}}>
-                  <Text style={{fontSize:13,color:'#A3A3A3'}}>Address *</Text>
+                  <Text style={{fontSize:13,color:'#A3A3A3',fontFamily:'robotoRegular'}}>Address *</Text>
                   </View>
                      <View style={{flex:0.8, alignItems:'flex-start'}}>
                      {this.state.emptyAddress &&
-                  <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
+                  <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>This field is required.</Text>
                      }
                   </View>
                  </View>
@@ -524,7 +572,7 @@ import {Actions} from 'react-native-router-flux';
                   <Input
                    type="text"
                    value={this.state.address1}
-                   autoCapitalize="none"
+                   autoCapitalize="words" 
                    autoCorrect={false}
                    maxLength={50}
                   style={{marginBottom:-9,borderBottomWidth:0,fontSize:13}} 
@@ -547,14 +595,14 @@ import {Actions} from 'react-native-router-flux';
       
             <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-               <Text style={{fontSize:13,color:'#A3A3A3'}}>City *</Text>
+               <Text style={{fontSize:13,color:'#A3A3A3',fontFamily:'robotoRegular'}}>City *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   { this.state.cityError &&
-               <Text style={{ color:'red',fontSize:12}}>City not valid.</Text>
+               <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>City not valid.</Text>
                   }
                      { this.state.emptyCity &&
-               <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>This field is required.</Text>
                   }
                </View>
             </View>
@@ -565,7 +613,7 @@ import {Actions} from 'react-native-router-flux';
                   value={this.state.city1}
 
                   style={{marginBottom:-9,borderBottomWidth: 0,fontSize:13}}  
-                  autoCapitalize="none"
+                  autoCapitalize="words" 
                  autoCorrect={false}
                  onBlur={()=>this.onDeactiveCity()}
                   onTouchStart={()=>this.onActiveCity()}
@@ -583,14 +631,14 @@ import {Actions} from 'react-native-router-flux';
 
             <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-                   <Text style={{fontSize:13,color:'#A3A3A3'}}>State *</Text>
+                   <Text style={{fontSize:13,color:'#A3A3A3',fontFamily:'robotoRegular'}}>State *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   {this.state.stateError &&
-                      <Text style={{ color:'red',fontSize:12}}>State not valid.</Text>
+                      <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>State not valid.</Text>
                   }
                      { this.state.emptyState &&
-               <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>This field is required.</Text>
                   }
                </View>
             </View>
@@ -601,7 +649,7 @@ import {Actions} from 'react-native-router-flux';
                    value={this.state.state1}
                    maxLength={30}
                    style={{marginBottom:-9,borderBottomWidth: 0,fontSize:13}}  
-                   autoCapitalize="none"
+                   autoCapitalize="words" 
                   autoCorrect={false}
                   onBlur={()=>this.onDeactiveState()}
                    onTouchStart={()=>this.onActiveState()}
@@ -621,17 +669,17 @@ import {Actions} from 'react-native-router-flux';
       
          <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-                   <Text style={{fontSize:13,color:'#A3A3A3'}}>Zip *</Text>
+                   <Text style={{fontSize:13,color:'#A3A3A3',fontFamily:'robotoRegular'}}>Zip *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   { this.state.zipError &&
-                     <Text style={{ color:'red',fontSize:12}}>Zipcode not valid.</Text>
+                     <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>Zipcode not valid.</Text>
                   }
                      { this.state.emptyZip &&
-               <Text style={{ color:'red',fontSize:12}}>*This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>*This field is required.</Text>
                   }
                        { this.state.zipLength &&
-               <Text style={{ color:'red',fontSize:12}}>Min 4 Characters required.</Text>
+               <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>Min 4 Characters required.</Text>
                   }
                </View>
             </View>
@@ -658,19 +706,19 @@ import {Actions} from 'react-native-router-flux';
 
 
 
-               <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10,marginRight:10}}>Texas Drivers Licence</Text>
+               <Text style={{marginTop:Metrics.screenHeight/35,marginLeft:10,marginRight:10,fontFamily:'robotoRegular'}}>Texas Drivers Licence</Text>
 
                  
             <View style={{ flex:1,flexDirection:'row', marginLeft:Metrics.screenWidth/19,marginTop:Metrics.screenHeight/45, marginBottom:-10}}>
                <View style={{flex:0.2}}>
-               <Text style={{fontSize:13,color:'#A3A3A3'}}>TXTDL *</Text>
+               <Text style={{fontSize:13,color:'#A3A3A3',fontFamily:'robotoRegular'}}>TXTDL *</Text>
                </View>
                   <View style={{flex:0.8, alignItems:'flex-start'}}>
                   {this.state.txdlError &&
-               <Text style={{ color:'red',fontSize:12}}>txtdl not valid.</Text>
+               <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>txtdl not valid.</Text>
                   }
                      {this.state.emptyTxdl &&
-               <Text style={{ color:'red',fontSize:12}}>This field is required.</Text>
+               <Text style={{ color:'red',fontSize:12,fontFamily:'robotoRegular'}}>This field is required.</Text>
                   }
                </View>
             </View>
@@ -701,14 +749,15 @@ import {Actions} from 'react-native-router-flux';
                   onPress={()=> this.checkError()}
                    style={{borderRadius:20,width:Metrics.screenWidth/1.3,height:40,justifyContent:"center",alignItems:"center",
                    backgroundColor:'#8CB102',}}>
-                   <Text style={{color:"white", fontSize:16}}>SAVE CHANGES</Text>
+                   <Text style={{color:"white", fontSize:16,fontFamily:'robotoRegular'}}>SAVE CHANGES</Text>
                     
                    </TouchableOpacity>
                        </View>
               </Form>
-
+          
               </Content>
-
+         }
+           </View>
           </Container>
 
 

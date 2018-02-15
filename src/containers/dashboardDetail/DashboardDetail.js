@@ -273,7 +273,7 @@ NetInfo.isConnected.fetch().done(
       
        
                   }}>
-               <Text style={{fontSize:22, fontFamily:'robotoRegular'}}> {this.state.data.title}</Text>
+               <Text style={{fontSize:22, fontFamily:'robotoBold'}}> {this.state.data.title}</Text>
             
                <Text style={{color:'#878787', fontSize:15,marginTop:Metrics.screenHeight/50,flex:1,fontFamily:'robotoLight'}}>
 
@@ -320,9 +320,9 @@ NetInfo.isConnected.fetch().done(
                 
 
                  <View style={{flexDirection:'row', flex:0.6, }}>
-                   <Text style={{fontSize:11,color:'#333333'}}>I Agree with your</Text>
+                   <Text style={{fontSize:11,color:'#333333',fontFamily:'robotoRegular'}}>I Agree with your</Text>
                    <TouchableOpacity onPress={()=>this.setState({ open: true})}>
-                   <Text style={{fontSize:12}}> Terms and Conditions</Text>
+                   <Text style={{fontSize:12,fontFamily:'robotoBold'}}> Terms and Conditions</Text>
                    </TouchableOpacity>
                    </View>
                
@@ -342,7 +342,7 @@ NetInfo.isConnected.fetch().done(
                     alignItems:"center",
                    backgroundColor:'#8CB102',
                    }}>
-                   <Text style={{color:"white", fontSize:15}}>ACCEPT TERMS AND CONDITION</Text>
+                   <Text style={{color:"white", fontSize:15,fontFamily:'robotoRegular'}}>ACCEPT TERMS AND CONDITION</Text>
                     
                    </TouchableOpacity>
 
@@ -380,17 +380,18 @@ NetInfo.isConnected.fetch().done(
               }}>
               <View style={{flexDirection:'row'}}>
                   <View style={{flex:0.8,alignItems:'flex-start',}}>
-                   <Text style={{fontSize:17,}}>Terms and Conditions</Text>
+                   <Text style={{fontSize:17,fontFamily:'robotoBold'}}>Terms and Conditions</Text>
                    </View>
 
                    <View style={{flex:0.2, alignItems:'flex-end',}}>
+             
                      <TouchableOpacity onPress={()=>this.setState({open:false})}>
                         <Image source={Images.backgreen} resizeMode="contain"/>
                    </TouchableOpacity>
                    </View>
               </View>
             
-              <Text style={{color:'#878787', fontSize:12, marginTop:Metrics.screenHeight/30}}>
+              <Text style={{color:'#878787', fontSize:12, marginTop:Metrics.screenHeight/30, fontFamily:'robotoLight'}}>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
                when an unknown printer took a galley of type and scrambled it to make a type 
@@ -469,9 +470,9 @@ NetInfo.isConnected.fetch().done(
              
               }}>
              
-              <Text style={{color:'black', fontSize:17, marginTop:Metrics.screenHeight/30}}> Birddog Express </Text>
-               <Text style={{color:'gray', fontSize:12,marginTop:Metrics.screenHeight/70}}>Thanks for accepting terms & conditions.</Text>
-             <Text style={{color:'gray', fontSize:12}}>Congrats! You have unlocked next training video.</Text>
+              <Text style={{color:'black', fontSize:17, marginTop:Metrics.screenHeight/30,fontFamily:'robotoBold'}}> Birddog Express </Text>
+               <Text style={{color:'gray', fontSize:12,marginTop:Metrics.screenHeight/70,fontFamily:'robotoLight'}}>Thanks for accepting terms & conditions.</Text>
+             <Text style={{color:'gray', fontSize:12,fontFamily:'robotoLight'}}>Congrats! You have unlocked next training video.</Text>
              <TouchableOpacity onPress={()=>this.backToDashboard()} 
              style={{borderRadius:20,
               height:35,
@@ -482,7 +483,7 @@ NetInfo.isConnected.fetch().done(
            marginLeft:Metrics.screenWidth/7,
            marginRight:Metrics.screenWidth/7
            }}>
-             <Text style={{color:'white', fontSize:16}}>OK</Text></TouchableOpacity>
+             <Text style={{color:'white', fontSize:16,fontFamily:'robotoRegular'}}>OK</Text></TouchableOpacity>
 
 
              </View>   
