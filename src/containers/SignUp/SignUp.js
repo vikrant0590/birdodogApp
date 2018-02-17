@@ -185,12 +185,14 @@ export default class Signup extends Component {
                    onChangeText={(name) => {
                      this.setState({name});
                    }}
+                   onSubmitEditing={ (event) => { this.refs.Email._root.focus() }} 
                    />
              </Item>
         
                <Item style={{marginTop:Metrics.screenHeight/50}}>
                <Image source={Images.message} style={{resizeMode:'contain', marginRight:Metrics.screenWidth/30}}/>
                  <Input
+                 ref={'Email'}
                  value={this.state.email}
                    placeholder="Email"
                      placeholderTextColor={'#A3A3A3'} 
@@ -201,6 +203,7 @@ export default class Signup extends Component {
                      onChangeText={(email) => {
                        this.setState({email});
                      }}
+                     onSubmitEditing={ (event) => { this.refs.Password._root.focus() }} 
                      />
               </Item>
 
@@ -218,6 +221,7 @@ export default class Signup extends Component {
                <Item>
                <Image source={Images.lockgreen} style={{resizeMode:'contain', marginRight:Metrics.screenWidth/30}} />
                  <Input 
+                  ref={'Password'}
                  value={this.state.password}
                  placeholder="Password" 
                  placeholderTextColor={'#A3A3A3'}
@@ -228,12 +232,14 @@ export default class Signup extends Component {
                  onChangeText={(password) => {
                    this.setState({password});
                  }}
+                 onSubmitEditing={ (event) => { this.refs.confirmPassword._root.focus() }} 
                  />
             </Item>
         
                <Item style={{marginTop:Metrics.screenHeight/50}}>
                <Image source={Images.lockgreen} style={{resizeMode:'contain', marginRight:Metrics.screenWidth/30}}/>
                  <Input
+                 ref={'confirmPassword'}
                  value={this.state.confirmPassword}
                    placeholder="Confirm Password"
                      placeholderTextColor={'#A3A3A3'}
@@ -241,9 +247,11 @@ export default class Signup extends Component {
                         onChangeText={(confirmPassword) => {
                           this.setState({confirmPassword});
                         }}
+                      
                         />
               </Item>
               <Button rounded 
+             
               onPress={()=>this.handleSubmit()}
         style={{width:Metrics.screenWidth/1.15, marginTop:Metrics.screenHeight/10,justifyContent:"center",alignItems:"center",backgroundColor:"#8CB102"}}>
             <Text style={{color:"white",fontSize:16, fontFamily:'regular'}}>SIGN UP</Text>

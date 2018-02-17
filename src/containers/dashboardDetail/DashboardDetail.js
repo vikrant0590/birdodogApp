@@ -35,6 +35,8 @@ import Dasboard from '../dashboard';
 import {Font} from 'expo';
 
 
+import { toast } from '../../helpers/ToastMessage';
+
 export default class DashboardDetail extends BaseScreen   {
   constructor(props){
     super(props);
@@ -273,7 +275,7 @@ NetInfo.isConnected.fetch().done(
       
        
                   }}>
-               <Text style={{fontSize:22, fontFamily:'robotoBold'}}> {this.state.data.title}</Text>
+               <Text style={{fontSize:22, fontFamily:'robotoRegular'}}> {this.state.data.title}</Text>
             
                <Text style={{color:'#878787', fontSize:15,marginTop:Metrics.screenHeight/50,flex:1,fontFamily:'robotoLight'}}>
 
@@ -332,7 +334,7 @@ NetInfo.isConnected.fetch().done(
          
                <View style={{ flex:0.4,justifyContent:'flex-end',marginTop:Metrics.screenHeight/20}}>
                <TouchableOpacity  
-               onPress={()=> this.state.checked  ? this.updateStatus() : alert("please accept terms and condition")}
+               onPress={()=> this.state.checked  ? this.updateStatus() : alert("Please accept terms and condition")}
                    style={{borderRadius:20,
                       height:35,
                       

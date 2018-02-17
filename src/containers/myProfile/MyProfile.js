@@ -12,6 +12,8 @@ import api from '../../helpers/ApiClient';
 import {Font} from 'expo';
 
 
+import { toast } from '../../helpers/ToastMessage';
+
 class MyProfile extends Component {
     constructor(props){
         super(props);
@@ -169,7 +171,7 @@ class MyProfile extends Component {
                 
                 <View style={{flex:0.15, justifyContent:"center", alignItems:"center", backgroundColor:'transparent'}}>
                  <Image source={Images.phone}  />
-                   <Text style={{ fontSize:16, color:'#7a7a7a',marginTop:Metrics.screenHeight/85,fontFamily:'robotoRegular'}}>{this.state.data.mobile}</Text>
+                   <Text style={{ fontSize:16, color:'#7a7a7a',marginTop:Metrics.screenHeight/85,fontFamily:'robotoRegular'}}>{this.state.data.mobile ? this.state.data.mobile : 'No records'}</Text>
                </View>    
 
                
@@ -183,9 +185,13 @@ class MyProfile extends Component {
                </View>
 
              <View>
+             {this.state.data.city || this.state.data.state || this.state.data.zipcode ?
              <Text style={{fontSize:16, color:'#7a7a7a',fontFamily:'robotoRegular'}}>
                 {this.state.data.city} {this.state.data.state} {this.state.data.zipcode}
                </Text>
+             :
+             <Text style={{fontSize:16, color:'#7a7a7a',fontFamily:'robotoRegular'}}>No records</Text>
+             }
              </View>
              
 
@@ -204,7 +210,9 @@ class MyProfile extends Component {
                
                 <View style={{flex:0.1, justifyContent:"center", alignItems:"center",backgroundColor:'transparent'}}>
                    <Text style={{marginTop:Metrics.screenHeight/27,fontFamily:'robotoRegular'}}>TXTDL</Text>
-                   <Text style={{color:'#7a7a7a',marginTop:Metrics.screenHeight/85,fontSize:16,marginBottom:Metrics.screenHeight/85,height:Metrics.screenHeight/16,fontFamily:'robotoRegular'}}>{this.state.data.txdl}</Text>
+                   <Text style={{color:'#7a7a7a',marginTop:Metrics.screenHeight/85,fontSize:16,marginBottom:Metrics.screenHeight/85,height:Metrics.screenHeight/16,fontFamily:'robotoRegular'}}>
+                   {this.state.data.txdl ? this.state.data.txdl :'No records'}
+                   </Text>
 
                      
                    </View>

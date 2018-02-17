@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import {View, Text, TouchableOpacity, Image, NetInfo} from 'react-native';
+import {View, Text, TouchableOpacity, Image, NetInfo,Platform} from 'react-native';
 import {Content, Form, Item, Label, Input, Icon, Container, StyleProvider, Row, Col} from 'native-base';
 import {  Colors , Images, Metrics} from '../../theme';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -9,6 +9,7 @@ import PropTypes, { any } from 'prop-types';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { connect } from 'react-redux';
 import {Font} from 'expo';
+
 
 import {Actions} from 'react-native-router-flux';
 
@@ -123,11 +124,8 @@ import {Actions} from 'react-native-router-flux';
     });
     console.log('connectionInfo', isConnected);
     if(!this.state.isConnected){
-      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
-        style: { marginBottom: 20 },
-        backgroundColor: Colors.snackBarColor,
-        textColor: Colors.white
-      });
+      toast('Looks like you lost your internet connection. Please try again after your link is active')
+    
     }
   };
   
@@ -464,6 +462,7 @@ import {Actions} from 'react-native-router-flux';
                    
                     
                       }}
+                      onSubmitEditing={ (event) => { this.refs.phone._root.focus() }} 
                 
                     />
                 </Item>
@@ -515,7 +514,7 @@ import {Actions} from 'react-native-router-flux';
                </View> 
                  <View  style={{flex:0.6,alignItems:'flex-start'}}>
                  { this.state.mobileSyntaxError &&
-              <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>Phone number not valid.</Text> 
+              <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>Phone number is not valid.</Text> 
               }
                 { this.state.mobileError &&
               <Text style={{fontSize:12, color:'red',fontFamily:'robotoRegular'}}>Min 10 digits required.</Text> 
@@ -529,12 +528,13 @@ import {Actions} from 'react-native-router-flux';
               <Item  style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Image source={Images.phone} style={{ marginBottom:-9 }} />
                  <Input type="text"
+                 ref="phone"
                 value={this.state.mobile1}
                   maxLength={10}
                   autoCorrect={false}
-                  keyboardType='numeric'
+                  keyboardType={Platform.OS =='ios' ? "number-pad" :'numeric'}
               
-                  returnKeyType="next"
+                  returnKeyType='done'
                   autoFocus ={false}
                   
                   style={{marginBottom:-9,borderBottomWidth:0 , fontSize:13,marginLeft:Metrics.screenWidth/50}} 
@@ -544,6 +544,7 @@ import {Actions} from 'react-native-router-flux';
                         onChangeText={(mobile) => {
                           this.setState({mobile1:mobile,emptyMobile:false,error:false,mobileError:false,mobileSyntaxError:false, errorMobile:false});
                         }}
+                        onSubmitEditing={ (event) => { this.refs.address._root.focus() }} 
                  />
                </Item>
                { this.state.mobile === false ?
@@ -570,18 +571,20 @@ import {Actions} from 'react-native-router-flux';
                  </View>
                   <Item  style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
                   <Input
+                  ref="address"
                    type="text"
                    value={this.state.address1}
                    autoCapitalize="words" 
                    autoCorrect={false}
+                   returnKeyType="next"
                    maxLength={50}
                   style={{marginBottom:-9,borderBottomWidth:0,fontSize:13}} 
                  onBlur={()=>this.onDeactiveAddress()}
                   onTouchStart={()=>this.onActiveAddress()}
                   onChangeText={(address)=> this.setState({address1:address,emptyAddress:false,errorAddress:false})}
-                 
-                 
+                  onSubmitEditing={ (event) => { this.refs.city._root.focus() }} 
                   />
+           
                </Item>
                { this.state.address === false ?
                 <Image source={Images.bar} resizeMode="contain" 
@@ -609,16 +612,19 @@ import {Actions} from 'react-native-router-flux';
                   <Item  style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
                   
                  <Input type="text"
+                 ref="city"
                  maxLength={30}
                   value={this.state.city1}
-
+                  returnKeyType="next"
                   style={{marginBottom:-9,borderBottomWidth: 0,fontSize:13}}  
                   autoCapitalize="words" 
                  autoCorrect={false}
                  onBlur={()=>this.onDeactiveCity()}
                   onTouchStart={()=>this.onActiveCity()}
                   onChangeText={(city)=>this.setState({ city1:city,cityError:false,emptyCity:false,errorCity:false})}
+                  onSubmitEditing={ (event) => { this.refs.state._root.focus() }} 
                  />
+      
                </Item>
                { this.state.city === false ?
                 <Image source={Images.bar} resizeMode="contain" 
@@ -646,6 +652,8 @@ import {Actions} from 'react-native-router-flux';
             <Item  style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
                   
                   <Input type="text"
+                   ref="state"
+                   returnKeyType="next"
                    value={this.state.state1}
                    maxLength={30}
                    style={{marginBottom:-9,borderBottomWidth: 0,fontSize:13}}  
@@ -654,7 +662,9 @@ import {Actions} from 'react-native-router-flux';
                   onBlur={()=>this.onDeactiveState()}
                    onTouchStart={()=>this.onActiveState()}
                    onChangeText={(state)=>this.setState({ state1:state, stateError:false, emptyState:false, errorState:false})}
+                   onSubmitEditing={ (event) => { this.refs.zip._root.focus() }} 
                   />
+                   
                 </Item>
                 { this.state.states === false ?
                  <Image source={Images.bar} resizeMode="contain" 
@@ -685,6 +695,8 @@ import {Actions} from 'react-native-router-flux';
             </View>
                   <Item  style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
                   <Input type="text" 
+                  ref="zip"
+                  returnKeyType="next"
                   value={this.state.zip1}
                    maxLength={10}
                   style={{marginBottom:-9,borderBottomWidth:0,fontSize:13}}  
@@ -693,7 +705,9 @@ import {Actions} from 'react-native-router-flux';
                   onBlur={()=>this.onDeactiveZip()}
                    onTouchStart={()=>this.onActiveZip()}
                    onChangeText={(zip)=>this.setState({ zip1:zip, zipError:false, emptyZip:false,zipLength:false, errorZip:false})}
+                   onSubmitEditing={ (event) => { this.refs.txtdl._root.focus() }} 
                   />
+                  
                </Item>
                { this.state.zip === false ?
                 <Image source={Images.bar} resizeMode="contain" 
@@ -724,6 +738,7 @@ import {Actions} from 'react-native-router-flux';
             </View>
                   <Item  style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
                   <Input type="text" 
+                  ref="txtdl"
                     maxLength={45}
                     value={this.state.txdl1}
                    style={{marginBottom:-9,borderBottomWidth: 0, fontSize:13}} 

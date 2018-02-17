@@ -13,6 +13,9 @@ import { dashboard } from '../../redux/modules/auth';
 import { connect } from 'react-redux';
 import {Font} from 'expo';
 
+
+import { toast } from '../../helpers/ToastMessage';
+
 const propTypes = {
   homeSection: PropTypes.any,
 test:any

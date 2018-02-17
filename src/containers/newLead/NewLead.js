@@ -1,6 +1,6 @@
 import React, { Component} from 'react';
-import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight, NetInfo} from 'react-native';
-import { Container, Content,  Form, Item, Input, Label , Row,Col,Textarea} from 'native-base';
+import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight, NetInfo, Platform, TextInput, Keyboard} from 'react-native';
+import { Container, Content,  Form, Item, Input, Label , Row,Col,Textarea,InputGroup} from 'native-base';
  import {Metrics, Images,} from '../../theme';
  import { ImagePicker } from 'expo';
  import ModalDropdown from 'react-native-modal-dropdown';
@@ -31,7 +31,7 @@ import {Font} from 'expo';
             imageFourth:null,
             trashCliked:false,
             property_type:'self',
-            lead_images:[],
+            lead_images:[0,0,0,0],
             notes:undefined,
             UserToken:undefined,
             isVisible:false,
@@ -158,7 +158,7 @@ import {Font} from 'expo';
     });
     console.log('connectionInfo', isConnected);
     if(!this.state.isConnected){
-      SnackBar.show('Looks like you lost your internet connection. Please try again after your link is active', {
+      toast('Looks like you lost your internet connection. Please try again after your link is active', {
         style: { marginBottom: 20 },
         backgroundColor: Colors.snackBarColor,
         textColor: Colors.white
@@ -183,7 +183,7 @@ import {Font} from 'expo';
 
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
     });
     if (!result.cancelled) {
@@ -205,9 +205,13 @@ import {Font} from 'expo';
        .then((responseData) => {
       
         
-           
-           this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
-           console.log("LEAD ID",this.state.lead_images)
+           if(responseData.status === 200){
+             const id =JSON.parse(responseData._bodyInit).data.id;
+             console.log("IMAGE ID",id)
+          // this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
+          this.state.lead_images.splice(0,1,id)
+           console.log("LEAD ID",this.state.lead_images);
+           }
        })
        .catch(err => {
          console.log(err);
@@ -221,7 +225,7 @@ import {Font} from 'expo';
 
   _pickImageSecond = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
     });
     if (!result.cancelled) {
@@ -243,8 +247,13 @@ import {Font} from 'expo';
       
         
            
-           this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
-           console.log("LEAD ID****",this.state.lead_images)
+        if(responseData.status === 200){
+          const id =JSON.parse(responseData._bodyInit).data.id;
+          console.log("IMAGE ID",id)
+       // this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
+       this.state.lead_images.splice(1,1,id)
+        console.log("LEAD ID",this.state.lead_images);
+        }
        })
        .catch(err => {
          console.log(err);
@@ -255,7 +264,7 @@ import {Font} from 'expo';
 
   _pickImageThird = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
     });
     if (!result.cancelled) {
@@ -276,9 +285,13 @@ import {Font} from 'expo';
        .then((responseData) => {
       
         
-           
-           this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
-           console.log("LEAD ID",this.state.lead_images)
+        if(responseData.status === 200){
+          const id =JSON.parse(responseData._bodyInit).data.id;
+          console.log("IMAGE ID",id)
+       // this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
+       this.state.lead_images.splice(2,1,id)
+        console.log("LEAD ID",this.state.lead_images);
+        }
        })
        .catch(err => {
          console.log(err);
@@ -290,7 +303,7 @@ import {Font} from 'expo';
 
   _pickImageFourth = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [4, 3],
     });
     if (!result.cancelled) {
@@ -311,9 +324,13 @@ import {Font} from 'expo';
        .then((responseData) => {
       
         
-           
-           this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
-           console.log("LEAD ID",this.state.lead_images)
+        if(responseData.status === 200){
+          const id =JSON.parse(responseData._bodyInit).data.id;
+          console.log("IMAGE ID",id)
+       // this.state.lead_images.push(JSON.parse(responseData._bodyInit).data.id);
+       this.state.lead_images.splice(3,1,id)
+        console.log("LEAD ID",this.state.lead_images);
+        }
        })
        .catch(err => {
          console.log(err);
@@ -344,7 +361,8 @@ import {Font} from 'expo';
           
          console.log("delete Response", res);
          if(res.status === 200){
-          delete this.state.lead_images[0];
+         delete this.state.lead_images[0];
+         //this.state.lead_images.splice(0,1);
            console.log("after Delete",this.state.lead_images);
           
          }
@@ -375,6 +393,7 @@ import {Font} from 'expo';
        console.log("delete Response", res);
        if(res.status === 200){
         delete this.state.lead_images[1];
+      // this.state.lead_images.splice(1,1);
          console.log("after Delete",this.state.lead_images);
        }
      
@@ -401,6 +420,7 @@ deleteThird =()=>{
        console.log("delete Response", res);
        if(res.status === 200){
         delete this.state.lead_images[2];
+      // this.state.lead_images.splice(2,1);
          console.log("after Delete",this.state.lead_images);
          console.log("LENGth",this.state.lead_images.length())
        }
@@ -428,6 +448,7 @@ deleteFourth =()=>{
        console.log("delete Response", res);
        if(res.status === 200){
         delete this.state.lead_images[3];
+      // this.state.lead_images.splice(3,1);
          console.log("after Delete",this.state.lead_images);
        }
      
@@ -443,7 +464,7 @@ onPressSubmit = () => {
   const finalArray = [];
   const finalDetail=[];
     for(var i=0;i< this.state.lead_images.length; i++) {
-    if(this.state.lead_images[i]!= undefined){
+    if(this.state.lead_images[i]!= undefined && this.state.lead_images[i]!= 0){
     finalArray.push(this.state.lead_images[i]);
     }
       
@@ -551,7 +572,7 @@ onPressSubmit = () => {
     if(this.state.oemail === null || this.state.oemail ===undefined){
       this.setState({emptyEmail:true})
     }
-    toast('Form fields data missing or invalid Information .');
+    toast('Form fields data missing or invalid Information.');
   }
 }
 
@@ -562,7 +583,7 @@ onPressSubmit = () => {
   }
   onDeactiveStreet(){
     this.setState({ street:false});
-    const streetValdiation =/^[0-9a-zA-Z]*$/;
+    const streetValdiation =/^[0-9a-zA-Z ]*$/;
     if(this.state.Street ==='' || this.state.Street=== undefined){
         this.setState({emptyStreet:true, error: true})
     }else{
@@ -976,6 +997,7 @@ uncheckBoxDetail(id){
 }
 
 
+
     render(){
 
       var payments = [];
@@ -1052,14 +1074,19 @@ uncheckBoxDetail(id){
 		)
   
 }
+
+
         let { image, imageSecond, imageThird, imageFourth } = this.state;
         return(
+
           <Container style={{flex:1,marginTop: Metrics.navBarHeight }}>
 
               <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
 
-          <Content>
+              <Content>
+        
           {this.state.isload &&
+          
                    <View style={{flexDirection:"column",marginBottom: Metrics.screenHeight/8,marginLeft:Metrics.screenWidth/36,marginRight:Metrics.screenHeight/36,}}>
 
                      <View style={{marginTop:Metrics.screenHeight/40}}>
@@ -1071,7 +1098,7 @@ uncheckBoxDetail(id){
                           <View style={{flex:0.2}}>
                            
                            <TouchableOpacity 
-                          onPress={()=>this.newPropertyOnPress()} >
+                          onPress={()=>this.newPropertyOnPress()}  >
                             { this.state.newProperty ?
                       <Image source={Images.activeradio}/>
                             :
@@ -1118,223 +1145,224 @@ uncheckBoxDetail(id){
 
 
 
-                     <View style={{flexDirection:'row' ,marginTop:Metrics.screenHeight/30,marginBottom:Metrics.screenHeight/30}}>
-                        <View style={{flex:0.3}}>
-                          <Text style={{fontSize:12, color:'#333333',fontFamily:'robotoBold'}}>Uplaod Image</Text>
-                         </View>
+          <View style={{flexDirection:'row' ,marginTop:Metrics.screenHeight/30,marginBottom:Metrics.screenHeight/30}}>
+            <View style={{flex:0.3}}>
+              <Text style={{fontSize:12, color:'#333333',fontFamily:'robotoBold'}}>Uplaod Image</Text>
+              </View>
 
-                         <View style={{flex:0.7,alignItems:'flex-start'}}>
-                         {this.state.image === null && this.state.imageSecond === null && this.state.imageThird === null && this.state.imageFourth===null &&
-                          <Text style={{fontSize:12, color:'#7a7a7a',fontFamily:'robotoRegular'}}>( Atleast one image is required.)</Text>
-                         }
-                         </View>
-                     </View>
+              <View style={{flex:0.7,alignItems:'flex-start'}}>
+              {this.state.image === null && this.state.imageSecond === null && this.state.imageThird === null && this.state.imageFourth===null &&
+              <Text style={{fontSize:12, color:'#7a7a7a',fontFamily:'robotoRegular'}}>( Atleast one image is required.)</Text>
+              }
+              </View>
+          </View>
 
-                   
+        
+    
+          {image ?
+          
+          <View style={{width:Metrics.screenWidth/1.1,height:Metrics.screenHeight/4,}}>
+              
                 
-                     {image ?
-                     
-                      <View style={{width:Metrics.screenWidth/1.1,}}>
-                         
-                            
-                             
-                                 <Image source={{ uri: image }} 
-                                 style={{width:Metrics.screenWidth/1.1,height:Metrics.screenHeight/4,
-                                 }}>
-                          
-                                 </Image>
-                               
-                              
-                       </View>
-                      
-                     
-                       
-                       :
-                       <TouchableOpacity onPress={this._pickImage}>
-                         <View style={{
-                            
-                            borderColor:'#b4b4b4',
-                        borderRadius:1,
-                        borderWidth:1,
-                        borderStyle: 'dashed' ,
-                        width:Metrics.screenWidth/1.1,
-                        height:Metrics.screenHeight/4,
-                        justifyContent:"center",
-                        alignItems:"center",
-                        backgroundColor:'#ECECEC'
-                        }}>
-                        
-                               <Image source={Images.addico}/>
-                       </View>  
-                   </TouchableOpacity>
-                     }
-
-                     <View>
-                       { image &&
-                     
-                     <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/3.6,}}>
-                     <TouchableOpacity onPress={()=>this.deleteFirst()}>
-                      <Image source={Images.delimagelarge} ></Image>
-                      </TouchableOpacity>
-                      </View>
-                    
-                     }
-                     </View>
                   
-
-                     <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, }}>
-
-                     { imageSecond ?
-                     <View style={{marginTop:Metrics.screenHeight/70,marginRight:Metrics.screenWidth/40,}}>
-                     
-                          <View>
-                             <TouchableOpacity onPress={()=>this._pickImageSecond()}>
-                             <Image source={{ uri: imageSecond }}
-                             style={{  width:Metrics.screenWidth/3.5,   height:Metrics.screenHeight/10, }}  />
-                             </TouchableOpacity>
-                           </View>
-                 
-                   
-
-                   </View>
-                   :
-                   <TouchableOpacity onPress={()=>this._pickImageSecond()}>
-                 <View style={{
-                     marginTop:Metrics.screenHeight/70,
-                     marginRight:Metrics.screenWidth/40,
-                     borderColor:'#b4b4b4',
-                    borderRadius:1,
-                    borderWidth:0.7,
-                    borderStyle: 'dashed' ,
-                    width:Metrics.screenWidth/3.5,
-                    height:Metrics.screenHeight/10,
-                    justifyContent:"center",
-                   alignItems:"center",
-                    backgroundColor:'#ECECEC',
-                    flex:1
-                    }}>
-                     
-                           <Image source={Images.addico}/>   
-               </View>  
-               </TouchableOpacity>
+                      <Image source={{ uri: image }} 
+                                
+                      style={{width:Metrics.screenWidth/1.1,height:Metrics.screenHeight/4,
+                      }}>
+              
+                      </Image>
                     
-                     }
-
-
-                   { imageThird ?
-                     <View style={{marginTop:Metrics.screenHeight/70,flexDirection:'row',marginRight:Metrics.screenWidth/40,}}>
-                     
-                          <View>
-                          <TouchableOpacity onPress={()=>this._pickImageThird()}>
-                             <Image source={{ uri: imageThird }}
-                             style={{  width:Metrics.screenWidth/3.5,
-                                height:Metrics.screenHeight/10 }}  />
-                             </TouchableOpacity>
-                           </View>
-                 
                   
+            </View>
+          
+          
+            
+            :
+            <TouchableOpacity onPress={this._pickImage}>
+              <View style={{
+                
+                borderColor:'#b4b4b4',
+            borderRadius:1,
+            borderWidth:1,
+            borderStyle: 'dashed' ,
+            width:Metrics.screenWidth/1.1,
+            height:Metrics.screenHeight/4,
+            justifyContent:"center",
+            alignItems:"center",
+            backgroundColor:'#ECECEC'
+            }}>
+            
+                    <Image source={Images.addico}/>
+            </View>  
+        </TouchableOpacity>
+          }
 
-                   </View>
-                   :
-                   <TouchableOpacity onPress={()=>this._pickImageThird()}>
-                   <View style={{marginTop:Metrics.screenHeight/70,
-                     marginRight:Metrics.screenWidth/40,
-                     borderColor:'#b4b4b4',
-                    borderRadius:1,
-                    borderWidth:0.7,
-                    borderStyle: 'dashed' ,
-                    width:Metrics.screenWidth/3.5,
-                    height:Metrics.screenHeight/10,
-                    justifyContent:"center",
-                    alignItems:"center",
-                    backgroundColor:'#ECECEC'
-                    }}>
-                     
-                           <Image source={Images.addico}/>   
-               </View>  
-               </TouchableOpacity>
-                    
-                     }
+          <View>
+            { image &&
+          
+          <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/3.6,}}>
+          <TouchableOpacity onPress={()=>this.deleteFirst()}>
+          <Image source={Images.delimagelarge} ></Image>
+          </TouchableOpacity>
+          </View>
+        
+          }
+          </View>
+      
 
-              { imageFourth ?
-                     <View 
-                     style={{
-                       marginTop:Metrics.screenHeight/70,
-                       flexDirection:'row', 
-                       marginRight:Metrics.screenWidth/40,}}>
-                     
-                          <View>
-                          <TouchableOpacity onPress={()=>this._pickImageFourth}>
-                             <Image source={{ uri: imageFourth }}
-                             style={{  width:Metrics.screenWidth/3.5,
-                                height:Metrics.screenHeight/10,}}/>
-                             </TouchableOpacity>
-                           </View>
-                 
-                 
+          <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, }}>
 
-                   </View>
-                   :
-                   <TouchableOpacity onPress={()=>this._pickImageFourth()}>
-                   <View style={{marginTop:Metrics.screenHeight/70,
-                     marginRight:Metrics.screenWidth/40,
-                    borderColor:'#b4b4b4',
-                    borderRadius:1,
-                    borderWidth:0.7,
-                    borderStyle: 'dashed' ,
-                    width:Metrics.screenWidth/3.5,
-                    height:Metrics.screenHeight/10,
-                    justifyContent:"center",
-                    alignItems:"center",
-                    backgroundColor:'#ECECEC'
-                    }}>
-                     
-                           <Image source={Images.addico} style={{}}/>   
-               </View>  
-               </TouchableOpacity>
-                    
-                     }
+          { imageSecond ?
+          <View style={{marginTop:Metrics.screenHeight/70,marginRight:Metrics.screenWidth/40,}}>
+          
+              <View>
+                
+                  <Image source={{ uri: imageSecond }}
+                  style={{  width:Metrics.screenWidth/3.5,   height:Metrics.screenHeight/10, }}  />
+                
+                </View>
+      
+        
 
-                     </View>   
-                    {/* Cut image Here */}
-                     <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, flex:1, }}>
-                     <View style={{flex:1,marginLeft:Metrics.screenWidth/90}}>
-                       { imageSecond &&
-                     
-                     <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
-                     <TouchableOpacity onPress={()=>this.deleteSecond()}>
-                      <Image source={Images.delimagesmall} ></Image>
-                      </TouchableOpacity>
-                      </View>
-                    
-                     }
-                     </View>
-                     <View style={{flex:1,marginLeft:Metrics.screenWidth/42}}>
-                       { imageThird &&
-                     
-                     <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
-                     <TouchableOpacity onPress={()=>this.deleteThird()}>
-                      <Image source={Images.delimagesmall} ></Image>
-                      </TouchableOpacity>
-                      </View>
-                    
-                     }
-                     </View>
-                     <View style={{flex:1,marginLeft:Metrics.screenWidth/37}}>
-                       { imageFourth &&
-                     
-                     <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
-                     <TouchableOpacity onPress={()=>this.deleteFourth()}>
-                      <Image source={Images.delimagesmall}></Image>
-                      </TouchableOpacity>
-                      </View>
-                    
-                     }
-                     </View>
-                     </View>
+        </View>
+        :
+        <TouchableOpacity onPress={()=>this._pickImageSecond()}>
+      <View style={{
+          marginTop:Metrics.screenHeight/70,
+          marginRight:Metrics.screenWidth/40,
+          borderColor:'#b4b4b4',
+        borderRadius:1,
+        borderWidth:0.7,
+        borderStyle: 'dashed' ,
+        width:Metrics.screenWidth/3.5,
+        height:Metrics.screenHeight/10,
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:'#ECECEC',
+        flex:1
+        }}>
+          
+                <Image source={Images.addico}/>   
+    </View>  
+    </TouchableOpacity>
+        
+          }
+
+
+        { imageThird ?
+          <View style={{marginTop:Metrics.screenHeight/70,flexDirection:'row',marginRight:Metrics.screenWidth/40,}}>
+          
+              <View>
+              
+                  <Image source={{ uri: imageThird }}
+                  style={{  width:Metrics.screenWidth/3.5,
+                    height:Metrics.screenHeight/10 }}  />
+  
+                </View>
+      
+      
+
+        </View>
+        :
+        <TouchableOpacity onPress={()=>this._pickImageThird()}>
+        <View style={{marginTop:Metrics.screenHeight/70,
+          marginRight:Metrics.screenWidth/40,
+          borderColor:'#b4b4b4',
+        borderRadius:1,
+        borderWidth:0.7,
+        borderStyle: 'dashed' ,
+        width:Metrics.screenWidth/3.5,
+        height:Metrics.screenHeight/10,
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:'#ECECEC'
+        }}>
+          
+                <Image source={Images.addico}/>   
+    </View>  
+    </TouchableOpacity>
+        
+          }
+
+  { imageFourth ?
+          <View 
+          style={{
+            marginTop:Metrics.screenHeight/70,
+            flexDirection:'row', 
+            marginRight:Metrics.screenWidth/40,}}>
+          
+              <View>
+              <TouchableOpacity onPress={()=>this._pickImageFourth}>
+                  <Image source={{ uri: imageFourth }}
+                  style={{  width:Metrics.screenWidth/3.5,
+                    height:Metrics.screenHeight/10,}}/>
+                  </TouchableOpacity>
+                </View>
+      
+      
+
+        </View>
+        :
+        <TouchableOpacity onPress={()=>this._pickImageFourth()}>
+        <View style={{marginTop:Metrics.screenHeight/70,
+          marginRight:Metrics.screenWidth/40,
+        borderColor:'#b4b4b4',
+        borderRadius:1,
+        borderWidth:0.7,
+        borderStyle: 'dashed' ,
+        width:Metrics.screenWidth/3.5,
+        height:Metrics.screenHeight/10,
+        justifyContent:"center",
+        alignItems:"center",
+        backgroundColor:'#ECECEC'
+        }}>
+          
+                <Image source={Images.addico} style={{}}/>   
+    </View>  
+    </TouchableOpacity>
+        
+          }
+
+          </View>   
+        {/* Cut image Here */}
+          <View style={{flexDirection:'row',width:Metrics.screenWidth/1.1, flex:1, }}>
+          <View style={{flex:1,marginLeft:Metrics.screenWidth/90}}>
+            { imageSecond &&
+          
+          <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
+          <TouchableOpacity onPress={()=>this.deleteSecond()}>
+          <Image source={Images.delimagesmall} ></Image>
+          </TouchableOpacity>
+          </View>
+        
+          }
+          </View>
+          <View style={{flex:1,marginLeft:Metrics.screenWidth/42}}>
+            { imageThird &&
+          
+          <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
+          <TouchableOpacity onPress={()=>this.deleteThird()}>
+          <Image source={Images.delimagesmall} ></Image>
+          </TouchableOpacity>
+          </View>
+        
+          }
+          </View>
+          <View style={{flex:1,marginLeft:Metrics.screenWidth/37}}>
+            { imageFourth &&
+          
+          <View style={{alignItems:'flex-end',marginTop:-Metrics.screenHeight/30,}}>
+          <TouchableOpacity onPress={()=>this.deleteFourth()}>
+          <Image source={Images.delimagesmall}></Image>
+          </TouchableOpacity>
+          </View>
+        
+          }
+          </View>
+          </View>
                      
               
-                       {this.state.newProperty ?
+           { this.state.newProperty ?
       // New Property Form here    *****************************************
 
            <View>
@@ -1355,18 +1383,18 @@ uncheckBoxDetail(id){
       <Text style={{fontSize:11,color:'red', marginBottom:-Metrics.screenHeight/40,fontFamily:'robotoRegular'}}>*Invalid street</Text>
       }
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
-        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30,fontFamily:'robotoRegular'}}>Street *</Text>
-        <Input style={{borderBottomWidth: 0}}
+        <Label style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30,fontFamily:'robotoRegular'}}>Street *</Label>
+        <Input style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
           value={this.state.Street}
           maxLength={20}
-          autoCapitalize="none" 
+          autoCapitalize="words" 
              autoCorrect={false}
              returnKeyType="next"
              autoFocus ={false}
          onBlur={()=>this.onDeactiveStreet()}
          onTouchStart={()=>this.onActiveStreet()}
          onChangeText={(street)=>this.setState({ Street:street,emptyStreet:false,streetError:false})}
-         
+         onSubmitEditing={ (event) => { this.refs.city._root.focus() }} 
          />
 
      </Item>
@@ -1395,9 +1423,10 @@ uncheckBoxDetail(id){
                  <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12,fontFamily:'robotoRegular'}}>City *</Text>
              
              <Input 
+             ref='city'
              style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
              maxLength={30}
-             autoCapitalize="none" 
+             autoCapitalize="words" 
              autoCorrect={false}
              returnKeyType="next"
              autoFocus ={false}
@@ -1405,6 +1434,8 @@ uncheckBoxDetail(id){
               onBlur={()=>this.onDeactiveCity()}
                onTouchStart={()=>this.onActiveCity()}
                onChangeText={(city)=> this.setState({cityy:city,emptyCity:false,cityError:false})}
+               onSubmitEditing={ (event) => { this.refs.state._root.focus() }} 
+
                
                />
 
@@ -1433,16 +1464,19 @@ uncheckBoxDetail(id){
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>State *</Text>
        <Input 
+       ref="state"
        maxLength={30}
        value={this.state.statee}
        onBlur={()=>this.onDeactiveState()} 
        onTouchStart={()=>this.onActiveState()} 
         style={{borderBottomWidth: 0,}}
-        autoCapitalize="none" 
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
         onChangeText={(state)=>this.setState({statee:state,emptyState:false, stateError:false})}
+        onSubmitEditing={ (event) => { this.refs.zip._root.focus() }} 
+
         />
 
     </Item>
@@ -1476,6 +1510,7 @@ uncheckBoxDetail(id){
           <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
              <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10,fontFamily:'robotoRegular'}}>Zip *</Text>
              <Input
+             ref="zip"
              maxLength={10}
              autoCapitalize={'none'}
              autoCorrect={false}
@@ -1486,6 +1521,8 @@ uncheckBoxDetail(id){
                onTouchStart={()=>this.onActiveZip()}
                 style={{borderBottomWidth: 0, marginLeft:-Metrics.screenWidth/40}}
                 onChangeText={(zip)=>this.setState({zipp:zip,emptyZip:false, zipError:false,ziplength:false})}
+                onSubmitEditing={ (event) => { this.refs.address._root.focus() }} 
+
                 />
 
           </Item>
@@ -1508,16 +1545,19 @@ uncheckBoxDetail(id){
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>Address * </Text>
        <Input 
+       ref="address"
        maxLength={50}
        value={this.state.Address}
        onBlur={()=>this.onDeactiveAddress()} 
        onTouchStart={()=>this.onActiveAddress()} 
         style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
-        autoCapitalize="none" 
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
         onChangeText={(address)=>this.setState({Address:address, emptyAddress:false})}
+        onSubmitEditing={ (event) => { this.refs.country._root.focus() }} 
+
         />
 
     </Item>
@@ -1545,16 +1585,18 @@ uncheckBoxDetail(id){
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>Country * </Text>
        <Input 
+       ref="country"
        maxLength={30}
        value={this.state.Country}
        onBlur={()=>this.onDeactiveCountry()} 
        onTouchStart={()=>this.onActiveCountry()} 
         style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
-        autoCapitalize="none" 
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
         onChangeText={(country=>this.setState({Country:country,emptyCountry:false, countryError:false}))}
+         onSubmitEditing={ (event) => { this.refs.notes._root.focus() }} 
         />
 
     </Item>
@@ -1586,7 +1628,8 @@ uncheckBoxDetail(id){
              //Owner Property Form starts from Here ****************************************************
 
                               <View>
-            
+                                
+          
                    <View style={{ marginTop:Metrics.screenHeight/20}}>
             <Text style={{ fontSize:12,color:'#333333', fontFamily:'robotoBold'}}>Owner Contact Info</Text> 
          </View>
@@ -1602,7 +1645,7 @@ uncheckBoxDetail(id){
         <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/16,fontFamily:'robotoRegular'}}>Owner Name *</Text>
         <Input style={{borderBottomWidth: 0, }} 
         maxLength={30}
-        autoCapitalize={'none'}
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
@@ -1610,6 +1653,7 @@ uncheckBoxDetail(id){
          onTouchStart={()=>this.onActiveNamee()}
          value={this.state.oname}
          onChangeText={(oname)=>this.setState({ oname:oname, emptyName:false, nameError:false})}
+         onSubmitEditing={ (event) => { this.refs.phone._root.focus() }} 
          />
 
      </Item>
@@ -1638,16 +1682,18 @@ uncheckBoxDetail(id){
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30,fontFamily:'robotoRegular'}}>Phone Number *</Text>
               <Input style={{borderBottomWidth: 0}}
+              ref="phone"
               maxLength={10}
               autoCapitalize={'none'}
               autoCorrect={false}
-              returnKeyType="next"
+              returnKeyType='done'
               autoFocus ={false}
-              keyboardType='numeric'
+              keyboardType={Platform.OS =='ios' ? "number-pad" :'numeric'}
               value={this.state.ophone}
               onBlur={()=>this.onDeactivePhonee()}
               onTouchStart={()=>this.onActivePhonee()}
               onChangeText={(ophone)=>this.setState({ ophone:ophone, emptyPhone:false, phoneError:false, mobileLengthError:false})}
+              onSubmitEditing={ (event) => { this.refs.email._root.focus() }} 
                 />
 
            </Item>
@@ -1676,6 +1722,7 @@ uncheckBoxDetail(id){
            <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
               <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20,fontFamily:'robotoRegular'}}>Email Address *</Text>
               <Input style={{borderBottomWidth: 0}}
+              ref="email"
               autoCapitalize={'none'}
               autoCorrect={false}
               returnKeyType="next"
@@ -1684,6 +1731,7 @@ uncheckBoxDetail(id){
                onBlur={()=>this.onDeactiveEmaill()} 
                onTouchStart={()=>this.onActiveEmaill()}
                onChangeText={(oemail)=>this.setState({ oemail:oemail, emptyEmail:false, emailError:false})}
+               onSubmitEditing={ (event) => { this.refs.street._root.focus() }} 
                />
 
            </Item>
@@ -1712,7 +1760,8 @@ uncheckBoxDetail(id){
         <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
         <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/30,fontFamily:'robotoRegular'}}>Street *</Text>
         <Input style={{borderBottomWidth: 0}}
-        autoCapitalize={'none'}
+        ref="street"
+           autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
@@ -1720,6 +1769,7 @@ uncheckBoxDetail(id){
          onBlur={()=>this.onDeactiveStreet()}
          onTouchStart={()=>this.onActiveStreet()}
          onChangeText={(street)=>this.setState({ Street:street,emptyStreet:false,streetError:false})}
+         onSubmitEditing={ (event) => { this.refs.city._root.focus() }} 
          
          />
 
@@ -1748,9 +1798,10 @@ uncheckBoxDetail(id){
             <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/12,fontFamily:'robotoRegular'}}>City *</Text>
         
         <Input 
+        ref="city"
         style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/40}}
         maxLength={30}
-        autoCapitalize="none" 
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
@@ -1758,6 +1809,7 @@ uncheckBoxDetail(id){
          onBlur={()=>this.onDeactiveCity()}
           onTouchStart={()=>this.onActiveCity()}
           onChangeText={(city)=> this.setState({cityy:city,emptyCity:false,cityError:false})}
+          onSubmitEditing={ (event) => { this.refs.state._root.focus() }} 
           
           />
 
@@ -1784,16 +1836,18 @@ uncheckBoxDetail(id){
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>State *</Text>
        <Input 
+       ref="state"
        maxLength={30}
        value={this.state.statee}
        onBlur={()=>this.onDeactiveState()} 
        onTouchStart={()=>this.onActiveState()} 
         style={{borderBottomWidth: 0,}}
-        autoCapitalize="none" 
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
         onChangeText={(state)=>this.setState({statee:state,emptyState:false, stateError:false})}
+        onSubmitEditing={ (event) => { this.refs.zip._root.focus() }} 
         />
 
     </Item>
@@ -1826,6 +1880,7 @@ uncheckBoxDetail(id){
     <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/10,fontFamily:'robotoRegular'}}>Zip *</Text>
        <Input
+        ref="zip"
        maxLength={10}
        autoCapitalize={'none'}
        autoCorrect={false}
@@ -1836,6 +1891,7 @@ uncheckBoxDetail(id){
          onTouchStart={()=>this.onActiveZip()}
           style={{borderBottomWidth: 0, marginLeft:-Metrics.screenWidth/40}}
           onChangeText={(zip)=>this.setState({zipp:zip,emptyZip:false, zipError:false,ziplength:false})}
+          onSubmitEditing={ (event) => { this.refs.address._root.focus() }} 
           />
 
     </Item>
@@ -1857,16 +1913,18 @@ uncheckBoxDetail(id){
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/20,fontFamily:'robotoRegular'}}>Address * </Text>
        <Input 
+       ref="address"
        maxLength={50}
        value={this.state.Address}
        onBlur={()=>this.onDeactiveAddress()} 
        onTouchStart={()=>this.onActiveAddress()} 
         style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
-        autoCapitalize="none" 
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
         onChangeText={(address)=>this.setState({Address:address, emptyAddress:false})}
+        onSubmitEditing={ (event) => { this.refs.country._root.focus() }} 
         />
 
     </Item>
@@ -1894,16 +1952,18 @@ uncheckBoxDetail(id){
        <Item inlineLabel style={{backgroundColor:'transparent',borderBottomWidth: 0}}>
        <Text style={{fontSize:11,color:'#A3A3A3',marginRight:Metrics.screenWidth/22,fontFamily:'robotoRegular'}}>Country * </Text>
        <Input 
+       ref="country"
        maxLength={30}
        value={this.state.Country}
        onBlur={()=>this.onDeactiveCountry()} 
        onTouchStart={()=>this.onActiveCountry()} 
         style={{borderBottomWidth: 0,marginLeft:-Metrics.screenWidth/20}}
-        autoCapitalize="none" 
+        autoCapitalize="words" 
         autoCorrect={false}
         returnKeyType="next"
         autoFocus ={false}
         onChangeText={(country=>this.setState({Country:country,emptyCountry:false, countryError:false}))}
+        onSubmitEditing={ (event) => { this.refs.notes._root.focus() }} 
         />
 
     </Item>
@@ -1918,11 +1978,10 @@ uncheckBoxDetail(id){
 
    
         </View>
-
-
-
-
+            
+              
         </View>
+        
                        }
                         
 
@@ -1956,24 +2015,34 @@ uncheckBoxDetail(id){
 
 <Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/90,fontFamily:'robotoRegular'}}>Notes *</Label>
                   <Item style={{marginTop:Metrics.screenHeight/70,backgroundColor:'transparent',borderBottomWidth: 0}}>
-                   <Textarea
-                    returnKeyType={"done"}
-                    multiline={true}
-                    placeholder='Type here'
-                    blurOnSubmit={true}
-                     style={{fontSize:15,height: Metrics.screenHeight/10,width:Metrics.screenWidth - Metrics.screenWidth/13}}
-                   value={this.state.message}
-           
-                    maxLength={250}
-                    autoCapitalize={'none'}
-                     autoCorrect={false}
-                     onBlur={()=>this.onDeactiveNotes()} 
-                     onTouchStart={()=>this.onActiveNotes()}
-                     autoFocus ={false}
-                     onChangeText={(message) => {
-                        this.setState({Notes:message,emptyNotes:false});
-                      }}
-                   />
+                  <InputGroup style={{borderBottomWidth:0}}>
+                        <Input
+                        ref="notes"
+                        editable={true} 
+                               maxLength={250}
+                              autoCorrect={false}
+                             
+                         onBlur={()=>this.onDeactiveNotes()} 
+                         onTouchStart={()=>this.onActiveNotes()}
+                       
+                        // multiline={true} 
+                    
+                         placeholder='Type your text here'
+                         onChangeText={(message) => {
+                          this.setState({Notes:message,emptyNotes:false});
+                        }}
+                      
+
+                        onEndEditing={Keyboard.dismiss}
+  
+                        style={{
+                            width: 200, height: 60
+                        }} /> 
+                              
+   
+                    </InputGroup>
+                    
+                
                   </Item>
 
                   { this.state.notess === false ?
@@ -1984,10 +2053,12 @@ uncheckBoxDetail(id){
           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:Metrics.screenHeight/60, }}
           />
                }
+               
 
 
                  <View>
                         <TouchableOpacity  
+                           
                         onPress={()=> this.onPressSubmit()}
                    style={{
                      borderRadius:20,
@@ -1998,13 +2069,16 @@ uncheckBoxDetail(id){
                    marginTop:Metrics.screenHeight/15,
                  
                    }}>
-                   <Text style={{color:"white", fontSize:14,fontFamily:'robotoRegular'}}>SUBMIT LEAD</Text>
+                   <Text  style={{color:"white", fontSize:14,fontFamily:'robotoRegular'}}>SUBMIT LEAD</Text>
                     
                    </TouchableOpacity>
 
                </View>
+            
+                    
                    </View>  
           }
+           
             </Content>
           
             </Container>

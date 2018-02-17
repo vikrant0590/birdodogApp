@@ -361,8 +361,8 @@ async componentDidMount() {
  :
  
  <View style={{flex:0.8,marginTop:Metrics.screenHeight/30,alignItems:'center', justifyContent:'center'}}>
-      <CardItem style={{flex:0.2,backgroundColor:"#01A9F2"}}>
-       <Text style={{fontSize:16}}>No Transactions Found!</Text>       
+      <CardItem style={{flex:0.2}}>
+       <Text style={{fontSize:16,fontFamily:'robotoRegular'}}>No Transactions Found!</Text>       
        </CardItem>
    </View>     
 

@@ -138,18 +138,22 @@ export default class Login extends Component {
           <Input placeholder="Email" 
           value={this.state.email}
            placeholderTextColor={'#A3A3A3'}
+           autoFocus={true}
            autoCorrect={false}
            autoCapitalize={'none'}
            onChangeText={(email) => {
              this.setState({email});
            }}
+           onSubmitEditing={ (event) => { this.refs.Password._root.focus() }} 
            style={{marginLeft:Metrics.screenWidth/60}}
            />
         </Item>
         
         <Item>
         <Image source={Images.lockgreen}/>
-          <Input  placeholder="Password" 
+          <Input
+          ref="Password"
+          placeholder="Password" 
           value={this.state.password}
           secureTextEntry={true} 
            placeholderTextColor={'#A3A3A3'}
