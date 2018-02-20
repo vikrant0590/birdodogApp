@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import PropTypes from 'prop-types';
-import { Text, Platform } from 'react-native';
+import { Text, Platform , Keyboard} from 'react-native';
 import Drawer from 'react-native-drawer';
 import { DefaultRenderer, Actions } from 'react-native-router-flux';
 import { MenuLeftDrawer } from './components';
@@ -26,7 +26,7 @@ class NavigationDrawer extends React.Component {
       <Drawer
     
         ref={(ref) => this._drawer = ref}
-        onOpen={() =>Actions.refresh({ key: state.key, open: true })}
+        onOpen={() =>Actions.refresh({ key: state.key, open: true },   Keyboard.dismiss())}
         onClose={() => Actions.refresh({ key: state.key, open: false })}
         content={ <MenuLeftDrawer homeSection={() => this.closeControlPanel()} />}
         tapToClose

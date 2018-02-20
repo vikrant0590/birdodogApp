@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Content, Button, Icon, Grid, Col, Row ,Body,Card, List, ListItem, H3,Left,Right,} from 'native-base';
-import { View, Text, Image, Platform, TouchableOpacity, Switch, Share,AsyncStorage ,NetInfo} from 'react-native'
+import { View, Text, Image, Platform, TouchableOpacity, Switch, Share,AsyncStorage ,NetInfo, Keyboard} from 'react-native'
 import { Colors, Images, Metrics } from '../../theme';
 import styles from './MenuLeftDrawerStyles';
 import {MyProfile}  from '../../containers';
@@ -74,6 +74,7 @@ import {Font} from 'expo';
     );
   }
   componentWillUnmount() {
+ 
     NetInfo.isConnected.removeEventListener(
       'change',
       this._handleConnectivityChange

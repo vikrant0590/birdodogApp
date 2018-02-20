@@ -177,6 +177,7 @@ NetInfo.isConnected.fetch().done(
 
     const type= await AsyncStorage.getItem('UserType');
     const UserType = JSON.parse(type);
+    console.log("UUSSERR TTYYPE ***", UserType)
 
     this.setState({ UserToken:Usertoken.data.token, UserType:UserType});
     const id ={
@@ -334,7 +335,7 @@ NetInfo.isConnected.fetch().done(
          
                <View style={{ flex:0.4,justifyContent:'flex-end',marginTop:Metrics.screenHeight/20}}>
                <TouchableOpacity  
-               onPress={()=> this.state.checked  ? this.updateStatus() : alert("Please accept terms and condition")}
+               onPress={()=> this.state.checked  ? this.updateStatus() : alert("Please accept Terms and Condition")}
                    style={{borderRadius:20,
                       height:35,
                       
@@ -473,7 +474,7 @@ NetInfo.isConnected.fetch().done(
               }}>
              
               <Text style={{color:'black', fontSize:17, marginTop:Metrics.screenHeight/30,fontFamily:'robotoBold'}}> Birddog Express </Text>
-               <Text style={{color:'gray', fontSize:12,marginTop:Metrics.screenHeight/70,fontFamily:'robotoLight'}}>Thanks for accepting terms & conditions.</Text>
+               <Text style={{color:'gray', fontSize:12,marginTop:Metrics.screenHeight/70,fontFamily:'robotoLight'}}>Thanks for accepting Terms & Conditions.</Text>
              <Text style={{color:'gray', fontSize:12,fontFamily:'robotoLight'}}>Congrats! You have unlocked next training video.</Text>
              <TouchableOpacity onPress={()=>this.backToDashboard()} 
              style={{borderRadius:20,

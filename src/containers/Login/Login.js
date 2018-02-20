@@ -138,7 +138,7 @@ export default class Login extends Component {
           <Input placeholder="Email" 
           value={this.state.email}
            placeholderTextColor={'#A3A3A3'}
-           autoFocus={true}
+           autoFocus={false}
            autoCorrect={false}
            autoCapitalize={'none'}
            onChangeText={(email) => {

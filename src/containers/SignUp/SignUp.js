@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableOpacity, Image,NetInfo } from 'react-native';
+import { Text, View, TouchableOpacity, Image,NetInfo,Keyboard } from 'react-native';
 import {Container, Content, Header, Form, Item, Input, Label , Button,Icon} from 'native-base';
 import styles from './signupStyles';
 import { ApplicationStyles, Colors, Metrics, Images } from '../../theme';
@@ -117,6 +117,7 @@ export default class Signup extends Component {
               .then((res) => {
                 if(res.status === 200){
                 this.setState({isVisible: false,name:'',email:'',password:'',confirmPassword:''});
+            
                 toast('Successfully Register!');
                 NavAction.drawer();
                 }else if (res.status === 400){
@@ -125,6 +126,7 @@ export default class Signup extends Component {
                     toast('Name can not exceed 30 characters.');
                   }else{
                   this.setState({isVisible: false});
+                  Keyboard.dismiss();
                   toast('Email already exist.');
                   }
                 }

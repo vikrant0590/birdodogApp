@@ -1,5 +1,5 @@
 import React, { Component} from 'react';
-import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight, NetInfo, Platform, TextInput, Keyboard} from 'react-native';
+import { Text, View , Image, TouchableOpacity, Button,  TouchableHighlight, NetInfo, Platform, TextInput, Keyboard,KeyboardAvoidingView} from 'react-native';
 import { Container, Content,  Form, Item, Input, Label , Row,Col,Textarea,InputGroup} from 'native-base';
  import {Metrics, Images,} from '../../theme';
  import { ImagePicker } from 'expo';
@@ -16,6 +16,7 @@ import { toast } from '../../helpers/ToastMessage';
 import { Actions } from 'react-native-router-flux';
 import {Font} from 'expo';
 
+import DoneButton from 'react-native-keyboard-done-button';
 
  const checkboxArray =[];
 
@@ -460,6 +461,7 @@ deleteFourth =()=>{
 
 
 onPressSubmit = () => {
+  
   var data=any;
   const finalArray = [];
   const finalDetail=[];
@@ -637,11 +639,14 @@ onPressSubmit = () => {
     const CountryValdiation =/^[a-zA-Z .]*$/;
     if(this.state.Country =='' || this.state.Country=== undefined){
         this.setState({emptyCountry:true, error: true})
+        Keyboard.dismiss();
     }else{
     if(CountryValdiation.test(this.state.Country)){
-      this.setState({ countryError:false, error:false})
+      this.setState({ countryError:false, error:false});
+      Keyboard.dismiss();
     }else {
       this.setState({countryError:true, error:true})
+      Keyboard.dismiss();
     }
   }
 
@@ -683,10 +688,12 @@ onPressSubmit = () => {
     this.setState({ street:false,city:false,State:false,zip:false,country:false, address:false, notess:true,emptyNotes:false });
   }
   onDeactiveNotes(){
+  
     this.setState({ notess:false});
     
     if(this.state.Notes ==='' || this.state.Notes=== undefined){
       this.setState({emptyNotes:true, error: true})
+      Keyboard.dismiss();
   }
   }
 
@@ -1084,7 +1091,7 @@ uncheckBoxDetail(id){
               <Spinner visible={this.state.isVisible} textContent={"Loading..."} textStyle={{color:'white'}} />
 
               <Content>
-        
+              <KeyboardAvoidingView>
           {this.state.isload &&
           
                    <View style={{flexDirection:"column",marginBottom: Metrics.screenHeight/8,marginLeft:Metrics.screenWidth/36,marginRight:Metrics.screenHeight/36,}}>
@@ -1596,7 +1603,7 @@ uncheckBoxDetail(id){
         returnKeyType="next"
         autoFocus ={false}
         onChangeText={(country=>this.setState({Country:country,emptyCountry:false, countryError:false}))}
-         onSubmitEditing={ (event) => { this.refs.notes._root.focus() }} 
+         //onSubmitEditing={ (event) => { this.refs.notes._root.focus() }} 
         />
 
     </Item>
@@ -2017,15 +2024,17 @@ uncheckBoxDetail(id){
                   <Item style={{marginTop:Metrics.screenHeight/70,backgroundColor:'transparent',borderBottomWidth: 0}}>
                   <InputGroup style={{borderBottomWidth:0}}>
                         <Input
-                        ref="notes"
-                        editable={true} 
+                       // ref="notes"
+                       
                                maxLength={250}
                               autoCorrect={false}
-                             
+
                          onBlur={()=>this.onDeactiveNotes()} 
                          onTouchStart={()=>this.onActiveNotes()}
-                       
-                        // multiline={true} 
+                    
+
+                        multiline={true} 
+                        blurOnSubmit={false} 
                     
                          placeholder='Type your text here'
                          onChangeText={(message) => {
@@ -2033,16 +2042,19 @@ uncheckBoxDetail(id){
                         }}
                       
 
-                        onEndEditing={Keyboard.dismiss}
+                       
   
                         style={{
-                            width: 200, height: 60
-                        }} /> 
+                            width: 200, height: 70,textAlignVertical: "top"
+                         
+                        }}
+                         /> 
+       
                               
    
                     </InputGroup>
                     
-                
+       
                   </Item>
 
                   { this.state.notess === false ?
@@ -2078,7 +2090,7 @@ uncheckBoxDetail(id){
                     
                    </View>  
           }
-           
+           </KeyboardAvoidingView>
             </Content>
           
             </Container>
@@ -2096,3 +2108,4 @@ const  mapDispatchToProps = {
 };
 
 export default  connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})(NewLead)
+

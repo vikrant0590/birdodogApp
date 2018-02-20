@@ -4,7 +4,7 @@ const environment = {
       apiUrl: 'http://s2.staging-host.com/birddog-express/api/'
     },
     production: {
-      isProduction: true,
+      isProduction: false,
       apiUrl: 'http://s2.staging-host.com/birddog-express/api/'
     }
   }[process.env.NODE_ENV || 'development'];

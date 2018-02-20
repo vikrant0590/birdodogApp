@@ -152,8 +152,9 @@ import {Font} from 'expo';
                  <Label style={{color:"#A3A3A3",fontSize:13, marginTop:Metrics.screenHeight/55,fontFamily:'robotoRegular'}}>Your Message...</Label>
                   <Item style={{marginTop:Metrics.screenHeight/70}}>
                    <Textarea
-                    returnKeyType={"done"}
+                   // returnKeyType={"done"}
                     multiline={true}
+                    numberOfLines={10}
                     placeholder='Type here'
                     blurOnSubmit={true}
                      style={{fontSize:15,height: Metrics.screenHeight/10,width:Metrics.screenWidth - Metrics.screenWidth/13}}

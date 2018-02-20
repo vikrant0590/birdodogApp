@@ -71,7 +71,8 @@ test:any
 
     const Type = await AsyncStorage.getItem('UserType');
     const UserType = JSON.parse(Type);
-    this.setState({UserType:Usertoken});
+    console.log("UT",UserType)
+    this.setState({UserType:UserType});
 
     console.log("USER TYPE",this.state.UserType)
 
