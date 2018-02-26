@@ -47,7 +47,7 @@ test:any
   };
 
   callme=async()=>{
-
+    
     this.setState({page:1,data:[]})
     this.componentWillMount();
    
@@ -56,7 +56,7 @@ test:any
 
   componentWillMount = async () => {
    
-
+ console.log("i am called");
     ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
 
     NetInfo.isConnected.removeEventListener(
@@ -108,6 +108,7 @@ async componentDidMount() {
     robotoCondensedRegular:require('../../fonts/RobotoCondensed-Regular.ttf')
   });
   this.setState({isload:true});
+  
   NetInfo.isConnected.addEventListener(
     'change',
     this._handleConnectivityChange

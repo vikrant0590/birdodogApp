@@ -125,6 +125,8 @@ backMe = async()=>{
  
 
   componentWillUnmount() {
+    ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
+
     NetInfo.isConnected.removeEventListener(
       'change',
       this._handleConnectivityChange
@@ -468,12 +470,12 @@ NetInfo.isConnected.fetch().done(
         <Content>
             <View style={{ 
           
-             marginLeft:Metrics.screenWidth/50 ,
-             marginRight:Metrics.screenWidth/50,
+             marginLeft:Metrics.screenWidth/60 ,
+             marginRight:Metrics.screenWidth/60,
              
               }}>
              
-              <Text style={{color:'black', fontSize:17, marginTop:Metrics.screenHeight/30,fontFamily:'robotoBold'}}> Birddog Express </Text>
+              <Text style={{color:'black', fontSize:17, marginTop:Metrics.screenHeight/40,fontFamily:'robotoBold'}}> Birddog Express </Text>
                <Text style={{color:'gray', fontSize:12,marginTop:Metrics.screenHeight/70,fontFamily:'robotoLight'}}>Thanks for accepting Terms & Conditions.</Text>
              <Text style={{color:'gray', fontSize:12,fontFamily:'robotoLight'}}>Congrats! You have unlocked next training video.</Text>
              <TouchableOpacity onPress={()=>this.backToDashboard()} 
@@ -482,7 +484,7 @@ NetInfo.isConnected.fetch().done(
             justifyContent:"center",
             alignItems:"center",
            backgroundColor:'#8CB102',
-           marginTop:Metrics.screenHeight/40,
+           marginTop:Metrics.screenHeight/45,
            marginLeft:Metrics.screenWidth/7,
            marginRight:Metrics.screenWidth/7
            }}>

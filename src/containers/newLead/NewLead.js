@@ -1094,7 +1094,7 @@ uncheckBoxDetail(id){
               <KeyboardAvoidingView>
           {this.state.isload &&
           
-                   <View style={{flexDirection:"column",marginBottom: Metrics.screenHeight/8,marginLeft:Metrics.screenWidth/36,marginRight:Metrics.screenHeight/36,}}>
+                   <View style={{flexDirection:"column",marginBottom: Metrics.screenHeight/8,marginLeft:Metrics.screenWidth/24,marginRight:Metrics.screenHeight/36,}}>
 
                      <View style={{marginTop:Metrics.screenHeight/40}}>
                          <Text style={{fontSize:11,color:'#333333',fontFamily:'robotoBold'}}>Select Property Type</Text>
@@ -1407,10 +1407,10 @@ uncheckBoxDetail(id){
      </Item>
      { this.state.street === false ?
                 <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
            /> :
            <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
            />
                 }
  </View>
@@ -1449,10 +1449,10 @@ uncheckBoxDetail(id){
           </Item>
           { this.state.city === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
 
@@ -1489,10 +1489,10 @@ uncheckBoxDetail(id){
     </Item>
     { this.state.State === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
 
@@ -1535,10 +1535,10 @@ uncheckBoxDetail(id){
           </Item>
           { this.state.zip === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45,}}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45,}}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
       </View>
@@ -1570,10 +1570,10 @@ uncheckBoxDetail(id){
     </Item>
     { this.state.address === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
 
@@ -1609,10 +1609,10 @@ uncheckBoxDetail(id){
     </Item>
     { this.state.country === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
 
@@ -1666,10 +1666,10 @@ uncheckBoxDetail(id){
      </Item>
      { this.state.Oname === false ?
                 <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
            /> :
            <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
            />
                 }
  </View>
@@ -1706,10 +1706,10 @@ uncheckBoxDetail(id){
            </Item>
            { this.state.Ophone === false ?
                 <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
            /> :
            <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
            />
                 }
        </View>
@@ -1744,10 +1744,10 @@ uncheckBoxDetail(id){
            </Item>
            { this.state.Oemail === false ?
                 <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
            /> :
            <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
            />
                 }
        </View>
@@ -1783,10 +1783,10 @@ uncheckBoxDetail(id){
      </Item>
      { this.state.street === false ?
                 <Image source={Images.bar} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
            /> :
            <Image source={Images.bar_green} resizeMode="contain" 
-           style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+           style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
            />
                 }
  </View>
@@ -1823,10 +1823,10 @@ uncheckBoxDetail(id){
      </Item>
      { this.state.city === false ?
           <Image source={Images.bar} resizeMode="contain" 
-     style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+     style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
      /> :
      <Image source={Images.bar_green} resizeMode="contain" 
-     style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+     style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
      />
           }
 
@@ -1860,10 +1860,10 @@ uncheckBoxDetail(id){
     </Item>
     { this.state.State === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
 
@@ -1904,10 +1904,10 @@ uncheckBoxDetail(id){
     </Item>
     { this.state.zip === false ?
          <Image source={Images.bar} resizeMode="contain" 
-    style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45,}}
+    style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45,}}
     /> :
     <Image source={Images.bar_green} resizeMode="contain" 
-    style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+    style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
     />
          }
 </View>
@@ -1937,10 +1937,10 @@ uncheckBoxDetail(id){
     </Item>
     { this.state.address === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
 
@@ -1976,10 +1976,10 @@ uncheckBoxDetail(id){
     </Item>
     { this.state.country === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:-Metrics.screenHeight/45, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:-Metrics.screenHeight/45, }}
           />
                }
 
@@ -2059,10 +2059,10 @@ uncheckBoxDetail(id){
 
                   { this.state.notess === false ?
                <Image source={Images.bar} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:Metrics.screenHeight/60 }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:Metrics.screenHeight/60 }}
           /> :
           <Image source={Images.bar_green} resizeMode="contain" 
-          style={{width:Metrics.screenWidth-Metrics.screenWidth/15,marginTop:Metrics.screenHeight/60, }}
+          style={{width:Metrics.screenWidth-Metrics.screenWidth/11,marginTop:Metrics.screenHeight/60, }}
           />
                }
                
@@ -2074,7 +2074,7 @@ uncheckBoxDetail(id){
                         onPress={()=> this.onPressSubmit()}
                    style={{
                      borderRadius:20,
-                    width:Metrics.screenWidth/1.07,
+                    width:Metrics.screenWidth/1.09,
                     height:35,
                     justifyContent:"center",alignItems:"center",
                    backgroundColor:'#8db103',

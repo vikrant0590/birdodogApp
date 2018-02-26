@@ -122,6 +122,7 @@ import {Font} from 'expo';
         
         return(
           <Container>
+            <Content>
             {this.state.isload && 
             <View style={{
                 flex:1,
@@ -154,20 +155,20 @@ import {Font} from 'expo';
                    <Textarea
                    // returnKeyType={"done"}
                     multiline={true}
-                    numberOfLines={10}
+                   // numberOfLines={10}
                     placeholder='Type here'
-                    blurOnSubmit={true}
                      style={{fontSize:15,height: Metrics.screenHeight/10,width:Metrics.screenWidth - Metrics.screenWidth/13}}
                    value={this.state.message}
            
                     maxLength={500}
                     autoCapitalize={'none'}
                      autoCorrect={false}
-                     
+                     blurOnSubmit={false} 
                      autoFocus ={false}
                      onChangeText={(message) => {
                         this.setState({message});
                       }}
+                      style={{ width: 200, height: 70,textAlignVertical: "top"}}
                    />
                   </Item>
                   <View style={{marginTop:Metrics.screenHeight/3, justifyContent:"center", alignItems:"center"}}>
@@ -183,6 +184,7 @@ import {Font} from 'expo';
 
             </View>    
             }
+            </Content>
             </Container>
         )
     }
