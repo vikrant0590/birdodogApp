@@ -23,7 +23,8 @@ import {
 } from './containers';
 
 
- import {MenuLeftDrawer,WalkThroughFirst } from './components'
+ import {MenuLeftDrawer } from './components';
+ import { Asset, AppLoading } from 'expo';
 
 import {  Colors, Metrics, Images } from './theme';
 import NavigationDrawer from './NavigationDrawer';
@@ -91,12 +92,14 @@ export default class AppRouter extends Component {
     this.state = {
       logged: false,
       loading: true,
-      isVisible:false
+      isVisible:false,
+      isReady:false
     };
   }
 
   
   componentWillMount = async () => {
+    console.log("WILL MOUNT")
   
     // AsyncStorage.removeItem('userCredentials');
     try {
@@ -138,12 +141,17 @@ export default class AppRouter extends Component {
   }
 
     render() {
+     
     
-       if(this.state.loading){
-         return(
-        <WalkThroughFirst/>
-         )
-       }
+      if (this.state.loading) {
+        return (
+          <AppLoading
+            startAsync={this._cacheResourcesAsync}
+            onFinish={() => this.setState({ loading: false })}
+            onError={console.warn}
+          />
+        );
+      }
         return (
          
           <Router

@@ -4,7 +4,7 @@ import { Container, Content,  Form, Item, Input, Label , Row,Col,Textarea,InputG
  import {Metrics, Images,} from '../../theme';
  import { ImagePicker } from 'expo';
  import ModalDropdown from 'react-native-modal-dropdown';
- import {NewProperty, OwnerProperty} from '../../components';
+ 
  import { deleteImage , submitLead} from '../../redux/modules/auth';
  import Spinner from 'react-native-loading-spinner-overlay';
  import PropTypes, {any, object} from 'prop-types';

@@ -56,7 +56,7 @@ test:any
 
   componentWillMount = async () => {
    
- console.log("i am called");
+//  console.log("i am called");
     ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
 
     NetInfo.isConnected.removeEventListener(
@@ -71,10 +71,10 @@ test:any
 
     const Type = await AsyncStorage.getItem('UserType');
     const UserType = JSON.parse(Type);
-    console.log("UT",UserType)
+    // console.log("UT",UserType)
     this.setState({UserType:UserType});
 
-    console.log("USER TYPE",this.state.UserType)
+    // console.log("USER TYPE",this.state.UserType)
 
     this.fetchData();
 }
@@ -123,12 +123,12 @@ async componentDidMount() {
 
 componentWillReceiveProps(nextProps){
   
-  console.log("Next Props...",nextProps)
+  // console.log("Next Props...",nextProps)
 
 }
 componentWillUpdate(prevProps, prevState){
-   console.log("previous",prevProps);
-   console.log("previous state",prevState);
+  //  console.log("previous",prevProps);
+  //  console.log("previous state",prevState);
   this.state.isVisible = false;
 }
 
@@ -141,8 +141,8 @@ this.setState({refreshMe:true})
     //on click video 
     
        playVideo = (watch_status, video_Id,) => {
-         console.log("PAGE",this.state.page)
-         console.log("???????????",video_Id);
+        //  console.log("PAGE",this.state.page)
+        //  console.log("???????????",video_Id);
          if(watch_status ==='watchable' || watch_status === 'watched'){
            console.log("Watch STATUS", watch_status);
          NavActions.dashboarddetail({id:video_Id,watch_status:watch_status,call:this.callme})
@@ -157,13 +157,13 @@ handleEnd =()=>{
   setTimeout(() => {
     this.setState(state =>({ page: this.state.page + 1 }),() =>this.fetchData());
   }, 3000);
-   console.log("HandleEnd");
+  //  console.log("HandleEnd");
 
 
  }
 
 fetchData= async() => {
-      console.log("FUNCTION")
+      // console.log("FUNCTION")
     this.setState({loading:true})
   const data = {
       method: 'GET',
@@ -172,23 +172,18 @@ fetchData= async() => {
       },
      
       }
-      // const {store: {dispatch}} = this.context;
-      // dispatch(dashboard(this.state.page,this.state.UserToken))
-      // .then((res)=>{
-      //   console.log("1234567890",res)
-      //   this.setState({DataDum:res})
-      // })
+    
     const response =await fetch( `http://s2.staging-host.com/birddog-express/api/video/list/${this.state.page}`,data);
       const json = await response.json();
       const json2 = json;
       
-      console.log("JSON.......",json)
+      // console.log("JSON.......",json)
 
       for(var i=0;i<json.data.length;i++){
          json.data[i].description = json.data[i].description.slice(0,70);
       
       }
-      console.log("&&&&&&&&&&&&&&&&",this.state.description);
+      // console.log("&&&&&&&&&&&&&&&&",this.state.description);
 
       if(json.status === 200){
                 
@@ -202,24 +197,20 @@ fetchData= async() => {
       }else {
         this.setState({message:json.message, loading:false});
       }
-      console.log("API DATA DASHBOARD",this.state.data);
-      console.log("MESSAGE",this.state.message)
+      // console.log("API DATA DASHBOARD",this.state.data);
+      // console.log("MESSAGE",this.state.message)
 
     
 }
-
-
-
-
 
     render(){
       const isIOS = Platform.OS === 'ios';
   
         return(
-        <View style={{marginTop:Metrics.navBarHeight, flex:1, }}>
+        <View style={styles.container}>
     {this.state.isload &&
                           <FlatList
-                             style={{flex:1,}}
+                             style={styles.flatListContainer}
                           data ={this.state.data || this.state.description}
                            
                            keyExtractor ={(x,i)=>i}
@@ -237,23 +228,15 @@ fetchData= async() => {
 
                            
 
-  <View style={{ flex:1}} >
-        <View style={{flex:1,height:Metrics.screenHeight/6,flexDirection:'row',
-        marginLeft:Metrics.screenWidth/25,marginRight:Metrics.screenWidth/25,marginTop:12, }}>
-        <View style={{flexDirection:'column'}}>
+  <View style={styles.List} >
+        <View style={styles.ListRow}>
+        <View style={styles.ListImageRow}>
       
-           <TouchableOpacity onPress={()=> this.playVideo(item.watch_status,item.id)} style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.4, }}>
+           <TouchableOpacity onPress={()=> this.playVideo(item.watch_status,item.id)} 
+           style={styles.ImageTouch}>
             
              <Image   source={{uri:item.thumb_path}} 
-             style={{
-               borderBottomLeftRadius:5,
-               borderBottomRightRadius:5,
-               borderTopLeftRadius:5,
-               borderTopRightRadius:5,
-               borderRadius:5,
-               height:Metrics.screenHeight/6,
-               width:Metrics.screenWidth/2.4,
-               resizeMode:'stretch'}}/>
+             style={ styles.ImageThumb}/>
 
                {item.watch_status === 'locked' &&
                 <BlurView tint="light" intensity={40} style={StyleSheet.absoluteFill} >
@@ -262,35 +245,32 @@ fetchData= async() => {
                }
            </TouchableOpacity>  
            { item.watch_status === 'watchable' || item.watch_status === 'watched' ?
-           <View style={{marginTop:-Metrics.screenHeight/8.8,alignItems:'center', justifyContent:'center'}}>
+           <View style={styles.playIcon}>
               <TouchableOpacity onPress={()=> this.playVideo(item.watch_status,item.id)}>
            <Image source={Images.play} />
            </TouchableOpacity>
            </View>
             :
            
-           <Image source={Images.lock} style={{marginTop:-Metrics.screenHeight/8.8,marginLeft:Metrics.screenWidth/6.3,alignItems:'center', justifyContent:'center'}}/>
+           <Image source={Images.lock} style={styles.lockIcon}/>
          
             }
            </View>
 
 
-           <View style={{height:Metrics.screenHeight/6,width:Metrics.screenWidth/2.1,flex:1,
-           
-             flexDirection:'column',
-              marginLeft:Metrics.screenWidth/30,}}>
-              <View  style={{alignItems:'flex-start',justifyContent:"center",marginTop:Metrics.screenHeight/120,flex:0.2, }}>
-                 <Text style={{color:'#333333', fontSize:16,fontFamily:'robotoBold'}}>{item.title} </Text>
+           <View style={styles.DetailColumn}>
+              <View  style={styles.titleView }>
+                 <Text style={styles.titleText}>{item.title} </Text>
               </View>
 
-              <View style={{flex:0.5, }}>
-                 <Text style={{color:'#878787', fontSize:12, fontFamily:'robotoLight'}}>{item.description} ...</Text>
+              <View style={styles.decView}>
+                 <Text style={styles.videoDesc}>{item.description} ...</Text>
               </View>  
 
-              <View style={{ flex:0.3,}}>
-               <TouchableOpacity style={{alignItems:'center', flexDirection:'row',}} onPress={ ()=> this.playVideo(item.watch_status,item.id,)}>
-               <Image source={Images.viewdetail} style={{marginRight:Metrics.screenWidth/60,}}/>
-               <Text style={{fontSize:12, color:'#333333', justifyContent:'center',fontFamily:'robotoBold'}}>View Detail</Text>
+              <View style={styles.viewDetailView}>
+               <TouchableOpacity style={styles.viewDetailTouchArea} onPress={ ()=> this.playVideo(item.watch_status,item.id,)}>
+               <Image source={Images.viewdetail} style={styles.viewDetailButton}/>
+               <Text style={styles.ViewDetailText}>View Detail</Text>
               </TouchableOpacity>
 
               </View>  
@@ -299,7 +279,7 @@ fetchData= async() => {
           </View> 
       </View>
 
-        <View style={{marginTop:12,height:0.4, backgroundColor:'#cecece'}}>
+        <View style={styles.ListRowSeperator}>
 
         </View>
      </View>
