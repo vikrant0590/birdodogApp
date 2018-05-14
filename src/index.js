@@ -146,7 +146,7 @@ export default class AppRouter extends Component {
       if (this.state.loading) {
         return (
           <AppLoading
-            startAsync={this._cacheResourcesAsync}
+            // startAsync={this._cacheResourcesAsync}
             onFinish={() => this.setState({ loading: false })}
             onError={console.warn}
           />

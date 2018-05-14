@@ -44,7 +44,6 @@ const images = {
     FAQ:require('../images/FAQ.png'),
     Terms: require('../images/Terms.png'),
     profilee: require('../images/profilee.png'),
-    logo:require('../images/logo.png'),
     lock: require('../images/lock.png'),
     play: require('../images/play.png')
    

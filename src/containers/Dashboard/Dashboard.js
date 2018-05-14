@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BlurView } from 'expo';
 import { Audio, Video, ScreenOrientation } from 'expo';
 import { Text, View, TouchableOpacity, Image, StatusBar, Platform ,AsyncStorage, FlatList, ActivityIndicator,StyleSheet,NetInfo} from 'react-native';
-
+import Spinner from 'react-native-loading-spinner-overlay';
 import {Container, Content, Header, Form, Item, Input, Label , Button,} from 'native-base';
 import styles from './DashboardStyles';
 import { Actions as NavActions } from 'react-native-router-flux';
@@ -33,7 +33,9 @@ test:any
       page:1,
       UserType:undefined,
       refresh:false,
-      refreshMe:false
+      refreshMe:false,
+      isVisible:true,
+      isload:false
     }
   }
 
@@ -156,7 +158,7 @@ handleEnd =()=>{
   this.setState({loading:true})
   setTimeout(() => {
     this.setState(state =>({ page: this.state.page + 1 }),() =>this.fetchData());
-  }, 3000);
+  }, 6000);
   //  console.log("HandleEnd");
 
 
@@ -192,10 +194,11 @@ fetchData= async() => {
           data: this.state.page ===1 ? json.data : [...state.data, ...json.data,],
           loading:false,
           message:json.message,
+          isVisible:false
   
       }));
       }else {
-        this.setState({message:json.message, loading:false});
+        this.setState({message:json.message, loading:false, isVisible:false});
       }
       // console.log("API DATA DASHBOARD",this.state.data);
       // console.log("MESSAGE",this.state.message)
@@ -207,6 +210,8 @@ fetchData= async() => {
       const isIOS = Platform.OS === 'ios';
   
         return(
+          <Container>
+              <Spinner visible={this.state.isVisible}/>
         <View style={styles.container}>
     {this.state.isload &&
                           <FlatList
@@ -244,7 +249,8 @@ fetchData= async() => {
                  </BlurView>
                }
            </TouchableOpacity>  
-           { item.watch_status === 'watchable' || item.watch_status === 'watched' ?
+           
+           { item.watch_status !== 'locked'  ?
            <View style={styles.playIcon}>
               <TouchableOpacity onPress={()=> this.playVideo(item.watch_status,item.id)}>
            <Image source={Images.play} />
@@ -290,7 +296,7 @@ fetchData= async() => {
               />
             }
       </View>
-      
+      </Container>
       
         
     
